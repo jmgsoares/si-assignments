@@ -5,8 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
-@XmlRootElement(name="class")
-
+@XmlRootElement(name="class", namespace = "urn:dei:ns1")
 public class StudentClass {
 	List<Student> studentsList;
 
