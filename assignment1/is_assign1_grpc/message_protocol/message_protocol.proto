@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package is_assign1_grpc;
+
+service SearchService {
+    rpc Search (SearchRequest) returns (SearchResponse);
+}
+
+message SearchRequest {
+
+}
+
+message SearchResponse {
+
+}
+
