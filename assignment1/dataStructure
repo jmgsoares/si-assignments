@@ -1,0 +1,28 @@
+car
+    uid
+    brand
+    model
+    bodyType
+    approval
+    chassis
+    tyreSize
+    weight          (kg)
+    fuel
+    seats
+    noise           (db)
+    co2Emissions    (g/km)
+    engineSize      (cm3)
+    power           (kw)
+    color
+    consumption     (l/100km)
+    plate
+    date
+    ownerUid
+owner
+    uid
+    name
+    telephone
+    address
+    licenceNumber
+    idNumber
+    taxNumber
