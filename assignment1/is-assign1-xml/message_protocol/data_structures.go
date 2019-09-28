@@ -1,15 +1,8 @@
-package main
+package message_protocol
 
 import (
-	"bufio"
 	"encoding/xml"
-	"fmt"
-	"log"
-	"net"
-	"strings"
 )
-
-const(port = ":4321")
 
 type Car struct {
 	XMLName   		xml.Name 	`xml:"car"`
@@ -44,25 +37,4 @@ type Owner struct {
 	IdNumber      	int      	`xml:"idNumber"`
 	TaxNumber     	int      	`xml:"taxNumber"`
 	Cars          	[]Car
-}
-
-func main() {
-	ln, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatalf("could not connect: %v", err)
-	}
-	for {
-		conn, err := ln.Accept()
-		if err != nil {
-			log.Fatalf("could not accept: %v", err)
-		}
-
-		message, _ := bufio.NewReader(conn).ReadString('\n')
-
-		fmt.Printf(string(message))
-
-		newmessage := strings.ToUpper(message)
-
-		_, _ = conn.Write([]byte(newmessage + "\n"))
-	}
 }
