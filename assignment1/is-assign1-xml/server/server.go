@@ -16,7 +16,7 @@ const (
 
 func main() {
 
-	o := message_protocol.Owner{Uid: 1, Name: "Zé", Telephone: 1, Address: "a", LicenceNumber: 1, IdNumber: 1, TaxNumber: 1,
+	o := message_protocol.SOwners{Owners: []message_protocol.Owner{{Uid: 1, Name: "Zé", Telephone: 1, Address: "a", LicenceNumber: 1, IdNumber: 1, TaxNumber: 1,
 		Cars: []message_protocol.Car{
 			{
 				Uid:          1,
@@ -38,7 +38,51 @@ func main() {
 				Plate:        "as-23-re",
 				Date:         "10",
 				OwnerUid:     1,
-			}}}
+			}}},
+		{Uid: 2, Name: "Manuel", Telephone: 1, Address: "a", LicenceNumber: 1, IdNumber: 1, TaxNumber: 1,
+			Cars: []message_protocol.Car{
+				{
+					Uid:          2,
+					Brand:        "a",
+					Model:        "b",
+					BodyType:     "c",
+					Approval:     "d",
+					Chassis:      "e",
+					TyreSize:     "1",
+					Weight:       6,
+					Fuel:         "gas",
+					Seats:        5,
+					Noise:        2,
+					Co2Emissions: 2.4,
+					EngineSize:   1,
+					Power:        5,
+					Color:        "Black",
+					Consumption:  3.2,
+					Plate:        "as-23-re",
+					Date:         "10",
+					OwnerUid:     1,
+				},
+				{
+					Uid:          3,
+					Brand:        "f",
+					Model:        "b",
+					BodyType:     "c",
+					Approval:     "d",
+					Chassis:      "e",
+					TyreSize:     "1",
+					Weight:       6,
+					Fuel:         "gas",
+					Seats:        5,
+					Noise:        2,
+					Co2Emissions: 2.4,
+					EngineSize:   1,
+					Power:        5,
+					Color:        "Black",
+					Consumption:  3.2,
+					Plate:        "as-23-re",
+					Date:         "10",
+					OwnerUid:     1,
+				}}}}}
 
 	ln, err := net.Listen("tcp", port)
 	if err != nil {
