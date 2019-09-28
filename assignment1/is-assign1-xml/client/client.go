@@ -1,13 +1,11 @@
 package main
 
 import (
-	"../message_protocol"
-	"bufio"
-	"encoding/xml"
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net"
-	"os"
 )
 
 const (
@@ -20,23 +18,17 @@ func main() {
 		log.Fatalf("failed to dial: %v", err)
 	}
 
-	_, _ = fmt.Fprintf(conn, "asd\n")
-	r := message_protocol.Owner{}
+	_, _ = fmt.Fprintf(conn, "Hello, this is client\n")
 
-	ab, err := bufio.NewReader(conn).ReadBytes('>')
+	var buf bytes.Buffer
+	_, _ = io.Copy(&buf, conn)
+	fmt.Println("total size:", buf.Len())
 
-	if err != nil {
-		log.Fatalf("failed to read: %v", err)
+	for {
+		line, err := buf.ReadBytes('\n')
+		fmt.Print(string(line))
+		if err == io.EOF {
+			break
+		}
 	}
-	err = xml.Unmarshal(ab, &r)
-	os.Stdout.Write(ab)
-
-	if err != nil {
-
-		fmt.Printf("error  : %v", err)
-
-		return
-
-	}
-
 }
