@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -19,12 +20,14 @@ type searchServiceServer struct {
 
 func (s *searchServiceServer) GetCarsForOwner(context.Context, *ss.SearchRequest) (*ss.SearchResponse, error) {
 	//TODO Get cars for the requested owners and return info
-	panic("implement me")
+	//panic("implement me")
+	fmt.Println("Testing communication")
+	return nil, nil
 }
 
 func (s *searchServiceServer) loadVehicles() {
 	//TODO Load vehicles to mem here
-	panic("implement me")
+	//panic("implement me")
 }
 
 func newServer() *searchServiceServer {
