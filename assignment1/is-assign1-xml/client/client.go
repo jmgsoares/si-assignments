@@ -7,9 +7,12 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 )
 
-const(port = ":4321")
+const (
+	port = ":4321"
+)
 
 func main() {
 	conn, err := net.Dial("tcp", port)
@@ -18,23 +21,22 @@ func main() {
 	}
 
 	_, _ = fmt.Fprintf(conn, "asd\n")
-	status, err := bufio.NewReader(conn).ReadString('\n')
-	if err!= nil {
+	r := message_protocol.Owner{}
+
+	ab, err := bufio.NewReader(conn).ReadBytes('>')
+
+	if err != nil {
 		log.Fatalf("failed to read: %v", err)
 	}
-
-	r := message_protocol.Owner{}
-	err = xml.Unmarshal([]byte(status), &r)
-
-	fmt.Printf(status)
+	err = xml.Unmarshal(ab, &r)
+	os.Stdout.Write(ab)
 
 	if err != nil {
 
-		fmt.Printf("error: %v", err)
+		fmt.Printf("error  : %v", err)
 
 		return
 
 	}
 
-	fmt.Printf(string(r.Uid))
 }
