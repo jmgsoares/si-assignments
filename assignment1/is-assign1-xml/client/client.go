@@ -22,7 +22,7 @@ func main() {
 
 	_, _ = fmt.Fprintf(conn, "Hello, this is client\n")
 
-	o := message_protocol.Owner{}
+	o := message_protocol.SOwners{}
 
 	var buf bytes.Buffer
 	_, _ = io.Copy(&buf, conn)
@@ -31,14 +31,16 @@ func main() {
 	err = xml.Unmarshal(buf.Bytes(), &o)
 
 	if err != nil {
-
 		fmt.Printf("error: %v", err)
-
 		return
-
 	}
 
-	fmt.Printf("Name: %q\n", o.Name)
+	for i := range o.Owners {
+		fmt.Println("User Name: " + o.Owners[i].Name)
+		for j := range o.Owners[i].Cars {
+			fmt.Println("	Car: " + o.Owners[i].Cars[j].Brand)
+		}
+	}
 
 	/*for {
 		line, err := buf.ReadBytes('\n')
