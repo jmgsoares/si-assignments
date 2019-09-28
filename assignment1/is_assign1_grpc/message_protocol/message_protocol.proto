@@ -3,14 +3,46 @@ syntax = "proto3";
 package is_assign1_grpc;
 
 service SearchService {
-    rpc Search (SearchRequest) returns (SearchResponse);
+    rpc getCarsForOwner (SearchRequest) returns (SearchResponse);
 }
 
 message SearchRequest {
-
+    repeated Owner owners = 1;
 }
 
 message SearchResponse {
-
+    repeated Owner owners = 1;
 }
 
+message Car {
+    int32 uid = 1;
+    string	brand = 2;
+    string	model = 3;
+    string	bodyType = 4;
+    string	approval = 5;
+    string	chassis = 6;
+    string	tyreSize = 7;
+    int32	weight =8;
+    string	fuel =9;
+    int32	seats = 10;
+    int32	noise = 11;
+    float	co2Emissions = 12;
+    int32	engineSize = 13;
+    int32	power = 14;
+    string	color = 15;
+    float	consumption = 16;
+    string	plate = 17;
+    string	date = 18;
+    int32	ownerUid = 19;
+}
+
+message Owner {
+    int32 uid = 1;
+    string name = 2;
+    int32  telephone = 3;
+    string address = 4;
+    int32 licenceNumber = 5;
+    int32 idNumber = 6;
+    int32 taxNumber = 7;
+    repeated Car cars = 8;
+}
