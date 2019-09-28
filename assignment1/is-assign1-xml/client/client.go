@@ -1,7 +1,9 @@
 package main
 
 import (
+	"../message_protocol"
 	"bytes"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"log"
@@ -20,15 +22,29 @@ func main() {
 
 	_, _ = fmt.Fprintf(conn, "Hello, this is client\n")
 
+	o := message_protocol.Owner{}
+
 	var buf bytes.Buffer
 	_, _ = io.Copy(&buf, conn)
 	fmt.Println("total size:", buf.Len())
 
-	for {
+	err = xml.Unmarshal(buf.Bytes(), &o)
+
+	if err != nil {
+
+		fmt.Printf("error: %v", err)
+
+		return
+
+	}
+
+	fmt.Printf("Name: %q\n", o.Name)
+
+	/*for {
 		line, err := buf.ReadBytes('\n')
 		fmt.Print(string(line))
 		if err == io.EOF {
 			break
 		}
-	}
+	}*/
 }
