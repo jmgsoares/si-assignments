@@ -9,6 +9,10 @@ import (
 
 const serverAddr = "127.0.0.1:10000"
 
+func printSearchResults(client ss.SearchServiceClient) {
+
+}
+
 func main() {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
@@ -25,6 +29,6 @@ func main() {
 	//TODO Get owners whom to search for cars -> build objects to memory
 	//TODO Time time to marshall all information
 	//TODO Send request to server
-	//TODO Parse answer & print to sdou / file
+	//TODO Parse answer & print to stdout / file
 	//TODO time time to un-marshall information
 }
