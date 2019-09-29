@@ -5,6 +5,7 @@ import (
 	file "../util"
 	"context"
 	"fmt"
+	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"log"
 	"time"
@@ -20,14 +21,28 @@ func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) {
 
 	req.Payload = &owners
 
+	req.TimeStamp = ptypes.TimestampNow()
+
 	response, err := client.GetCarsFromOwners(ctx, req)
+
+	done, _ := ptypes.Timestamp(response.TimeStamp)
+	elapsed := time.Since(done)
+	elapsed2, _ := ptypes.Duration(response.Elapsed)
+
+	total := elapsed + elapsed2
 
 	if err != nil {
 		log.Fatalf("%v.Somethign went wrong(_) = _, %v: ", client, err)
 		return
 	}
 
-	fmt.Print(response.Payload.Owners)
+	//fmt.Print(response.Payload.Owners)
+
+	fmt.Println()
+	fmt.Println(elapsed)
+	fmt.Println(elapsed2)
+	fmt.Println(total)
+	fmt.Println()
 }
 
 func main() {
@@ -45,5 +60,8 @@ func main() {
 
 	owners := file.LoadData("testdata/sampleClientQuery.json")
 
-	getVehiclesFromQueryList(client, owners)
+	for i := 0; i < 10; i++ {
+		getVehiclesFromQueryList(client, owners)
+	}
+
 }
