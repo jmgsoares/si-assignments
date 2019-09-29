@@ -7,11 +7,11 @@ service SearchService {
 }
 
 message SearchRequest {
-    repeated Owner owners = 1;
+    Owners payload = 1;
 }
 
 message SearchResponse {
-    repeated Owner owners = 1;
+    Owners payload = 1;
 }
 
 message Car {
@@ -44,4 +44,8 @@ message Owner {
     int32 idNumber = 6;
     int32 taxNumber = 7;
     repeated Car cars = 8;
+}
+
+message Owners {
+    repeated Owner owners = 1;
 }
