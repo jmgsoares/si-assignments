@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package is_assign1_grpc;
+package grpc;
 
 service SearchService {
-    rpc getCarsForOwner (SearchRequest) returns (SearchResponse);
+    rpc getCarsFromOwners (SearchRequest) returns (SearchResponse);
 }
 
 message SearchRequest {
