@@ -1,10 +1,12 @@
 package main
 
 import (
-	"../message_protocol"
+	mp "../message_protocol"
 	"bufio"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -14,87 +16,47 @@ const (
 	port = ":4321"
 )
 
+func GetCarsFromOwners(message string) mp.Owners {
+	result := mp.Owners{}
+	o := loadData("testdata/sampleData.json")
+	query := mp.Owners{}
+
+	_ = xml.Unmarshal([]byte(message), &query)
+
+	fmt.Println(query)
+
+	fmt.Print("Received request for cars of owners id's: ")
+	for _, owner := range query.Owners {
+		fmt.Printf("%d ", owner.Uid)
+	}
+
+	for _, owner := range query.Owners {
+		result.Owners = append(result.Owners, o.Owners[owner.Uid-1])
+	}
+
+	return result
+}
+
+func loadData(filePath string) mp.Owners {
+	var data mp.Owners
+
+	fileData, err := ioutil.ReadFile(filePath)
+
+	if err != nil {
+		log.Fatalf("Failed to load sample fileData: %v", err)
+	}
+
+	if err := json.Unmarshal(fileData, &data); err != nil {
+		log.Fatalf("Failed to load sample fileData: %v", err)
+	}
+
+	return data
+}
+
 func main() {
-
-	o := message_protocol.SOwners{Owners: []message_protocol.Owner{{Uid: 1, Name: "Zé", Telephone: 1, Address: "a", LicenceNumber: 1, IdNumber: 1, TaxNumber: 1,
-		Cars: []message_protocol.Car{
-			{
-				Uid:          1,
-				Brand:        "a",
-				Model:        "b",
-				BodyType:     "c",
-				Approval:     "d",
-				Chassis:      "e",
-				TyreSize:     "1",
-				Weight:       6,
-				Fuel:         "gas",
-				Seats:        5,
-				Noise:        2,
-				Co2Emissions: 2.4,
-				EngineSize:   1,
-				Power:        5,
-				Color:        "Black",
-				Consumption:  3.2,
-				Plate:        "as-23-re",
-				Date:         "10",
-				OwnerUid:     1,
-			}}},
-		{Uid: 2, Name: "Manuel", Telephone: 1, Address: "a", LicenceNumber: 1, IdNumber: 1, TaxNumber: 1,
-			Cars: []message_protocol.Car{
-				{
-					Uid:          2,
-					Brand:        "a",
-					Model:        "b",
-					BodyType:     "c",
-					Approval:     "d",
-					Chassis:      "e",
-					TyreSize:     "1",
-					Weight:       6,
-					Fuel:         "gas",
-					Seats:        5,
-					Noise:        2,
-					Co2Emissions: 2.4,
-					EngineSize:   1,
-					Power:        5,
-					Color:        "Black",
-					Consumption:  3.2,
-					Plate:        "as-23-re",
-					Date:         "10",
-					OwnerUid:     1,
-				},
-				{
-					Uid:          3,
-					Brand:        "f",
-					Model:        "b",
-					BodyType:     "c",
-					Approval:     "d",
-					Chassis:      "e",
-					TyreSize:     "1",
-					Weight:       6,
-					Fuel:         "gas",
-					Seats:        5,
-					Noise:        2,
-					Co2Emissions: 2.4,
-					EngineSize:   1,
-					Power:        5,
-					Color:        "Black",
-					Consumption:  3.2,
-					Plate:        "as-23-re",
-					Date:         "10",
-					OwnerUid:     1,
-				}}}}}
-
 	ln, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
-	}
-
-	output, err := xml.MarshalIndent(o, "  ", "    ")
-
-	if err != nil {
-
-		fmt.Printf("error: %v\n", err)
-
 	}
 
 	for {
@@ -105,11 +67,19 @@ func main() {
 		}
 
 		message, _ := bufio.NewReader(conn).ReadString('\n')
+		fmt.Printf("Received from client -> %s\n", message)
 
-		fmt.Printf("Received from client -> %s\n", string(message))
+		output := GetCarsFromOwners(message)
+
+		result, err := xml.MarshalIndent(output, "  ", "    ")
+
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+
 		fmt.Print("Sending -> ")
-		_, _ = os.Stdout.Write(output)
-		_, _ = conn.Write(output)
+		_, _ = os.Stdout.Write(result)
+		_, _ = conn.Write(result)
 		_ = conn.Close()
 	}
 }
