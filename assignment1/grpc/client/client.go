@@ -13,7 +13,7 @@ import (
 
 const serverAddr = "127.0.0.1:10000"
 
-func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) {
+func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) time.Duration {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -33,16 +33,21 @@ func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) {
 
 	if err != nil {
 		log.Fatalf("%v.Somethign went wrong(_) = _, %v: ", client, err)
-		return
+		return 0
 	}
 
 	//fmt.Print(response.Payload.Owners)
 
 	fmt.Println()
-	fmt.Println(elapsed)
+	fmt.Print(elapsed)
+	fmt.Printf(" ")
 	fmt.Println(elapsed2)
+	fmt.Printf("Time total -> ")
 	fmt.Println(total)
-	fmt.Println()
+	fmt.Printf("Payload Size -> ")
+	fmt.Println(response.XXX_Size())
+
+	return total
 }
 
 func main() {
@@ -60,8 +65,16 @@ func main() {
 
 	owners := file.LoadData("testdata/sampleClientQuery.json")
 
-	for i := 0; i < 10; i++ {
-		getVehiclesFromQueryList(client, owners)
+	getVehiclesFromQueryList(client, owners)
+
+	var total time.Duration
+	for i := 0; i < 100; i++ {
+		total += getVehiclesFromQueryList(client, owners)
 	}
+
+	total = total / 100
+	fmt.Println()
+	fmt.Printf("Mean total -> ")
+	fmt.Println(total)
 
 }
