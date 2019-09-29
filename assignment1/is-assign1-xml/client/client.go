@@ -2,53 +2,41 @@ package main
 
 import (
 	mp "../message_protocol"
+	file "../util"
 	"bytes"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
+	"time"
 )
 
-const (
-	port = ":4321"
-)
+const serverAddr = "127.0.0.1:10000"
 
-func loadData(filePath string) mp.Owners {
-	var data mp.Owners
-
-	fileData, err := ioutil.ReadFile(filePath)
-
-	if err != nil {
-		log.Fatalf("Failed to load sample fileData: %v", err)
-	}
-
-	if err := json.Unmarshal(fileData, &data); err != nil {
-		log.Fatalf("Failed to load sample fileData: %v", err)
-	}
-
-	return data
-}
-
-func main() {
-	conn, err := net.Dial("tcp", port)
+func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
+	conn, err := net.Dial("tcp", serverAddr)
 	if err != nil {
 		log.Fatalf("failed to dial: %v", err)
 	}
 
 	defer conn.Close()
 
-	owners := loadData("testdata/sampleClientQuery.json")
-
-	for i := range owners.Owners {
-		fmt.Println(owners.Owners[i].Uid)
-	}
+	// Start of elapsed 1
+	start := time.Now()
 
 	output, err := xml.Marshal(owners)
-	_, _ = conn.Write(output)
-	_, _ = fmt.Fprintf(conn, "\n")
+
+	_, err = conn.Write(output)
+	if err != nil {
+		fmt.Printf("error: %v", err)
+		return 0
+	}
+	_, err = fmt.Fprintf(conn, "\n")
+	if err != nil {
+		fmt.Printf("error: %v", err)
+		return 0
+	}
 
 	o := mp.Owners{}
 
@@ -56,10 +44,13 @@ func main() {
 	_, _ = io.Copy(&buf, conn)
 
 	err = xml.Unmarshal(buf.Bytes(), &o)
+	// TODO: get elapsed2 time here
+	tot := time.Since(start)
+	//elapsed2 := time.Since(elapsed)
 
 	if err != nil {
 		fmt.Printf("error: %v", err)
-		return
+		return 0
 	}
 
 	for i := range o.Owners {
@@ -69,11 +60,35 @@ func main() {
 		}
 	}
 
-	/*for {
-		line, err := buf.ReadBytes('\n')
-		fmt.Print(string(line))
-		if err == io.EOF {
-			break
-		}
-	}*/
+	//total := elapsed + elapsed2
+	//total := tot - (time in server)
+	// TODO: get elapsed time 1 and 2 and the payload size
+	fmt.Println()
+	fmt.Println(tot)
+	//fmt.Print(elapsed)
+	fmt.Printf(" ")
+	//fmt.Println(elapsed2)
+	fmt.Printf("Time total -> ")
+	//fmt.Println(total)
+	fmt.Printf("Payload Size -> ")
+	//fmt.Println(response.XXX_Size())
+
+	return tot
+}
+
+func main() {
+	owners := file.LoadData("testdata/sampleClientQuery.json")
+
+	getVehiclesFromQueryList(owners)
+
+	var total time.Duration
+
+	for i := 0; i < 100; i++ {
+		total += getVehiclesFromQueryList(owners)
+	}
+
+	total = total / 100
+	fmt.Println()
+	fmt.Printf("Mean total -> ")
+	fmt.Println(total)
 }
