@@ -3,56 +3,45 @@
 package main
 
 import (
+	ss "../protocol"
+	file "../util"
 	"context"
-	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc"
-	"io/ioutil"
 	"log"
 	"net"
-
-	ss "../protocol"
+	"time"
 )
 
 const serverAddr = "127.0.0.1:10000"
 
 type searchServiceServer struct {
-	owners []*ss.Owner
+	data ss.Owners
 }
 
 func (s *searchServiceServer) GetCarsFromOwners(ctx context.Context, searchRequest *ss.SearchRequest) (*ss.SearchResponse, error) {
 
 	fmt.Print("Received request for cars of owners id's: ")
-
-	for _, owner := range searchRequest.Owners {
+	for _, owner := range searchRequest.Payload.Owners {
 		fmt.Printf("%d ", owner.Uid)
 	}
 	fmt.Println("")
 
-	r := ss.SearchResponse{Owners: s.owners}
+	start := time.Now()
+	r := ss.SearchResponse{Payload: new(ss.Owners)}
+
+	for _, owner := range searchRequest.Payload.Owners {
+		r.Payload.Owners = append(r.Payload.Owners, s.data.Owners[owner.Uid-1])
+	}
+	elapsed := time.Since(start)
+	log.Printf("\nTime %s\n", elapsed)
 
 	return &r, nil
 }
 
-func loadData(filePath string) []*ss.Owner {
-	var data []*ss.Owner
-
-	fileData, err := ioutil.ReadFile(filePath)
-
-	if err != nil {
-		log.Fatalf("Failed to load sample fileData: %v", err)
-	}
-
-	if err := json.Unmarshal(fileData, &data); err != nil {
-		log.Fatalf("Failed to load sample fileData: %v", err)
-	}
-
-	return data
-}
-
 func newServer() *searchServiceServer {
 	var s searchServiceServer
-	s.owners = loadData("testdata/sampleData.json")
+	s.data = file.LoadData("testdata/sampleData.json")
 	return &s
 }
 

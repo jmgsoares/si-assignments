@@ -2,24 +2,23 @@ package main
 
 import (
 	ss "../protocol"
+	file "../util"
 	"context"
-	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc"
-	"io/ioutil"
 	"log"
 	"time"
 )
 
 const serverAddr = "127.0.0.1:10000"
 
-func getVehiclesFromOwnersList(client ss.SearchServiceClient, owners []*ss.Owner) {
+func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	req := &ss.SearchRequest{Owners: nil}
+	req := &ss.SearchRequest{Payload: nil}
 
-	req.Owners = append(req.Owners, owners...)
+	req.Payload = &owners
 
 	response, err := client.GetCarsFromOwners(ctx, req)
 
@@ -28,24 +27,7 @@ func getVehiclesFromOwnersList(client ss.SearchServiceClient, owners []*ss.Owner
 		return
 	}
 
-	fmt.Print(response.Owners)
-
-}
-
-func loadOwnersList(filePath string) []*ss.Owner {
-	var owners []*ss.Owner
-
-	data, err := ioutil.ReadFile(filePath)
-
-	if err != nil {
-		log.Fatalf("Failed to load sample data: %v", err)
-	}
-
-	if err := json.Unmarshal(data, &owners); err != nil {
-		log.Fatalf("Failed to load sample data: %v", err)
-	}
-
-	return owners
+	fmt.Print(response.Payload.Owners)
 }
 
 func main() {
@@ -61,7 +43,7 @@ func main() {
 
 	client := ss.NewSearchServiceClient(conn)
 
-	owners := loadOwnersList("testdata/sampleClientQuery.json")
+	owners := file.LoadData("testdata/sampleClientQuery.json")
 
-	getVehiclesFromOwnersList(client, owners)
+	getVehiclesFromQueryList(client, owners)
 }
