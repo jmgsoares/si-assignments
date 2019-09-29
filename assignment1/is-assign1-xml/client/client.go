@@ -16,20 +16,20 @@ const (
 	port = ":4321"
 )
 
-func loadOwnersList(filePath string) []*mp.Owner {
-	var owners []*mp.Owner
+func loadData(filePath string) mp.Owners {
+	var data mp.Owners
 
-	data, err := ioutil.ReadFile(filePath)
+	fileData, err := ioutil.ReadFile(filePath)
 
 	if err != nil {
-		log.Fatalf("Failed to load sample data: %v", err)
+		log.Fatalf("Failed to load sample fileData: %v", err)
 	}
 
-	if err := json.Unmarshal(data, &owners); err != nil {
-		log.Fatalf("Failed to load sample data: %v", err)
+	if err := json.Unmarshal(fileData, &data); err != nil {
+		log.Fatalf("Failed to load sample fileData: %v", err)
 	}
 
-	return owners
+	return data
 }
 
 func main() {
@@ -40,10 +40,10 @@ func main() {
 
 	defer conn.Close()
 
-	owners := loadOwnersList("testdata/sampleClientQuery.json")
+	owners := loadData("testdata/sampleClientQuery.json")
 
-	for i := range owners {
-		fmt.Println(owners[i].Uid)
+	for i := range owners.Owners {
+		fmt.Println(owners.Owners[i].Uid)
 	}
 
 	output, err := xml.Marshal(owners)
