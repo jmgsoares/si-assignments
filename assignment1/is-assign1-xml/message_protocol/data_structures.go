@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 )
 
-type SOwners struct {
+type Owners struct {
 	XMLName xml.Name `xml:"owners"`
 	Owners  []Owner  `xml:"owner"`
 }
