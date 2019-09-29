@@ -33,7 +33,6 @@ message Car {
     float	consumption = 16;
     string	plate = 17;
     string	date = 18;
-    int32	ownerUid = 19;
 }
 
 message Owner {
