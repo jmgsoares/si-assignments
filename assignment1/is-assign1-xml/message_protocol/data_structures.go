@@ -2,7 +2,15 @@ package message_protocol
 
 import (
 	"encoding/xml"
+	"time"
 )
+
+var StartC = time.Now()
+var StartS = time.Now()
+
+var ElapsedC1 = time.Duration(0)
+var ElapsedS1 = time.Duration(0)
+var ElapsedC2 = time.Duration(0)
 
 type Owners struct {
 	XMLName xml.Name `xml:"owners"`
