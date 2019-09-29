@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 )
 
 const serverAddr = "127.0.0.1:10000"
@@ -18,7 +19,8 @@ func GetCarsFromOwners(message string) mp.Owners {
 	query := mp.Owners{}
 
 	_ = xml.Unmarshal([]byte(message), &query)
-	// TODO: get elapsed time here
+	//get elapsed time here
+	mp.StartS = time.Now()
 
 	for _, owner := range query.Owners {
 		result.Owners = append(result.Owners, o.Owners[owner.Uid-1])
@@ -43,7 +45,9 @@ func main() {
 
 		output := GetCarsFromOwners(message)
 
-		// TODO: start elapsed2 time here
+		//start elapsed2 time here
+		mp.ElapsedS1 = time.Since(mp.StartS)
+
 		result, err := xml.MarshalIndent(output, "  ", "    ")
 
 		if err != nil {
