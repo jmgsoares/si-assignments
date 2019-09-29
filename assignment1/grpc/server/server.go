@@ -7,6 +7,7 @@ import (
 	file "../util"
 	"context"
 	"fmt"
+	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -21,21 +22,23 @@ type searchServiceServer struct {
 
 func (s *searchServiceServer) GetCarsFromOwners(ctx context.Context, searchRequest *ss.SearchRequest) (*ss.SearchResponse, error) {
 
+	start, _ := ptypes.Timestamp(searchRequest.TimeStamp)
+	elapsed := time.Since(start)
+
 	fmt.Print("Received request for cars of owners id's: ")
 	for _, owner := range searchRequest.Payload.Owners {
 		fmt.Printf("%d ", owner.Uid)
 	}
 	fmt.Println("")
 
-	start := time.Now()
 	r := ss.SearchResponse{Payload: new(ss.Owners)}
+	r.Elapsed = ptypes.DurationProto(elapsed)
 
 	for _, owner := range searchRequest.Payload.Owners {
 		r.Payload.Owners = append(r.Payload.Owners, s.data.Owners[owner.Uid-1])
 	}
-	elapsed := time.Since(start)
-	log.Printf("\nTime %s\n", elapsed)
 
+	r.TimeStamp = ptypes.TimestampNow()
 	return &r, nil
 }
 
