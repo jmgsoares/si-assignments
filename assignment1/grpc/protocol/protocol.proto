@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+package grpc;
+
+service SearchService {
+    rpc getCarsFromOwners (SearchRequest) returns (SearchResponse);
+}
+
+message SearchRequest {
+    Owners payload = 1;
+    google.protobuf.Timestamp timeStamp = 2;
+}
+
+message SearchResponse {
+    Owners payload = 1;
+    google.protobuf.Timestamp timeStamp = 2;
+    google.protobuf.Duration elapsed = 3;
+}
+
+message Car {
+    int32 uid = 1;
+    string	brand = 2;
+    string	model = 3;
+    string	bodyType = 4;
+    string	approval = 5;
+    string	chassis = 6;
+    string	tyreSize = 7;
+    int32	weight =8;
+    string	fuel =9;
+    int32	seats = 10;
+    int32	noise = 11;
+    float	co2Emissions = 12;
+    int32	engineSize = 13;
+    int32	power = 14;
+    string	color = 15;
+    float	consumption = 16;
+    string	plate = 17;
+    string	date = 18;
+}
+
+message Owner {
+    int32 uid = 1;
+    string name = 2;
+    int32  telephone = 3;
+    string address = 4;
+    int32 licenceNumber = 5;
+    int32 idNumber = 6;
+    int32 taxNumber = 7;
+    repeated Car cars = 8;
+}
+
+message Owners {
+    repeated Owner owners = 1;
+}
