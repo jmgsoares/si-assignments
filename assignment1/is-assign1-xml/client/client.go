@@ -23,9 +23,9 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	defer conn.Close()
 
 	// Start of elapsed 1
-	mp.StartC = time.Now()
-
-	output, err := xml.Marshal(owners)
+	request := mp.Request{Start: time.Now()}
+	request.Owners = owners
+	output, err := xml.Marshal(request)
 
 	_, err = conn.Write(output)
 	if err != nil {
@@ -38,7 +38,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 		return 0
 	}
 
-	o := mp.Owners{}
+	o := mp.Request{}
 
 	var buf bytes.Buffer
 	_, _ = io.Copy(&buf, conn)
@@ -46,32 +46,27 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	err = xml.Unmarshal(buf.Bytes(), &o)
 
 	// get elapsed2 time here
-	mp.ElapsedC1 = time.Since(mp.StartC)
+	o.Elapsed2 = time.Since(request.Start)
 
 	if err != nil {
-		fmt.Printf("error: %v", err)
+		fmt.Printf("error in unmarsheling: %v", err)
 		return 0
 	}
 
-	/*for i := range o.Owners {
-		fmt.Println("User Name: " + o.Owners[i].Name)
-		for j := range o.Owners[i].Cars {
-			fmt.Println("	Car: " + o.Owners[i].Cars[j].Brand)
+	/*for i := range o.Owners.Owners {
+		fmt.Println("User Name: " + o.Owners.Owners[i].Name)
+		for j := range o.Owners.Owners[i].Cars {
+			fmt.Println("	Car: " + o.Owners.Owners[i].Cars[j].Brand)
 		}
 	}*/
 
-	total := (mp.ElapsedC1 + mp.ElapsedC2) - mp.ElapsedS1
-	// TODO: get the payload size
+	total := o.Elapsed + o.Elapsed2
 	fmt.Println()
-	fmt.Print(mp.StartC)
+	fmt.Print(o.Start)
 	fmt.Println()
-	fmt.Print(mp.ElapsedC1)
+	fmt.Print(o.Elapsed)
 	fmt.Printf(" ")
-	fmt.Println(mp.ElapsedC2)
-	fmt.Println()
-	fmt.Print(mp.StartS)
-	fmt.Println()
-	fmt.Print(mp.ElapsedS1)
+	fmt.Println(o.Elapsed2)
 	fmt.Println()
 	fmt.Printf("Time total -> ")
 	fmt.Println(total)
@@ -89,11 +84,11 @@ func main() {
 
 	var total time.Duration
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1; i++ {
 		total += getVehiclesFromQueryList(owners)
 	}
 
-	total = total / 100
+	total = total / 1
 	fmt.Println()
 	fmt.Printf("Mean total -> ")
 	fmt.Println(total)
