@@ -28,3 +28,4 @@ owner
     licenceNumber   (int)
     idNumber        (int)
     taxNumber       (int)
+    
