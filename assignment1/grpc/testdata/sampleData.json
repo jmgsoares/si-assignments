@@ -1,6 +1,5 @@
 {
-  "Owners" :
-  [
+  "Owners": [
     {
       "Uid": 1,
       "Name": "Alberto Pascoal",
@@ -222,8 +221,7 @@
           "Consumption": 10.5,
           "Plate": "0000JJ",
           "Date": "01011995"
-        }
-      ,
+        },
         {
           "Uid": 10,
           "Brand": "Yamaha",
