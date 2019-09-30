@@ -13,14 +13,13 @@ import (
 
 const serverAddr = "127.0.0.1:10000"
 
-func GetCarsFromOwners(message string) mp.Request {
-	result := mp.Request{}
+func GetCarsFromOwners(message string) mp.Response {
+	result := mp.Response{}
 	o := file.LoadData("testdata/sampleData.json")
 	query := mp.Request{}
 
 	_ = xml.Unmarshal([]byte(message), &query)
 	//get elapsed time here
-	result.Start = query.Start
 	result.Elapsed = time.Since(query.Start)
 
 	for _, owner := range query.Owners.Owners {
