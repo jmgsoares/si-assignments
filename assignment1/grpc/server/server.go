@@ -25,11 +25,7 @@ func (s *searchServiceServer) GetCarsFromOwners(ctx context.Context, searchReque
 	start, _ := ptypes.Timestamp(searchRequest.TimeStamp)
 	elapsed := time.Since(start)
 
-	fmt.Print("Received request for cars of owners id's: ")
-	for _, owner := range searchRequest.Payload.Owners {
-		fmt.Printf("%d ", owner.Uid)
-	}
-	fmt.Println("")
+	fmt.Print("Received request\n")
 
 	r := ss.SearchResponse{Payload: new(ss.Owners)}
 	r.Elapsed = ptypes.DurationProto(elapsed)
