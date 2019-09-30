@@ -6,11 +6,15 @@ import (
 )
 
 type Request struct {
-	XMLName  xml.Name      `xml:"time"`
-	Owners   Owners        `xml:"owners"`
-	Start    time.Time     `xml:"start"`
-	Elapsed  time.Duration `xml:"elapsed1"`
-	Elapsed2 time.Duration `xml:"elapsed2"`
+	XMLName xml.Name  `xml:"time"`
+	Owners  Owners    `xml:"owners"`
+	Start   time.Time `xml:"start"`
+}
+
+type Response struct {
+	XMLName xml.Name      `xml:"time"`
+	Owners  Owners        `xml:"owners"`
+	Elapsed time.Duration `xml:"elapsed"`
 }
 
 type Owners struct {
