@@ -45,7 +45,7 @@ func getVehiclesFromQueryList(client ss.SearchServiceClient, owners ss.Owners) t
 	fmt.Printf("Time total -> ")
 	fmt.Println(total)
 	fmt.Printf("Payload Size -> ")
-	fmt.Println(response.XXX_Size())
+	fmt.Println(float32(response.XXX_Size()) / 1024.0 / 1024.0)
 
 	return total
 }
@@ -63,7 +63,7 @@ func main() {
 
 	client := ss.NewSearchServiceClient(conn)
 
-	owners := file.LoadData("testdata/sampleClientQuery.json")
+	owners := file.LoadData("testdata/sampleClientQueryBig.json")
 
 	getVehiclesFromQueryList(client, owners)
 
