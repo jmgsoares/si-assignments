@@ -5,12 +5,13 @@ import (
 	"time"
 )
 
-var StartC = time.Now()
-var StartS = time.Now()
-
-var ElapsedC1 = time.Duration(0)
-var ElapsedS1 = time.Duration(0)
-var ElapsedC2 = time.Duration(0)
+type Request struct {
+	XMLName  xml.Name      `xml:"time"`
+	Owners   Owners        `xml:"owners"`
+	Start    time.Time     `xml:"start"`
+	Elapsed  time.Duration `xml:"elapsed1"`
+	Elapsed2 time.Duration `xml:"elapsed2"`
+}
 
 type Owners struct {
 	XMLName xml.Name `xml:"owners"`
