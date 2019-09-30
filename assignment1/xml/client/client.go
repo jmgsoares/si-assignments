@@ -68,24 +68,24 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	fmt.Printf("Time total -> ")
 	fmt.Println(total)
 	fmt.Printf("Payload Size -> ")
-	fmt.Println(buf.Len())
+	fmt.Println(float64(buf.Len()) / 1024.0 / 1024.0)
 	fmt.Println()
 
 	return total
 }
 
 func main() {
-	owners := file.LoadData("testdata/sampleClientQuery.json")
+	owners := file.LoadData("testdata/sampleClientQueryBig.json")
 
 	getVehiclesFromQueryList(owners)
 
 	var total time.Duration
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 15; i++ {
 		total += getVehiclesFromQueryList(owners)
 	}
 
-	total = total / 100
+	total = total / 15
 	fmt.Println()
 	fmt.Printf("Mean total -> ")
 	fmt.Println(total)
