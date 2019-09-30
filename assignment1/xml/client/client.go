@@ -1,7 +1,7 @@
 package main
 
 import (
-	mp "../message_protocol"
+	mp "../protocol"
 	file "../util"
 	"bytes"
 	"encoding/xml"
@@ -62,12 +62,9 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 
 	total := o.Elapsed + elapsed2
 	fmt.Println()
-	fmt.Print(request.Start)
-	fmt.Println()
 	fmt.Print(o.Elapsed)
 	fmt.Printf(" ")
 	fmt.Println(elapsed2)
-	fmt.Println()
 	fmt.Printf("Time total -> ")
 	fmt.Println(total)
 	fmt.Printf("Payload Size -> ")

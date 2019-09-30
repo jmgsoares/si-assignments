@@ -1,7 +1,7 @@
 package main
 
 import (
-	mp "../message_protocol"
+	mp "../protocol"
 	file "../util"
 	"bufio"
 	"encoding/xml"

@@ -1,4 +1,4 @@
-package message_protocol
+package protocol
 
 import (
 	"encoding/xml"

@@ -1,7 +1,7 @@
 package util
 
 import (
-	mp "../message_protocol"
+	mp "../protocol"
 	"encoding/json"
 	"io/ioutil"
 	"log"
