@@ -13,17 +13,18 @@ import (
 
 const serverAddr = "127.0.0.1:10000"
 
-func GetCarsFromOwners(message string) mp.Owners {
-	result := mp.Owners{}
+func GetCarsFromOwners(message string) mp.Request {
+	result := mp.Request{}
 	o := file.LoadData("testdata/sampleData.json")
-	query := mp.Owners{}
+	query := mp.Request{}
 
 	_ = xml.Unmarshal([]byte(message), &query)
 	//get elapsed time here
-	mp.StartS = time.Now()
+	result.Start = query.Start
+	result.Elapsed = time.Since(query.Start)
 
-	for _, owner := range query.Owners {
-		result.Owners = append(result.Owners, o.Owners[owner.Uid-1])
+	for _, owner := range query.Owners.Owners {
+		result.Owners.Owners = append(result.Owners.Owners, o.Owners[owner.Uid-1])
 	}
 
 	return result
@@ -45,13 +46,10 @@ func main() {
 
 		output := GetCarsFromOwners(message)
 
-		//start elapsed2 time here
-		mp.ElapsedS1 = time.Since(mp.StartS)
-
 		result, err := xml.MarshalIndent(output, "  ", "    ")
 
 		if err != nil {
-			fmt.Printf("error: %v\n", err)
+			fmt.Printf("error in marsheling: %v\n", err)
 		}
 
 		_, _ = conn.Write(result)
