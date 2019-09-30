@@ -38,7 +38,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 		return 0
 	}
 
-	o := mp.Request{}
+	o := mp.Response{}
 
 	var buf bytes.Buffer
 	_, _ = io.Copy(&buf, conn)
@@ -46,7 +46,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	err = xml.Unmarshal(buf.Bytes(), &o)
 
 	// get elapsed2 time here
-	o.Elapsed2 = time.Since(request.Start)
+	elapsed2 := time.Since(request.Start)
 
 	if err != nil {
 		fmt.Printf("error in unmarsheling: %v", err)
@@ -60,13 +60,13 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 		}
 	}*/
 
-	total := o.Elapsed + o.Elapsed2
+	total := o.Elapsed + elapsed2
 	fmt.Println()
-	fmt.Print(o.Start)
+	fmt.Print(request.Start)
 	fmt.Println()
 	fmt.Print(o.Elapsed)
 	fmt.Printf(" ")
-	fmt.Println(o.Elapsed2)
+	fmt.Println(elapsed2)
 	fmt.Println()
 	fmt.Printf("Time total -> ")
 	fmt.Println(total)
@@ -84,11 +84,11 @@ func main() {
 
 	var total time.Duration
 
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 100; i++ {
 		total += getVehiclesFromQueryList(owners)
 	}
 
-	total = total / 1
+	total = total / 100
 	fmt.Println()
 	fmt.Printf("Mean total -> ")
 	fmt.Println(total)
