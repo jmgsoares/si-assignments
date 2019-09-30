@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const serverAddr = "127.0.0.1:10000"
+const serverAddr = "127.0.0.1:10001"
 
 func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	conn, err := net.Dial("tcp", serverAddr)
@@ -46,7 +46,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	err = xml.Unmarshal(buf.Bytes(), &o)
 
 	// get elapsed2 time here
-	elapsed2 := time.Since(request.Start)
+	elapsed2 := time.Since(o.StartS)
 
 	if err != nil {
 		fmt.Printf("error in unmarsheling: %v", err)

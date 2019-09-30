@@ -15,6 +15,7 @@ type Response struct {
 	XMLName xml.Name      `xml:"time"`
 	Owners  Owners        `xml:"owners"`
 	Elapsed time.Duration `xml:"elapsed"`
+	StartS  time.Time     `xml:"starts"`
 }
 
 type Owners struct {

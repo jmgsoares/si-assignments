@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const serverAddr = "127.0.0.1:10000"
+const serverAddr = "127.0.0.1:10001"
 
 func GetCarsFromOwners(message string) mp.Response {
 	result := mp.Response{}
@@ -44,6 +44,8 @@ func main() {
 		message, _ := bufio.NewReader(conn).ReadString('\n')
 
 		output := GetCarsFromOwners(message)
+
+		output.StartS = time.Now()
 
 		result, err := xml.MarshalIndent(output, "  ", "    ")
 
