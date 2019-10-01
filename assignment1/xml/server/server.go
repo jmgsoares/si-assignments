@@ -47,7 +47,7 @@ func main() {
 
 		output.StartS = time.Now()
 
-		result, err := xml.MarshalIndent(output, "  ", "    ")
+		result, err := xml.Marshal(output)
 
 		if err != nil {
 			fmt.Printf("error in marsheling: %v\n", err)

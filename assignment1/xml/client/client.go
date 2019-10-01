@@ -81,12 +81,12 @@ func main() {
 
 	var total time.Duration
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 50; i++ {
 		total += getVehiclesFromQueryList(owners)
 	}
 
-	total = total / 10
+	total = total / 50
 	fmt.Println()
 	fmt.Printf("Mean total -> ")
-	fmt.Println(total.Seconds())
+	fmt.Println(total.Milliseconds())
 }
