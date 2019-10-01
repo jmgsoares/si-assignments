@@ -5,49 +5,49 @@ import (
 )
 
 type Request struct {
-	Owners Owners    `xml:"owners"`
-	Start  time.Time `xml:"start"`
+	Owners Owners
+	Start  time.Time
 }
 
 type Response struct {
-	Owners  Owners        `xml:"owners"`
-	Elapsed time.Duration `xml:"elapsed"`
-	StartS  time.Time     `xml:"starts"`
+	Owners  Owners
+	Elapsed time.Duration
+	StartS  time.Time
 }
 
 type Owners struct {
-	Owners []Owner `xml:"owner"`
+	Owners []Owner
 }
 
 type Owner struct {
-	Uid           int    `xml:"uid"`
-	Name          string `xml:"name"`
-	Telephone     int    `xml:"telephone"`
-	Address       string `xml:"address"`
-	LicenceNumber int    `xml:"licenceNumber"`
-	IdNumber      int    `xml:"idNumber"`
-	TaxNumber     int    `xml:"taxNumber"`
-	Cars          []Car  `xml:"car"`
+	Uid           int
+	Name          string
+	Telephone     int
+	Address       string
+	LicenceNumber int
+	IdNumber      int
+	TaxNumber     int
+	Cars          []Car
 }
 
 type Car struct {
-	Uid          int     `xml:"uid"`
-	Brand        string  `xml:"brand"`
-	Model        string  `xml:"model"`
-	BodyType     string  `xml:"bodyType"`
-	Approval     string  `xml:"approval"`
-	Chassis      string  `xml:"chassis"`
-	TyreSize     string  `xml:"tyreSize"`
-	Weight       int     `xml:"weight"`
-	Fuel         string  `xml:"fuel"`
-	Seats        int     `xml:"seats"`
-	Noise        int     `xml:"noise"`
-	Co2Emissions float32 `xml:"co2Emissions"`
-	EngineSize   int     `xml:"engineSize"`
-	Power        int     `xml:"power"`
-	Color        string  `xml:"color"`
-	Consumption  float32 `xml:"consumption"`
-	Plate        string  `xml:"plate"`
-	Date         string  `xml:"date"`
-	OwnerUid     int     `xml:"ownerUid"`
+	Uid          int
+	Brand        string
+	Model        string
+	BodyType     string
+	Approval     string
+	Chassis      string
+	TyreSize     string
+	Weight       int
+	Fuel         string
+	Seats        int
+	Noise        int
+	Co2Emissions float32
+	EngineSize   int
+	Power        int
+	Color        string
+	Consumption  float32
+	Plate        string
+	Date         string
+	OwnerUid     int
 }
