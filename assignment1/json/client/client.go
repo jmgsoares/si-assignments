@@ -17,7 +17,7 @@ import (
 
 const serverAddr = "127.0.0.1:10001"
 
-func getVehiclesFromQueryList(owners mp.Owners) (time.Duration, int) {
+func getVehiclesFromQueryList(owners mp.Owners) (time.Duration, time.Duration, int) {
 	conn, err := net.Dial("tcp", serverAddr)
 	if err != nil {
 		log.Fatalf("failed to dial: %v", err)
@@ -36,12 +36,12 @@ func getVehiclesFromQueryList(owners mp.Owners) (time.Duration, int) {
 
 	if err != nil {
 		fmt.Printf("error: %v", err)
-		return 0, 0
+		return 0, 0, 0
 	}
 	_, err = fmt.Fprintf(conn, "\n")
 	if err != nil {
 		fmt.Printf("error: %v", err)
-		return 0, 0
+		return 0, 0, 0
 	}
 
 	o := mp.Response{}
@@ -58,10 +58,8 @@ func getVehiclesFromQueryList(owners mp.Owners) (time.Duration, int) {
 
 	if err != nil {
 		fmt.Printf("error in unmarsheling: %v", err)
-		return 0, 0
+		return 0, 0, 0
 	}
-
-	total := o.Elapsed + elapsed2
 
 	/*
 		fmt.Println()
@@ -74,7 +72,7 @@ func getVehiclesFromQueryList(owners mp.Owners) (time.Duration, int) {
 		fmt.Println(float64(buf.Len()) / 1024.0 / 1024.0)
 		fmt.Println()
 	*/
-	return total, buf.Len()
+	return o.Elapsed, elapsed2, buf.Len()
 }
 
 func main() {
@@ -89,18 +87,24 @@ func main() {
 
 			owners := file.LoadData("testdata/" + fileName + "_queries_4.json")
 			getVehiclesFromQueryList(owners)
-			var total time.Duration
+			var request, reply time.Duration
 			var payloadSize int
 			for i := 0; i < numberRuns; i++ {
-				ttotal, tpayloadSize := getVehiclesFromQueryList(owners)
-				total += ttotal
+				trequest, treply, tpayloadSize := getVehiclesFromQueryList(owners)
+				request += trequest
+				reply += treply
 				payloadSize += tpayloadSize
 			}
 
-			total = total / time.Duration(numberRuns)
+			request = request / time.Duration(numberRuns)
+			reply = reply / time.Duration(numberRuns)
 			payloadSize = payloadSize / numberRuns
+			fmt.Printf("Mean request -> ")
+			fmt.Println(request)
+			fmt.Printf("Mean reply -> ")
+			fmt.Println(reply)
 			fmt.Printf("Mean total -> ")
-			fmt.Println(total)
+			fmt.Println(request + reply)
 			fmt.Printf("Mean PayloadSize -> ")
 			fmt.Println(float32(payloadSize) / 1024.0 / 1024.0)
 			fmt.Println()
@@ -113,7 +117,11 @@ func main() {
 
 			w := bufio.NewWriter(f)
 
-			_, err = fmt.Fprintf(w, "%f %f\n", float64(total)/float64(time.Millisecond), float32(payloadSize)/1024.0/1024.0)
+			_, err = fmt.Fprintf(w, "%f %f %f %f\n",
+				float64(request)/float64(time.Millisecond),
+				float64(reply)/float64(time.Millisecond),
+				float64(reply)/float64(time.Millisecond) + float64(request)/float64(time.Millisecond),
+				float32(payloadSize)/1024.0/1024.0)
 			if err != nil {
 				log.Fatalf("failed connection to server: %v", err)
 				return
