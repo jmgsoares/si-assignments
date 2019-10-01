@@ -19,6 +19,7 @@ func GetCarsFromOwners(message []byte) mp.Response {
 	query := mp.Request{}
 
 	_ = json.Unmarshal(message, &query)
+
 	//get elapsed time here
 	result.Elapsed = time.Since(query.Start)
 
@@ -34,8 +35,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}
-	for {
 
+	for {
 		conn, err := ln.Accept()
 		if err != nil {
 			log.Fatalf("could not accept: %v", err)

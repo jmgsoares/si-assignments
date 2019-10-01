@@ -58,13 +58,6 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 		return 0
 	}
 
-	/*for i := range o.Owners.Owners {
-		fmt.Println("User Name: " + o.Owners.Owners[i].Name)
-		for j := range o.Owners.Owners[i].Cars {
-			fmt.Println("	Car: " + o.Owners.Owners[i].Cars[j].Brand)
-		}
-	}*/
-
 	total := o.Elapsed + elapsed2
 	fmt.Println()
 	fmt.Print(o.Elapsed)
