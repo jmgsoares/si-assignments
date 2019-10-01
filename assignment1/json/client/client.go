@@ -27,7 +27,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 	request.Owners = owners
 	output, err := json.Marshal(request)
 
-	println(string(output))
+	//println(string(output))
 
 	_, err = conn.Write(output)
 
@@ -48,7 +48,7 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 
 	err = json.Unmarshal(buf.Bytes(), &o)
 
-	println(string(buf.Bytes()))
+	//println(string(buf.Bytes()))
 
 	// get elapsed2 time here
 	elapsed2 := time.Since(o.StartS)
@@ -73,18 +73,18 @@ func getVehiclesFromQueryList(owners mp.Owners) time.Duration {
 }
 
 func main() {
-	owners := file.LoadData("testdata/sampleClientQuery.json")
+	owners := file.LoadData("testdata/sampleClientQueryBig.json")
 
 	getVehiclesFromQueryList(owners)
 
 	var total time.Duration
 
-	for i := 0; i < 25; i++ {
+	for i := 0; i < 50; i++ {
 		total += getVehiclesFromQueryList(owners)
 	}
 
-	total = total / 25
+	total = total / 50
 	fmt.Println()
 	fmt.Printf("Mean total -> ")
-	fmt.Println(total.Seconds())
+	fmt.Println(total.Milliseconds())
 }

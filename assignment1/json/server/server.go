@@ -48,7 +48,7 @@ func main() {
 
 		output.StartS = time.Now()
 
-		result, err := json.MarshalIndent(output, "  ", "    ")
+		result, err := json.Marshal(output)
 
 		if err != nil {
 			fmt.Printf("error in marsheling: %v\n", err)
