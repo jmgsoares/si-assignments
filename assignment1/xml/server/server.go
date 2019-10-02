@@ -13,10 +13,9 @@ import (
 
 const serverAddr = "127.0.0.1:10001"
 
-func GetCarsFromOwners(message string) mp.Response {
-	result := mp.Response{}
-	o := file.LoadData("testdata/sampleData.json")
+func GetCarsFromOwners(message string, o mp.Owners) mp.Response {
 	query := mp.Request{}
+	result := mp.Response{}
 
 	_ = xml.Unmarshal([]byte(message), &query)
 	//get elapsed time here
@@ -34,6 +33,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}
+
+	o := file.LoadData("testdata/sampleData.json")
 	for {
 
 		conn, err := ln.Accept()
@@ -43,7 +44,7 @@ func main() {
 
 		message, _ := bufio.NewReader(conn).ReadString('\n')
 
-		output := GetCarsFromOwners(message)
+		output := GetCarsFromOwners(message, o)
 
 		output.StartS = time.Now()
 
