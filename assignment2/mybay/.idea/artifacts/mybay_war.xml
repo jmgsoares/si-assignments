@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mybay:war">
+    <output-path>$PROJECT_DIR$/docker-dir/mybay_war</output-path>
+    <root id="archive" name="mybay_war.war">
+      <element id="artifact" artifact-name="mybay:war exploded" />
+    </root>
+  </artifact>
+</component>
