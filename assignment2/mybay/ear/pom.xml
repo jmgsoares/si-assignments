@@ -45,6 +45,13 @@
 			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>pt.onept.mei.is1920.mybay</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
+			<type>jar</type>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -72,6 +79,10 @@
 						<jarModule>
 							<groupId>pt.onept.mei.is1920.mybay</groupId>
 							<artifactId>data</artifactId>
+						</jarModule>
+						<jarModule>
+							<groupId>pt.onept.mei.is1920.mybay</groupId>
+							<artifactId>common</artifactId>
 						</jarModule>
 					</modules>
 				</configuration>
