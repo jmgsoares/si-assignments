@@ -1,5 +1,10 @@
 body {
-    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    /*background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);*/
+    background: linear-gradient(to top, #30cfd0 0%, #330867 100%) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 form {
@@ -74,6 +79,6 @@ button {
 }
 
 button:hover {
-    background: #30cfd0;
+    background: #330867;
     color: #ffffff;
 }
