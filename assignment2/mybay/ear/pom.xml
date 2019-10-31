@@ -63,7 +63,7 @@
 						<webModule>
 							<groupId>pt.onept.mei.is1920.mybay</groupId>
 							<artifactId>web</artifactId>
-							<contextRoot>/my-bay</contextRoot>
+							<contextRoot>/myBay</contextRoot>
 						</webModule>
 						<ejbModule>
 							<groupId>pt.onept.mei.is1920.mybay</groupId>
