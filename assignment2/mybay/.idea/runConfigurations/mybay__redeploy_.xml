@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="clean-install-redeploy" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="mybay [redeploy]" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,7 +10,7 @@
           </option>
           <option name="goals">
             <list>
-              <option value="wildfly:redeploy" />
+              <option value="clean" />
             </list>
           </option>
           <option name="pomFileName" />
@@ -18,13 +18,14 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/ear" />
+          <option name="workingDirPath" value="$PROJECT_DIR$" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="install" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/ear/pom.xml" goal="wildfly:redeploy" />
     </method>
   </configuration>
 </component>
