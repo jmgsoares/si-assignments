@@ -14,20 +14,23 @@ public class User implements Serializable {
     private String email;
     private String password;
     //@TODO see if this should be a string or a token
-    private String contry;
+    private String country;
 
-    //@OneToMany(mappedBy = "user")
-    //private List<Item> items;
+    @OneToMany(mappedBy = "seller")
+    private List<Item> items;
 
-    public User(int id, String name, String email, String password, String contry) {
+    public User() {
+        super();
+    }
+
+    public User(int id, String name, String email, String password, String country) {
         super();
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.contry = contry;
+        this.country = country;
     }
-
 
     public String getName() {
         return name;
@@ -53,19 +56,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getContry() {
-        return contry;
+    public String getCountry() {
+        return country;
     }
 
-    public void setContry(String contry) {
-        this.contry = contry;
+    public void setCountry(String contry) {
+        this.country = contry;
     }
 
-    /*public List<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
     public void setItems(List<Item> items) {
         this.items = items;
-    }*/
+    }
 }

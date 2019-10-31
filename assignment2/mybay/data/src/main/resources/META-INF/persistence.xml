@@ -8,6 +8,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/jdbc/mybayDS</jta-data-source>
         <class>pt.onept.mei.is1920.mybay.data.User</class>
+        <class>pt.onept.mei.is1920.mybay.data.Item</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>

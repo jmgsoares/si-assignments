@@ -1,4 +1,4 @@
-/*package pt.onept.mei.is1920.mybay.data;
+package pt.onept.mei.is1920.mybay.data;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -13,31 +13,36 @@ public class Item implements Serializable {
     private int id;
     private String name;
     //@TODO see if this should be a string or a token
-    private String contryOfOrigin;
+    private String countryOfOrigin;
     private float price;
     @Temporal(TemporalType.DATE)
     private Date publishDate;
     //@TODO see if this should be a string or a token
     private String category;
 
-    private Image photo;
+    //TODO Image has to be stored on the file system
+    //private Image photo;
 
     @ManyToOne
     private User seller;
 
-    public Item(int id, String name, String contryOfOrigin, float price, Date publishDate, String category, Image photo, User seller) {
+	public Item() {
+		super();
+	}
+
+    public Item(int id, String name, String countryOfOrigin, float price, Date publishDate, String category, Image photo, User seller) {
         super();
         this.id = id;
         this.name = name;
-        this.contryOfOrigin = contryOfOrigin;
+        this.countryOfOrigin = countryOfOrigin;
         this.price = price;
         this.publishDate = publishDate;
         this.category = category;
-        this.photo = photo;
+        //this.photo = photo;
         this.seller = seller;
     }
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
@@ -45,12 +50,12 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public String getContryOfOrigin() {
-        return contryOfOrigin;
+    public String getCountryOfOrigin() {
+        return countryOfOrigin;
     }
 
-    public void setContryOfOrigin(String contryOfOrigin) {
-        this.contryOfOrigin = contryOfOrigin;
+    public void setCountryOfOrigin(String countryOfOrigin) {
+        this.countryOfOrigin = countryOfOrigin;
     }
 
     public float getPrice() {
@@ -77,13 +82,13 @@ public class Item implements Serializable {
         this.category = category;
     }
 
-    public Image getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Image photo) {
-        this.photo = photo;
-    }
+//    public Image getPhoto() {
+//        return photo;
+//    }
+//
+//    public void setPhoto(Image photo) {
+//        this.photo = photo;
+//    }
 
     public User getSeller() {
         return seller;
@@ -92,4 +97,4 @@ public class Item implements Serializable {
     public void setSeller(User seller) {
         this.seller = seller;
     }
-}*/
+}
