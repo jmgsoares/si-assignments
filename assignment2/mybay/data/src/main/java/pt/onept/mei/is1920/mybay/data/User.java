@@ -16,8 +16,8 @@ public class User implements Serializable {
     //@TODO see if this should be a string or a token
     private String contry;
 
-    @OneToMany(mappedBy = "user")
-    private List<Item> items;
+    //@OneToMany(mappedBy = "user")
+    //private List<Item> items;
 
     public User(int id, String name, String email, String password, String contry) {
         super();
@@ -61,11 +61,11 @@ public class User implements Serializable {
         this.contry = contry;
     }
 
-    public List<Item> getItems() {
+    /*public List<Item> getItems() {
         return items;
     }
 
     public void setItems(List<Item> items) {
         this.items = items;
-    }
+    }*/
 }

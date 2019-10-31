@@ -26,7 +26,7 @@
         </div>
     </label>
     <button type="submit">submit</button>
-    <p><br>Not registered yet? <a href="register.html">Register here!</a></p>
+    <p><br>Not registered yet? <a href="register.jsp">Register here!</a></p>
 </form>
 
 </body>

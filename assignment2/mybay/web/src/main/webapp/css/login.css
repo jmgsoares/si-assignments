@@ -46,6 +46,12 @@ label {
     background: #330867;
 }
 
+.form-group {
+    position: relative;
+    width: 100%;
+    padding: 2px;
+}
+
 .line {
     position: absolute;
     width: 0%;

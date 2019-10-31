@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.data;
+/*package pt.onept.mei.is1920.mybay.data;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -92,4 +92,4 @@ public class Item implements Serializable {
     public void setSeller(User seller) {
         this.seller = seller;
     }
-}
+}*/

@@ -38,15 +38,23 @@
 
     <label>
         <p class="label-txt">ENTER YOUR COUNTRY</p>
-        <input type="text" class="input">
-        <div class="line-box">
-            <div class="line"></div>
+        <div class="form-group">
+            <label for="sel1"></label>
+            <select class="form-control" id="sel1">
+                <option value="portugal">PORTUGAL</option>
+                <option value="spain">SPAIN</option>
+                <option value="france">FRANCE</option>
+                <option value="england">ENGLAND</option>
+                <option value="germany">GERMANY</option>
+                <option value="belgium">BELGIUM</option>
+                <option value="switzerland">SWITZERLAND</option>
+            </select>
         </div>
     </label>
 
 
     <button type="submit">submit</button>
-    <p><br>Already registered? <a href="login.html">Login here!</a></p>
+    <p><br>Already registered? <a href="login.jsp">Login here!</a></p>
 </form>
 
 </body>
