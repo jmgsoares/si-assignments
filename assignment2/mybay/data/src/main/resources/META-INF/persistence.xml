@@ -7,15 +7,16 @@
     <persistence-unit name="myBayPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/jdbc/mybayDS</jta-data-source>
-        <class>pt.onept.mei.is1920.mybay.data.User</class>
-        <class>pt.onept.mei.is1920.mybay.data.Item</class>
+        <class>pt.onept.mei.is1920.mybay.data.type.User</class>
+        <class>pt.onept.mei.is1920.mybay.data.type.Item</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.default_schema" value="public"/>
             <property name="hibernate.generate_statistics" value="true"/>
+            <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.0"/>
         </properties>
 
     </persistence-unit>

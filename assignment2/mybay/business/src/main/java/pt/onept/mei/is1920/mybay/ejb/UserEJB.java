@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class UserEJB {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("User");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("myBayPersistenceUnit");
 
     public UserEJB() {
 

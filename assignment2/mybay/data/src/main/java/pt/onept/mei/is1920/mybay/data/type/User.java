@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.data;
+package pt.onept.mei.is1920.mybay.data.type;
 
 import javax.persistence.*;
 import java.io.Serializable;
