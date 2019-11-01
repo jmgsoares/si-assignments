@@ -41,13 +41,13 @@
         <div class="form-group">
             <label for="sel1"></label>
             <select class="form-control" id="sel1">
-                <option value="portugal">PORTUGAL</option>
-                <option value="spain">SPAIN</option>
-                <option value="france">FRANCE</option>
-                <option value="england">ENGLAND</option>
-                <option value="germany">GERMANY</option>
-                <option value="belgium">BELGIUM</option>
-                <option value="switzerland">SWITZERLAND</option>
+                <option value="portugal">Portugal</option>
+                <option value="spain">Spain</option>
+                <option value="france">France</option>
+                <option value="england">England</option>
+                <option value="germany">Germany</option>
+                <option value="belgium">Belgium</option>
+                <option value="switzerland">Switzerland</option>
             </select>
         </div>
     </label>
