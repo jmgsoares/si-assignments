@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +13,7 @@
 <body>
 
 
-<form>
+<form action="RegisterServlet" method="post">
     <label>
         <p class="label-txt">ENTER YOUR NAME</p>
         <input type="text" class="input" name="name">
@@ -40,7 +42,7 @@
         <p class="label-txt">ENTER YOUR COUNTRY</p>
         <div class="form-group">
             <label for="sel1"></label>
-            <select class="form-control" id="sel1">
+            <select class="form-control" id="sel1" name="country">
                 <option value="portugal">Portugal</option>
                 <option value="spain">Spain</option>
                 <option value="france">France</option>
@@ -53,7 +55,7 @@
     </label>
 
 
-    <button type="submit">submit</button>
+    <button type="submit" value="Submit">submit</button>
     <p><br>Already registered? <a href="login.jsp">Login here!</a></p>
 </form>
 

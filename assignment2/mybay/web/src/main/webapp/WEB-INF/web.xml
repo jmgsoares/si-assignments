@@ -12,4 +12,13 @@
 		</session-timeout>
 	</session-config>
 
+	<!--@TODO: redo for struts-->
+	<!--<servlet>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>pt.onept.mei.is1920.mybay.web.RegisterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>-->
 </web-app>
