@@ -13,19 +13,44 @@
 
 	<packaging>war</packaging>
 
+	<name>MyBay</name>
+	<url>https://onept.pt:9443/myBay</url>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
 			<artifactId>business</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.opensymphony</groupId>
+			<artifactId>xwork</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
 		</dependency>
 	</dependencies>
 

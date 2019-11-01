@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 
-	<welcome-file-list>
-		<welcome-file>login.jsp</welcome-file>
-	</welcome-file-list>
+<web-app id="web" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>DropBox RestWebApp Test - SD Class 18/19</display-name>
 
-	<session-config>
-		<session-timeout>
-			30
-		</session-timeout>
-	</session-config>
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
 
-	<!--@TODO: redo for struts-->
-	<!--<servlet>
-		<servlet-name>RegisterServlet</servlet-name>
-		<servlet-class>pt.onept.mei.is1920.mybay.web.RegisterServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>RegisterServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>-->
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>
