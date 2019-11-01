@@ -1,8 +1,12 @@
 package pt.onept.mei.is1920.mybay.ejb;
 
-import javax.ejb.Remote;
+import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
+import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 
-@Remote
+import javax.ejb.Local;
+
+@Local
 public interface UserEJBRemote {
+	void register() throws DuplicatedException, IncompleteException;
 
 }

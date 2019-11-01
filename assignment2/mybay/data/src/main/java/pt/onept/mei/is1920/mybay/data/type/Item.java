@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name = "item")
 public class Item implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
