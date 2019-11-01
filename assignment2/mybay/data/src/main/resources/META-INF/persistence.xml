@@ -2,7 +2,8 @@
 
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
-             xsi:schemaLocation=" http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+             xsi:schemaLocation=" http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
     <persistence-unit name="myBayPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
@@ -16,6 +17,8 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.default_schema" value="public"/>
             <property name="hibernate.generate_statistics" value="true"/>
+
+            <!-- Force downgrade to prevent the exception on Wildfly JPA statistics module -->
             <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.0"/>
         </properties>
 
