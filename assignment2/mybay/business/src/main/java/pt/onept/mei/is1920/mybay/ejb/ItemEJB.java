@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class ItemEJB {
+public class ItemEJB implements ItemEJBRemote {
 
 	@PersistenceContext(unitName = "myBayPersistenceUnit")
 	private EntityManager em;
