@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import pt.onept.mei.is1920.mybay.common.basicType.User;
 import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class PersistenceUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -42,6 +43,13 @@ public class User implements Serializable {
     private Country country;
 
     @OneToMany(mappedBy = "seller")
-    private List<Item> items;
+    private List<PersistenceItem> items;
+
+    public PersistenceUser(User user) {
+        this.name = user.getName();
+        this.country = user.getCountry();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+    }
 
 }

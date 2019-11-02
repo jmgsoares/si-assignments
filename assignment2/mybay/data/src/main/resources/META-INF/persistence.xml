@@ -8,8 +8,8 @@
     <persistence-unit name="myBayPersistenceUnit" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/jdbc/mybayDS</jta-data-source>
-        <class>pt.onept.mei.is1920.mybay.data.type.User</class>
-        <class>pt.onept.mei.is1920.mybay.data.type.Item</class>
+        <class>pt.onept.mei.is1920.mybay.data.type.PersistenceUser</class>
+        <class>pt.onept.mei.is1920.mybay.data.type.PersistenceItem</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>

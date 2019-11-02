@@ -10,6 +10,15 @@ public class CountryConverter implements AttributeConverter <Country, String> {
 
 	@Override
 	public String convertToDatabaseColumn(Country country) {
+		return CountryConverter.CountryToString(country);
+	}
+
+	@Override
+	public Country convertToEntityAttribute(String s) {
+		return CountryConverter.StringToCountry(s);
+	}
+
+	public static String CountryToString(Country country) {
 		switch (country) {
 			case PT:
 				return "portugal";
@@ -28,8 +37,7 @@ public class CountryConverter implements AttributeConverter <Country, String> {
 		}
 	}
 
-	@Override
-	public Country convertToEntityAttribute(String s) {
+	public static Country StringToCountry(String s) {
 		if (s.equals("portugal")) return Country.PT;
 		if (s.equals("spain")) return Country.S;
 		if (s.equals("france")) return Country.F;

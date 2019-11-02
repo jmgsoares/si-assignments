@@ -50,22 +50,15 @@
             <div class="label">
                 <h:outputLabel value="ENTER YOUR COUNTRY" styleClass="label-txt" />
                 <div class="form-group">
-                    <h:selectOneMenu styleClass="form-group">  <!--value=""-->
-                        <!--<f:selectItems value="#{userController.countries}" />-->
-                        <f:selectItem itemValue="portugal" itemLabel="Portugal" />
-                        <f:selectItem itemValue="spain" itemLabel="Spain" />
-                        <f:selectItem itemValue="france" itemLabel="France" />
-                        <f:selectItem itemValue="england" itemLabel="England" />
-                        <f:selectItem itemValue="germany" itemLabel="Germany" />
-                        <f:selectItem itemValue="belgium" itemLabel="Belgium" />
-                        <f:selectItem itemValue="switzerland" itemLabel="Switzerland" />
+                    <h:selectOneMenu styleClass="form-group">
+                       <f:selectItems value="#{countryController.countries}" />
                     </h:selectOneMenu>
                 </div>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
-            <!--<h:commandButton action="" value="Sign Up"/>-->
+            <h:commandButton action="#{userController.register}" value="Sign Up"/>
             <p><br/>Already registered? <a href="login.xhtml">Login here!</a></p>
         </h:form>
     </f:view>

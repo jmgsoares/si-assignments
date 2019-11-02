@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item implements Serializable {
+public class PersistenceItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,6 +43,6 @@ public class Item implements Serializable {
     private ItemCategory category;
 
     @ManyToOne
-    private User seller;
+    private PersistenceUser seller;
 
 }
