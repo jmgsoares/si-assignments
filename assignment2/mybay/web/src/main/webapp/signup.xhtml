@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <title>MyBay - Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+</h:head>
+
+<h:body>
+    <f:view>
+        <h:form id="SignUp">
+            <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
+            <h:inputText id="name" value="" />
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+
+            <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
+            <h:inputText id="email" value="" />
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+
+            <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
+            <h:inputSecret id="password" value="" />
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+
+            <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt" />
+            <h:inputSecret id="passwordConfirmation" value="" />
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+
+            <h:outputLabel value="ENTER YOUR COUNTRY" styleClass="label-txt" />
+            <div class="form-group">
+                <h:selectOneMenu value="">
+                    <f:selectItem value="portugal" itemLabel="Portugal" />
+                    <f:selectItem value="spain" itemLabel="Spain" />
+                    <f:selectItem value="france" itemLabel="France" />
+                    <f:selectItem value="england" itemLabel="England" />
+                    <f:selectItem value="germany" itemLabel="Germany" />
+                    <f:selectItem value="belgium" itemLabel="Belgium" />
+                    <f:selectItem value="switzerland" itemLabel="Switzerland" />
+                </h:selectOneMenu>
+            </div>
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+
+            <h:commandButton action="" value="Sign Up"/>
+            <p><br/>Already registered? <a href="login.xhtml">Login here!</a></p>
+        </h:form>
+    </f:view>
+</h:body>
+</html>
