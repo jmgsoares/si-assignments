@@ -17,6 +17,12 @@
 	<url>https://onept.pt:9443/myBay</url>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>

@@ -30,6 +30,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>pt.onept.mei.is1920.mybay</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -4,18 +4,24 @@ import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
 import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 @Stateless
-public class UserEJB implements UserEJBRemote{
-    @PersistenceUnit(unitName = "myBayPersistenceUnit")
+public class UserEJB implements UserEJBRemote {
+
+    @PersistenceContext(unitName = "myBayPersistenceUnit")
     private EntityManager em;
 
     @Override
     public void register() throws DuplicatedException, IncompleteException {
-
     }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
 }

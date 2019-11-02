@@ -1,5 +1,8 @@
 package pt.onept.mei.is1920.mybay.data.type;
 
+import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
+import pt.onept.mei.is1920.mybay.common.util.ItemCategoryConverter;
+
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -9,20 +12,26 @@ import java.util.Date;
 @Table(name = "item")
 public class Item implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @SequenceGenerator(name = "seq_item", sequenceName = "seq_item_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_item", strategy = GenerationType.SEQUENCE)
     private int id;
+
+    @Column(name = "name", nullable = false)
     private String name;
-    //@TODO see if this should be a string or a token
-    private String countryOfOrigin;
+
+    @Column(name = "price", nullable = false)
     private float price;
+
+    @Column(name = "publish_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date publishDate;
-    //@TODO see if this should be a string or a token
-    private String category;
 
-    //TODO Image has to be stored on the file system
-    //private Image photo;
+    @Column(name = "category", nullable = false)
+    @Convert(converter = ItemCategoryConverter.class)
+    private ItemCategory category;
 
     @ManyToOne
     private User seller;
@@ -31,15 +40,13 @@ public class Item implements Serializable {
 		super();
 	}
 
-    public Item(int id, String name, String countryOfOrigin, float price, Date publishDate, String category, Image photo, User seller) {
+    public Item(int id, String name, String countryOfOrigin, float price, Date publishDate, ItemCategory category, Image photo, User seller) {
         super();
         this.id = id;
         this.name = name;
-        this.countryOfOrigin = countryOfOrigin;
         this.price = price;
         this.publishDate = publishDate;
         this.category = category;
-        //this.photo = photo;
         this.seller = seller;
     }
 
@@ -49,14 +56,6 @@ public class Item implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCountryOfOrigin() {
-        return countryOfOrigin;
-    }
-
-    public void setCountryOfOrigin(String countryOfOrigin) {
-        this.countryOfOrigin = countryOfOrigin;
     }
 
     public float getPrice() {
@@ -75,21 +74,13 @@ public class Item implements Serializable {
         this.publishDate = publishDate;
     }
 
-    public String getCategory() {
+    public ItemCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ItemCategory category) {
         this.category = category;
     }
-
-//    public Image getPhoto() {
-//        return photo;
-//    }
-//
-//    public void setPhoto(Image photo) {
-//        this.photo = photo;
-//    }
 
     public User getSeller() {
         return seller;
@@ -98,4 +89,5 @@ public class Item implements Serializable {
     public void setSeller(User seller) {
         this.seller = seller;
     }
+
 }
