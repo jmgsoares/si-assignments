@@ -10,7 +10,7 @@
     <s:include value="template/scripts.jsp" />
     <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
-<body> u
+<body>
 
 <form action="LoginServlet" method="post">
     <label>
