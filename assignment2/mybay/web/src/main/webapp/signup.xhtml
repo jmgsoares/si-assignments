@@ -17,7 +17,7 @@
         <h:form id="SignUp" styleClass="form">
             <div class="label">
                 <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
-                <h:inputText id="name" styleClass="input" value="#{userController.}"/> <!--value=""-->
+                <h:inputText id="name" styleClass="input" /> <!--value=""-->
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -50,15 +50,15 @@
             <div class="label">
                 <h:outputLabel value="ENTER YOUR COUNTRY" styleClass="label-txt" />
                 <div class="form-group">
-                    <h:selectOneMenu >  <!--value=""-->
-                        <f:selectItems value="#{userController.countries}" />
-                        <!--<f:selectItem itemValue="portugal" itemLabel="Portugal" />
+                    <h:selectOneMenu styleClass="form-group">  <!--value=""-->
+                        <!--<f:selectItems value="#{userController.countries}" />-->
+                        <f:selectItem itemValue="portugal" itemLabel="Portugal" />
                         <f:selectItem itemValue="spain" itemLabel="Spain" />
                         <f:selectItem itemValue="france" itemLabel="France" />
                         <f:selectItem itemValue="england" itemLabel="England" />
                         <f:selectItem itemValue="germany" itemLabel="Germany" />
                         <f:selectItem itemValue="belgium" itemLabel="Belgium" />
-                        <f:selectItem itemValue="switzerland" itemLabel="Switzerland" />-->
+                        <f:selectItem itemValue="switzerland" itemLabel="Switzerland" />
                     </h:selectOneMenu>
                 </div>
                 <div class="line-box">
