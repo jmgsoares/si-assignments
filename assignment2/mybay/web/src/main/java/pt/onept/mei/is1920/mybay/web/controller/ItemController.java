@@ -9,13 +9,13 @@ import java.io.Serializable;
 @ManagedBean(name = "itemController")
 public class ItemController implements Serializable {
 	@EJB
-	private ItemEJBRemote user;
+	private ItemEJBRemote item;
 
-	public ItemEJBRemote getUser() {
-		return user;
+	public ItemEJBRemote getItem() {
+		return item;
 	}
 
-	public void setUser(ItemEJBRemote user) {
-		this.user = user;
+	public void setItem(ItemEJBRemote item) {
+		this.item = item;
 	}
 }
