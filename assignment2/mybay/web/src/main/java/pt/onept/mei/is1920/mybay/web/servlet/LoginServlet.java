@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.web;
+package pt.onept.mei.is1920.mybay.web.servlet;
 
 import pt.onept.mei.is1920.mybay.data.type.User;
 

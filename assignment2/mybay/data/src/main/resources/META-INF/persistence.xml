@@ -17,7 +17,7 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.default_schema" value="public"/>
             <property name="hibernate.generate_statistics" value="true"/>
-
+            
             <!-- Force downgrade to prevent the exception on Wildfly JPA statistics module -->
             <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.0"/>
         </properties>
