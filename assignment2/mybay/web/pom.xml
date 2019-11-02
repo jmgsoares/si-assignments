@@ -17,6 +17,10 @@
 	<url>https://onept.pt:9443/myBay</url>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.faces</groupId>
@@ -29,41 +33,28 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>pt.onept.mei.is1920.mybay</groupId>
+			<artifactId>business</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
-			<artifactId>business</artifactId>
-			<version>0.0.1</version>
+			<artifactId>common</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.opensymphony</groupId>
-			<artifactId>xwork</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Dependencies>javax.faces.api, javaee.api, org.slf4j</Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

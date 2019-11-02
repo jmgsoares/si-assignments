@@ -18,10 +18,7 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -30,15 +27,29 @@
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
 			<artifactId>data</artifactId>
-			<version>0.0.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
 			<artifactId>common</artifactId>
-			<version>0.0.1</version>
-			<scope>compile</scope>
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Dependencies>javaee.api, org.slf4j</Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

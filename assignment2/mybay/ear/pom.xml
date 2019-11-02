@@ -14,15 +14,6 @@
 	<packaging>ear</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
@@ -59,7 +50,6 @@
 		<plugins>
 			<!--Ear plugin -creating the ear - watch out skinny WARS! -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ear-plugin</artifactId>
 				<configuration>
 					<applicationName>mybay</applicationName>
