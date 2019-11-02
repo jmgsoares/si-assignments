@@ -1,5 +1,6 @@
 package pt.onept.mei.is1920.mybay.web.controller;
 
+import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.ejb.UserEJBRemote;
 
 import javax.ejb.EJB;
@@ -18,4 +19,9 @@ public class UserController implements Serializable {
 	public void setUser(UserEJBRemote user) {
 		this.user = user;
 	}
+
+	public Country[] getCountries() {
+		return Country.values();
+	}
+
 }

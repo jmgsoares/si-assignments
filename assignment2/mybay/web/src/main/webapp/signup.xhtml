@@ -8,8 +8,8 @@
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>MyBay - Sign Up</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-    <h:outputStylesheet name="css/login.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <h:outputStylesheet library="css" name="login.css" />
 </h:head>
 
 <h:body>
@@ -17,7 +17,7 @@
         <h:form id="SignUp" styleClass="form">
             <div class="label">
                 <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
-                <h:inputText id="name" styleClass="input" /> <!--value=""-->
+                <h:inputText id="name" styleClass="input" value="#{userController.}"/> <!--value=""-->
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -51,13 +51,14 @@
                 <h:outputLabel value="ENTER YOUR COUNTRY" styleClass="label-txt" />
                 <div class="form-group">
                     <h:selectOneMenu >  <!--value=""-->
-                        <f:selectItem value="portugal" itemLabel="Portugal" />
-                        <f:selectItem value="spain" itemLabel="Spain" />
-                        <f:selectItem value="france" itemLabel="France" />
-                        <f:selectItem value="england" itemLabel="England" />
-                        <f:selectItem value="germany" itemLabel="Germany" />
-                        <f:selectItem value="belgium" itemLabel="Belgium" />
-                        <f:selectItem value="switzerland" itemLabel="Switzerland" />
+                        <f:selectItems value="#{userController.countries}" />
+                        <!--<f:selectItem itemValue="portugal" itemLabel="Portugal" />
+                        <f:selectItem itemValue="spain" itemLabel="Spain" />
+                        <f:selectItem itemValue="france" itemLabel="France" />
+                        <f:selectItem itemValue="england" itemLabel="England" />
+                        <f:selectItem itemValue="germany" itemLabel="Germany" />
+                        <f:selectItem itemValue="belgium" itemLabel="Belgium" />
+                        <f:selectItem itemValue="switzerland" itemLabel="Switzerland" />-->
                     </h:selectOneMenu>
                 </div>
                 <div class="line-box">
