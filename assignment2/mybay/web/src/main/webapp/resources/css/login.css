@@ -7,7 +7,7 @@ body {
     background-size: cover;
 }
 
-form {
+.form {
     width: 60%;
     margin: 60px auto;
     background: #efefef;
@@ -16,7 +16,7 @@ form {
     -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
     box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
 }
-outputLabel {
+.label {
     display: block;
     position: relative;
     margin: 40px 0px;
@@ -71,7 +71,7 @@ outputLabel {
     top: -3em;
 }
 
-button {
+.button {
     display: inline-block;
     padding: 12px 24px;
     background: rgb(220,220,220);
@@ -84,7 +84,7 @@ button {
     transition: ease .3s;
 }
 
-button:hover {
+.button:hover {
     background: #330867;
     color: #ffffff;
 }
