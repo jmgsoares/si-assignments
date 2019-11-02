@@ -1,5 +1,6 @@
 package pt.onept.mei.is1920.mybay.ejb;
 
+import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
 import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
 import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 

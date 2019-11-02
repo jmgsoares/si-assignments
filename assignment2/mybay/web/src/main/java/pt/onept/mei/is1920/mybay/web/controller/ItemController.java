@@ -1,6 +1,6 @@
 package pt.onept.mei.is1920.mybay.web.controller;
 
-import pt.onept.mei.is1920.mybay.ejb.ItemEJBRemote;
+import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;

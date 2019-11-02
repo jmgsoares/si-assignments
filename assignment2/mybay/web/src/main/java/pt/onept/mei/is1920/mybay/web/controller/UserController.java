@@ -1,7 +1,7 @@
 package pt.onept.mei.is1920.mybay.web.controller;
 
 import pt.onept.mei.is1920.mybay.common.enums.Country;
-import pt.onept.mei.is1920.mybay.ejb.UserEJBRemote;
+import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;

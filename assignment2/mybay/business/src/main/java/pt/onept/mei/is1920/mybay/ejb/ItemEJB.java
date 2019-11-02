@@ -1,5 +1,7 @@
 package pt.onept.mei.is1920.mybay.ejb;
 
+import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
