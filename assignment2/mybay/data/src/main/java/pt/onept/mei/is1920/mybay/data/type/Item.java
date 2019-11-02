@@ -4,12 +4,21 @@ import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.util.ItemCategoryConverter;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "item")
+@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -35,59 +44,5 @@ public class Item implements Serializable {
 
     @ManyToOne
     private User seller;
-
-	public Item() {
-		super();
-	}
-
-    public Item(int id, String name, String countryOfOrigin, float price, Date publishDate, ItemCategory category, Image photo, User seller) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.publishDate = publishDate;
-        this.category = category;
-        this.seller = seller;
-    }
-
-	public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public ItemCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ItemCategory category) {
-        this.category = category;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
 
 }
