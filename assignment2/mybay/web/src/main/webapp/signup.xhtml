@@ -17,7 +17,7 @@
         <h:form id="SignUp" styleClass="form">
             <div class="label">
                 <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
-                <h:inputText id="name" styleClass="input" /> <!--value=""-->
+                <h:inputText id="name" styleClass="input" value="#{userController.name}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -25,7 +25,7 @@
 
             <div class="label">
                 <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
-                <h:inputText id="email" styleClass="input" /> <!--value=""-->
+                <h:inputText id="email" styleClass="input" value="#{userController.email}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -33,7 +33,7 @@
 
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" /> <!--value=""-->
+                <h:inputSecret id="password" styleClass="input" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -41,7 +41,7 @@
 
             <div class="label">
                 <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="passwordConfirmation" styleClass="input" /> <!--value=""-->
+                <h:inputSecret id="passwordConfirmation" styleClass="input" value="#{userController.password}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -51,7 +51,8 @@
                 <h:outputLabel value="ENTER YOUR COUNTRY" styleClass="label-txt" />
                 <div class="form-group">
                     <h:selectOneMenu styleClass="form-group">
-                       <f:selectItems value="#{countryController.countries}" />
+                       <f:selectItems value="#{countryController.countries}" var="countryString"
+                                      itemValue="#{userController.countryString}"/>
                     </h:selectOneMenu>
                 </div>
                 <div class="line-box">
