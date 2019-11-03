@@ -7,5 +7,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://onept.pt:1433/mybay</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="PostgreSQL - postgres@localhost" uuid="960c5c9d-f40d-4e27-b44e-87b4089ac999">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+    </data-source>
   </component>
 </project>

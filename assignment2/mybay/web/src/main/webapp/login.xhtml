@@ -17,19 +17,19 @@
         <h:form id="Login" styleClass="form">
             <div class="label">
                 <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
-                <h:inputText id="email" styleClass="input" />
+                <h:inputText id="email" styleClass="input" value="#{userController.email}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" />
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
-            <h:commandButton value="Login" styleClass="button"/>
+            <h:commandButton value="Login" styleClass="button" action="#{userController.login}"/>
             <p><br/>Not registered yet? <a href="signup.xhtml">Sign up here!</a></p>
         </h:form>
 

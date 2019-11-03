@@ -21,29 +21,29 @@ public class CountryConverter implements AttributeConverter <Country, String> {
 	public static String CountryToString(Country country) {
 		switch (country) {
 			case PT:
-				return "Portugal";
+				return "portugal";
 			case S:
-				return "Spain";
+				return "spain";
 			case F:
-				return "France";
+				return "france";
 			case GB:
-				return "Great Britain";
+				return "great britain";
 			case B:
-				return "Belgium";
+				return "belgium";
 			case CH:
-				return "Switzerland";
+				return "switzerland";
 			default:
 				return null;
 		}
 	}
 
 	public static Country StringToCountry(String s) {
-		if (s.equals("Portugal")) return Country.PT;
-		if (s.equals("Spain")) return Country.S;
-		if (s.equals("France")) return Country.F;
-		if (s.equals("Great Britain")) return Country.GB;
-		if (s.equals("Belgium")) return Country.B;
-		if (s.equals("Switzerland")) return Country.CH;
+		if (s.equals("portugal")) return Country.PT;
+		if (s.equals("spain")) return Country.S;
+		if (s.equals("france")) return Country.F;
+		if (s.equals("great britain")) return Country.GB;
+		if (s.equals("belgium")) return Country.B;
+		if (s.equals("switzerland")) return Country.CH;
 		else return null;
 	}
 }
