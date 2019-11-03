@@ -28,7 +28,7 @@ public class UserEJB implements UserEJBRemote {
 
     @Override
     public User register(User user) throws DuplicatedException, IncompleteException {
-        logger.info("Trying to persist -> " + user.toString());
+        logger.debug("Trying to persist -> " + user.toString());
         em.persist(new PersistenceUser(user));
         return user;
     }

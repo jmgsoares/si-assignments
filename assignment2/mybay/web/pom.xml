@@ -52,6 +52,7 @@
 					<archive>
 						<manifestEntries>
 							<Dependencies>javax.faces.api, javaee.api, org.slf4j</Dependencies>
+							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>
 				</configuration>
