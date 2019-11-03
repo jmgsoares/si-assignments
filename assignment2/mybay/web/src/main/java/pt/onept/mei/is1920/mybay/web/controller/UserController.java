@@ -43,4 +43,5 @@ public class UserController implements Serializable {
 	//TODO 	we have to map what happens next......
 	// at com.sun.jsf-impl@2.3.9.SP03//com.sun.faces.application.ActionListenerImpl.getNavigationOutcome(ActionListenerImpl.java:96)
 
+	public void logout() {}
 }
