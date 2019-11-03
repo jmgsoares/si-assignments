@@ -30,11 +30,11 @@ public class UserController implements Serializable {
 
 	public void register() {
 		try {
-			logger.info("Received user to register with " +
+			logger.debug("Received user to register with " +
 					"Name: "+ name + " eMail: " + email + " password: " + password + " country: " + countryString);
 			country = CountryConverter.StringToCountry(countryString);
 			User userToRegister = new User(name, email, password, country);
-			logger.info("Trying to register user " + userToRegister.toString());
+			logger.debug("Trying to register user " + userToRegister.toString());
 			user.register(userToRegister);
 		} catch (DuplicatedException e) {
 			e.printStackTrace();

@@ -49,6 +49,7 @@
 					<archive>
 						<manifestEntries>
 							<Dependencies>javaee.api, org.slf4j</Dependencies>
+							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>
 				</configuration>
