@@ -1,5 +1,4 @@
 body {
-    /*background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);*/
     background: linear-gradient(to top, #30cfd0 0%, #330867 100%) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -19,7 +18,7 @@ body {
 .label {
     display: block;
     position: relative;
-    margin: 40px 0px;
+    margin: 40px;
 }
 .label-txt {
     position: absolute;
@@ -54,9 +53,7 @@ body {
 
 .line {
     position: absolute;
-    width: 0%;
     height: 2px;
-    top: 0px;
     left: 50%;
     transform: translateX(-50%);
     background: #30cfd0;

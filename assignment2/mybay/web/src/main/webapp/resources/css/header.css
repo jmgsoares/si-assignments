@@ -1,7 +1,37 @@
-.logout {
-
+body {
+    background: linear-gradient(to top, #30cfd0 0%, #330867 100%) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-.profile {
+.btn-group {
+    width: 100%;
+}
 
+.button {
+    width: 100%;
+    padding: 12px;
+    background: rgb(220,220,220);
+    font-weight: bold;
+    color: rgb(120,120,120);
+    border: none;
+    outline: none;
+    /*border-radius: 5px;*/
+    cursor: pointer;
+    transition: ease .3s;
+    float: left;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.button:hover {
+    background: #330867;
+    color: #ffffff;
 }
