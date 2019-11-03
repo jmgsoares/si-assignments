@@ -25,14 +25,16 @@ public class UserController implements Serializable {
 	@EJB
 	private UserEJBRemote user;
 
-	private String name, email, password, countryString;
+	private String name, email, password, passwordConfirmation, countryString;
 	private Country country;
 
 	public void register() {
 		try {
+			logger.info("Received user to register with " +
+					"Name: "+ name + " eMail: " + email + " password: " + password + " country: " + countryString);
 			country = CountryConverter.StringToCountry(countryString);
 			User userToRegister = new User(name, email, password, country);
-			logger.debug("Trying to register user " + userToRegister);
+			logger.info("Trying to register user " + userToRegister.toString());
 			user.register(userToRegister);
 		} catch (DuplicatedException e) {
 			e.printStackTrace();
@@ -40,11 +42,11 @@ public class UserController implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	//TODO 	we have to map what happens next......
-	// at com.sun.jsf-impl@2.3.9.SP03//com.sun.faces.application.ActionListenerImpl.getNavigationOutcome(ActionListenerImpl.java:96)
+	public void logout() {
 
-	public void logout() {}
+	}
 
 	public void login() {
+
 	}
 }

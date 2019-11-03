@@ -52,9 +52,8 @@
                 <h:outputLabel value="" styleClass="input" />
 
                 <div class="form-group">
-                    <h:selectOneMenu styleClass="form-control">
-                       <f:selectItems value="#{countryController.countries}" var="countryString"
-                                      itemValue="#{userController.countryString}"/>
+                    <h:selectOneMenu styleClass="form-control" value="#{userController.countryString}">
+                       <f:selectItems value="#{countryController.countries}"/>
                     </h:selectOneMenu>
                 </div>
             </div>

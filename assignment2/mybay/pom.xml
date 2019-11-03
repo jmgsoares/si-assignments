@@ -85,17 +85,11 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>1.18.10</version>
+				<scope>provided</scope>
 			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
-
-	<repositories>
-		<repository>
-			<id>projectlombok.org</id>
-			<url>http://projectlombok.org/mavenrepo</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<pluginManagement>
