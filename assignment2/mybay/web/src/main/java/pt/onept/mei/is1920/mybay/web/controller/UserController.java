@@ -15,7 +15,6 @@ import pt.onept.mei.is1920.mybay.common.util.SessionUtils;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.management.Query;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
