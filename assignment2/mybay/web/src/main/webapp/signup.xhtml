@@ -3,7 +3,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
@@ -33,7 +33,7 @@
 
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" />
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -41,11 +41,14 @@
 
             <div class="label">
                 <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="passwordConfirmation" styleClass="input" value="#{userController.password}"/>
+                <h:inputSecret id="confirm" styleClass="input" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
+
+            <o:validateEqual id="equal" components="password confirm"
+                             message="Passwords don't match!" showMessageFor="password" />
 
             <div class="label">
                 <h:outputLabel value="SELECT YOUR COUNTRY" styleClass="label-txt" />
