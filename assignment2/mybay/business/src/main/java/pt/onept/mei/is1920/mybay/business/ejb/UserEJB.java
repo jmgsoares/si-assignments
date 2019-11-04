@@ -6,14 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.basicType.User;
 import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
-import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
-import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
-import javax.validation.constraints.Null;
-import java.util.List;
 
 @Stateless
 @Getter @Setter
@@ -74,11 +70,12 @@ public class UserEJB implements UserEJBRemote {
                 logger.debug("Attempt to delete user " + userToDelete.getEmail() + " unsuccessful. User not found");
                 return false;
             }
+            em.remove(persistedUserToDelete);
+            logger.debug("Deleted account with email " + userToDelete.getEmail());
+            return true;
         } catch (IllegalArgumentException e) {
             logger.error(e.getMessage(), e);
         }
-        em.remove(userToDelete);
-        logger.debug("Deleted account with email " + userToDelete.getEmail());
-        return true;
+        return false;
     }
 }
