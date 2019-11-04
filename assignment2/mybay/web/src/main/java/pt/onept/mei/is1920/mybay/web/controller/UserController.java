@@ -31,6 +31,8 @@ public class UserController implements Serializable {
 	private String name, email, password, countryString;
 	private Country country;
 
+	private boolean loggedIn = false;
+
 	public void register() {
 		try {
 			country = CountryConverter.StringToCountry(countryString);
@@ -47,7 +49,8 @@ public class UserController implements Serializable {
 	public String logout() {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
-		return "login";
+		loggedIn = false;
+		return "logout";
 	}
 
 	public String login() {
@@ -59,6 +62,7 @@ public class UserController implements Serializable {
 				session.setAttribute("name", name);
 				session.setAttribute("country", country);
 				logger.info("Login successful");
+				loggedIn = true;
 				return "home";
 			}
 		} catch (Exception e) {
@@ -75,6 +79,7 @@ public class UserController implements Serializable {
             HttpSession session = SessionUtils.getSession();
             session.invalidate();
             logger.info("Delete successful");
+			loggedIn = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
