@@ -13,14 +13,15 @@ import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.util.SessionUtils;
 import pt.onept.mei.is1920.mybay.common.util.MD5;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
 @Named(value = "userController")
-@RequestScoped
+@SessionScoped
 @Getter @Setter
 public class UserController implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -55,6 +56,8 @@ public class UserController implements Serializable {
 			if(user.login(email, hashPassword(password))) {
 				HttpSession session = SessionUtils.getSession();
 				session.setAttribute("email", email);
+				session.setAttribute("name", name);
+				session.setAttribute("country", country);
 				logger.info("Login successful");
 				return "home";
 			}
@@ -64,6 +67,18 @@ public class UserController implements Serializable {
 		logger.info("Login failed");
 		return "login";
 	}
+
+	public void deleteAcc() {
+        try {
+            logger.info("Deleting account: " + email);
+            user.delete(email);
+            HttpSession session = SessionUtils.getSession();
+            session.invalidate();
+            logger.info("Delete successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	private String hashPassword(String password) {
 		for (int i = 0; i <= 7; i++) {

@@ -47,4 +47,10 @@ public class UserEJB implements UserEJBRemote {
         return false;
     }
 
+    @Override
+    public void delete(String email) {
+        logger.info("Trying to delete account ->" + email);
+        Query q = em.createQuery("delete from PersistenceUser u where u.email = :e");
+        q.setParameter("e", email);
+    }
 }

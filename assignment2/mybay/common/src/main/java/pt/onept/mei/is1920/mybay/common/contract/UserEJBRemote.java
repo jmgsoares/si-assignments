@@ -10,4 +10,5 @@ import javax.ejb.Local;
 public interface UserEJBRemote {
 	User register(User user) throws DuplicatedException, IncompleteException;
 	boolean login(String email, String password);
+	void delete(String email);
 }
