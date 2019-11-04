@@ -14,7 +14,7 @@
 
 <h:body>
     <f:view>
-        <h:form id="Login" styleClass="form">
+        <h:form id="Login" styleClass="form" onsubmit="validationLogin();" >
             <div class="label">
                 <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
                 <h:inputText id="email" styleClass="input" value="#{userController.email}"/>
@@ -24,14 +24,13 @@
             </div>
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" >
-                    <f:converter converterId="pt.onept.mei.is1920.mybay.web.controller.MD5Controller" />
-                </h:inputSecret>
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
             <h:commandButton id="button" value="Login" styleClass="button" action="#{userController.login}"/>
+            <h:message for="button" style="color: red" />
             <p><br/>Not registered yet? <a href="signup.xhtml">Sign up here!</a></p>
         </h:form>
 

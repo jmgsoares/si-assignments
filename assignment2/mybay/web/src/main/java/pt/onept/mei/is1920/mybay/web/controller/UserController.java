@@ -28,7 +28,7 @@ public class UserController implements Serializable {
 	@EJB
 	private UserEJBRemote user;
 
-	private String name, email, password, passwordConfirmation, countryString;
+	private String name, email, password, countryString;
 	private Country country;
 
 	public void register() {

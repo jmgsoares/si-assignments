@@ -15,7 +15,7 @@
 
 <h:body>
     <f:view>
-        <h:form id="SignUp" styleClass="form" onsubmit="return showMessage();">
+        <h:form id="SignUp" styleClass="form" onsubmit="return validationSignUp();">
             <div class="label">
                 <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
                 <h:inputText id="name" styleClass="input" value="#{userController.name}" required="true" />
@@ -34,9 +34,7 @@
 
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" required="true" >
-                    <f:converter converterId="pt.onept.mei.is1920.mybay.web.controller.MD5Controller" />
-                </h:inputSecret>
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" required="true" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -45,9 +43,7 @@
 
             <div class="label">
                 <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="confirm" styleClass="input" required="true" >
-                    <f:converter converterId="pt.onept.mei.is1920.mybay.web.controller.MD5Controller" />
-                </h:inputSecret>
+                <h:inputSecret id="confirm" styleClass="input" required="true" />
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
