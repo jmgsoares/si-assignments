@@ -24,7 +24,9 @@
             </div>
             <div class="label">
                 <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" />
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" >
+                    <f:converter converterId="pt.onept.mei.is1920.mybay.web.controller.MD5Controller" />
+                </h:inputSecret>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
