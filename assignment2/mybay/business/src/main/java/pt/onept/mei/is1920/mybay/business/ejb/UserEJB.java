@@ -34,21 +34,19 @@ public class UserEJB implements UserEJBRemote {
     @Override
     public boolean login(String email, String password) {
         logger.info("Trying to query -> " + email + " " + password);
-        Query q = em.createQuery("from PersistenceUser u where u.email = :e and u.password = :p");
+        Query q = em.createQuery("FROM PersistenceUser u WHERE u.email = :e AND u.password = :p");
         q.setParameter("e", email);
         q.setParameter("p", password);
         List<User> result = q.getResultList();
         logger.info("Response -> " + result.toString());
-        if(!result.isEmpty()) {
-            return true;
-        }
-        return false;
+        return !result.isEmpty();
     }
 
     @Override
     public void delete(String email) {
         logger.info("Trying to delete account ->" + email);
-        Query q = em.createQuery("delete from PersistenceUser u where u.email = :e");
+        Query q = em.createQuery("DELETE FROM PersistenceUser u WHERE u.email = :e");
         q.setParameter("e", email);
+        q.executeUpdate();
     }
 }
