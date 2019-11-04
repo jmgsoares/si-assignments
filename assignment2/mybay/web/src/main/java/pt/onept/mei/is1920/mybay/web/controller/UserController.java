@@ -33,18 +33,21 @@ public class UserController implements Serializable {
 
 	private boolean loggedIn = false;
 
-	public void register() {
+	public String register() {
 		try {
 			country = CountryConverter.StringToCountry(countryString);
 			User userToRegister = new User(name, email, hashPassword(password), country);
 			logger.info("Registering user " + name);
 			logger.debug("User to register -> " + userToRegister.toString());
 			user.register(userToRegister);
+			return "signup";
 		} catch (DuplicatedException e) {
 			e.printStackTrace();
 		} catch (IncompleteException e) {
 			e.printStackTrace();
 		}
+		logger.info("Failed to sign up");
+		return "register";
 	}
 	public String logout() {
 		HttpSession session = SessionUtils.getSession();
@@ -72,7 +75,7 @@ public class UserController implements Serializable {
 		return "login";
 	}
 
-	public void deleteAcc() {
+	public String deleteAcc() {
         try {
             logger.info("Deleting account: " + email);
             user.delete(email);
@@ -83,6 +86,7 @@ public class UserController implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return "delete";
     }
 
 	private String hashPassword(String password) {

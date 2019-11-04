@@ -12,8 +12,6 @@ import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Stateless
