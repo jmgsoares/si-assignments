@@ -9,5 +9,8 @@ function showMessage(){
         alert("Passwords don't match!")
         return false;
     }
+
+    pwd = md5(pwd);
+
     return true;
 }
