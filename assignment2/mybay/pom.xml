@@ -88,6 +88,13 @@
 				<scope>provided</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>org.omnifaces</groupId>
+				<artifactId>omnifaces</artifactId>
+				<version>3.4</version>
+
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
