@@ -1,5 +1,8 @@
 package pt.onept.mei.is1920.mybay.web.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -9,33 +12,42 @@ import java.io.IOException;
 
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"*.xhtml"})
 public class AuthorizationFilter implements Filter {
-    private AuthorizationFilter(){}
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+
+    private AuthorizationFilter() { }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
+    public void init(FilterConfig filterConfig) { }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void destroy() { }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         try {
-            HttpServletRequest req = (HttpServletRequest) request;
-            HttpServletResponse res = (HttpServletResponse) response;
-            HttpSession ses = req.getSession(false);
+            logger.info("Filtering Request");
+            logger.debug("Filtering: request " + request.toString() + " " + response.toString());
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            HttpSession httpSession = httpServletRequest.getSession(false);
 
-            String reqURI = req.getRequestURI();
+            String requestURI = httpServletRequest.getRequestURI();
 
-            if (reqURI.contains("/login.xhtml") || reqURI.contains("/signup.xhtml") || (ses != null && ses.getAttribute("email") != null))
+            if (
+                requestURI.contains("/login.xhtml") ||
+                requestURI.contains("/signup.xhtml") ||
+                (httpSession != null && httpSession.getAttribute("email") != null)
+            ) {
+                logger.debug("Chaining filters for " + requestURI);
                 chain.doFilter(request, response);
-            else
-                res.sendRedirect(req.getContextPath() + "/login.xhtml");
+
+            }
+            else {
+                logger.debug("Request for " + requestURI + " not accepted");
+                httpServletResponse.sendRedirect("/login.xhtml");
+            }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }
