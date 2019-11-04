@@ -12,8 +12,6 @@ import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Stateless
@@ -35,16 +33,13 @@ public class UserEJB implements UserEJBRemote {
 
     @Override
     public boolean login(String email, String password) {
-        logger.info("Trying to query -> " + email + " " + password);
+        logger.debug("Trying to query -> " + email + " " + password);
         Query q = em.createQuery("from PersistenceUser u where u.email = :e and u.password = :p");
         q.setParameter("e", email);
         q.setParameter("p", password);
         List<User> result = q.getResultList();
-        logger.info("Response -> " + result.toString());
-        if(!result.isEmpty()) {
-            return true;
-        }
-        return false;
+        logger.debug("Response -> " + result.toString());
+        return !result.isEmpty();
     }
 
 }
