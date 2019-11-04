@@ -12,11 +12,11 @@ import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.List;
 
 @Stateless
-@Getter
-@Setter
+@Getter @Setter
 public class UserEJB implements UserEJBRemote {
 
     @PersistenceContext(unitName = "myBayPersistenceUnit")
@@ -25,28 +25,60 @@ public class UserEJB implements UserEJBRemote {
     private static final Logger logger = LoggerFactory.getLogger(UserEJB.class);
 
     @Override
-    public User register(User user) throws DuplicatedException, IncompleteException {
-        logger.info("Trying to persist -> " + user.toString());
-        em.persist(new PersistenceUser(user));
-        return user;
+    public boolean create(User user) {
+        logger.info("Registering new user");
+        try {
+            em.persist(new PersistenceUser(user));
+        } catch (EntityExistsException | TransactionRequiredException | IllegalArgumentException e) {
+            logger.error(e.getMessage(), e);
+            return false;
+        }
+        logger.debug("Registered user -> " + user.toString());
+        return true;
+    }
+
+    @Override
+    public boolean update(User userToUpdate) {
+        return false;
+    }
+
+    @Override
+    public User read(User userToRead) {
+        return null;
     }
 
     @Override
     public boolean login(String email, String password) {
-        logger.info("Trying to query -> " + email + " " + password);
-        Query q = em.createQuery("FROM PersistenceUser u WHERE u.email = :e AND u.password = :p");
-        q.setParameter("e", email);
-        q.setParameter("p", password);
-        List<User> result = q.getResultList();
-        logger.info("Response -> " + result.toString());
-        return !result.isEmpty();
+        logger.info("Login request from " + email);
+        PersistenceUser userToLogIn = em.find(PersistenceUser.class, email);
+        if (userToLogIn == null) {
+            logger.debug("Attempt login from " + email + " unsuccessful. User not found");
+            return false;
+        }
+        if (userToLogIn.getPassword().equals(password)) {
+            logger.debug("Attempt login from " + email + " successful");
+            return true;
+        }
+        else {
+            logger.debug("Attempt login from " + email + " unsuccessful. Incorrect password");
+            return false;
+        }
     }
 
     @Override
-    public void delete(String email) {
-        logger.info("Trying to delete account ->" + email);
-        Query q = em.createQuery("DELETE FROM PersistenceUser u WHERE u.email = :e");
-        q.setParameter("e", email);
-        q.executeUpdate();
+    public boolean delete(User userToDelete) {
+        logger.info("Delete account request from " + userToDelete.getEmail());
+        try {
+            PersistenceUser persistedUserToDelete = em.find(PersistenceUser.class, userToDelete.getEmail());
+            if (persistedUserToDelete == null) {
+                logger.debug("Attempt to delete user " + userToDelete.getEmail() + " unsuccessful. User not found");
+                return false;
+            }
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage(), e);
+        }
+        em.remove(userToDelete);
+        logger.debug("Deleted account with email " + userToDelete.getEmail());
+        return true;
     }
 }

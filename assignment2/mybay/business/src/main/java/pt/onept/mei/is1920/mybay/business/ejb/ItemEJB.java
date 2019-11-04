@@ -2,6 +2,7 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
+import pt.onept.mei.is1920.mybay.common.basicType.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 
 import javax.ejb.Stateless;
@@ -15,11 +16,23 @@ public class ItemEJB implements ItemEJBRemote {
 	@PersistenceContext(unitName = "myBayPersistenceUnit")
 	private EntityManager em;
 
-	public EntityManager getEm() {
-		return em;
+	@Override
+	public boolean create(Item itemToCreate) {
+		return false;
 	}
 
-	public void setEm(EntityManager em) {
-		this.em = em;
+	@Override
+	public Item read(Item itemToRead) {
+		return null;
+	}
+
+	@Override
+	public boolean update(Item itemToUpdate) {
+		return false;
+	}
+
+	@Override
+	public boolean delete(Item itemToDelete) {
+		return false;
 	}
 }

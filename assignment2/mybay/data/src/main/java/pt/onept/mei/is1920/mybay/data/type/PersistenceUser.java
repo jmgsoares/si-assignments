@@ -24,16 +24,11 @@ public class PersistenceUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id")
-    @SequenceGenerator(name = "seq_user", sequenceName = "seq_user_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_user", strategy = GenerationType.SEQUENCE)
-    private int id;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;

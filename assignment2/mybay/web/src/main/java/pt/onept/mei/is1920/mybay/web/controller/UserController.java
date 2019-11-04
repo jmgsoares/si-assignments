@@ -34,21 +34,19 @@ public class UserController implements Serializable {
 	private boolean loggedIn = false;
 
 	public String register() {
-		try {
-			country = CountryConverter.StringToCountry(countryString);
-			User userToRegister = new User(name, email, hashPassword(password), country);
-			logger.info("Registering user " + name);
-			logger.debug("User to register -> " + userToRegister.toString());
-			user.register(userToRegister);
+		country = CountryConverter.StringToCountry(countryString);
+		User userToRegister = new User(name, email, hashPassword(password), country);
+		logger.info("Registering user " + name);
+		logger.debug("User to register -> " + userToRegister.toString());
+		if (user.create(userToRegister)) {
 			return "signup";
-		} catch (DuplicatedException e) {
-			e.printStackTrace();
-		} catch (IncompleteException e) {
-			e.printStackTrace();
 		}
-		logger.info("Failed to sign up");
-		return "register";
+		else {
+			logger.info("Failed to sign up");
+			return "register";
+		}
 	}
+
 	public String logout() {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
@@ -80,7 +78,7 @@ public class UserController implements Serializable {
 			HttpSession session = SessionUtils.getSession();
 			email = session.getAttribute("email").toString();
 			logger.info("Deleting account: " + email);
-            user.delete(email);
+            user.delete(new User().setEmail(email));
             session.invalidate();
             logger.info("Delete successful");
 			loggedIn = false;
