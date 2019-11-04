@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.ejb;
+package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.ejb;
+package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class UserEJB implements UserEJBRemote {
 
     @Override
     public User register(User user) throws DuplicatedException, IncompleteException {
-        logger.debug("Trying to persist -> " + user.toString());
+        logger.info("Trying to persist -> " + user.toString());
         em.persist(new PersistenceUser(user));
         return user;
     }
