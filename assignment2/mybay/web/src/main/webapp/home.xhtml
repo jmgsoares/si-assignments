@@ -14,9 +14,11 @@
     <f:view>
        <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <h:form styleClass="form">
-                    <h:outputLabel value="Welcome #{userController.name}" styleClass="label-txt"/>
-                </h:form>
+                <div class="form">
+                    <div class="label">
+                        <h:outputLabel value="Welcome #{userController.name}" styleClass="label-txt"/>
+                    </div>
+                </div>
             </ui:define>
        </ui:composition>
 

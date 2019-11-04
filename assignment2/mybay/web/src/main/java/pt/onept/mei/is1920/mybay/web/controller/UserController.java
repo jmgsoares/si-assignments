@@ -11,6 +11,7 @@ import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
 import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.util.SessionUtils;
+import pt.onept.mei.is1920.mybay.common.util.MD5;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -33,7 +34,7 @@ public class UserController implements Serializable {
 	public void register() {
 		try {
 			country = CountryConverter.StringToCountry(countryString);
-			User userToRegister = new User(name, email, password, country);
+			User userToRegister = new User(name, email, hashPassword(password), country);
 			logger.info("Trying to register user " + userToRegister.toString());
 			user.register(userToRegister);
 		} catch (DuplicatedException e) {
@@ -51,7 +52,7 @@ public class UserController implements Serializable {
 	public String login() {
 		try {
 			logger.info("Received user to login with eMail: " + email + " password: " + password);
-			if(user.login(email, password)) {
+			if(user.login(email, hashPassword(password))) {
 				HttpSession session = SessionUtils.getSession();
 				session.setAttribute("email", email);
 				logger.info("Login successful");
@@ -62,5 +63,12 @@ public class UserController implements Serializable {
 		}
 		logger.info("Login failed");
 		return "login";
+	}
+
+	private String hashPassword(String password) {
+		for (int i = 0; i <= 7; i++) {
+			password = MD5.GetMd5(password);
+		}
+		return password;
 	}
 }

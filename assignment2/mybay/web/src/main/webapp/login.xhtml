@@ -10,11 +10,13 @@
     <title>MyBay - Login</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <h:outputStylesheet library="css" name="login.css" />
+    <h:outputScript library="js" name="validation.js" />
+    <h:outputScript library="js" name="md5.js" />
 </h:head>
 
 <h:body>
     <f:view>
-        <h:form id="Login" styleClass="form" onsubmit="validationLogin();" >
+        <h:form id="Login" styleClass="form" onsubmit="return validationLogin();" >
             <div class="label">
                 <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
                 <h:inputText id="email" styleClass="input" value="#{userController.email}"/>
@@ -29,8 +31,7 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <h:commandButton id="button" value="Login" styleClass="button" action="#{userController.login}"/>
-            <h:message for="button" style="color: red" />
+            <h:commandButton action="#{userController.login}" styleClass="button" value="Login" />
             <p><br/>Not registered yet? <a href="signup.xhtml">Sign up here!</a></p>
         </h:form>
 

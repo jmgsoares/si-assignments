@@ -7,11 +7,13 @@ function validationSignUp(){
         return false;
     }
 
-    document.getElementById("SignUp:password").value = md5( document.getElementById("SignUp:password").value);
+    document.getElementById("SignUp:password").value = md5(document.getElementById("SignUp:password").value);
 
     return true;
 }
 
 function validationLogin() {
-    document.getElementById("Login:password").value = md5(document.getElementById("Login:password").value);
+    let pwd = document.getElementById("Login:password").value;
+    document.getElementById("Login:password").value = md5(pwd);
+    return true;
 }
