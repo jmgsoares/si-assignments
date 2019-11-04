@@ -10,10 +10,9 @@ import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
 import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
-import pt.onept.mei.is1920.mybay.common.util.SessionUtils;
-import pt.onept.mei.is1920.mybay.common.util.MD5;
+import pt.onept.mei.is1920.mybay.web.util.SessionUtils;
+import pt.onept.mei.is1920.mybay.web.util.MD5;
 
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -36,7 +35,8 @@ public class UserController implements Serializable {
 		try {
 			country = CountryConverter.StringToCountry(countryString);
 			User userToRegister = new User(name, email, hashPassword(password), country);
-			logger.info("Trying to register user " + userToRegister.toString());
+			logger.info("Registering user " + name);
+			logger.debug("User to register -> " + userToRegister.toString());
 			user.register(userToRegister);
 		} catch (DuplicatedException e) {
 			e.printStackTrace();

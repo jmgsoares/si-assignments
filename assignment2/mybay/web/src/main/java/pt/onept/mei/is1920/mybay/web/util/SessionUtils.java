@@ -1,10 +1,12 @@
-package pt.onept.mei.is1920.mybay.common.util;
+package pt.onept.mei.is1920.mybay.web.util;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class SessionUtils {
+public final class SessionUtils {
+
+    private SessionUtils() { }
 
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.getCurrentInstance()
