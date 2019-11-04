@@ -57,7 +57,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background: #30cfd0;
-    transition: ease .6s;
+    transition: ease 1s;
 }
 
 .input:focus + .line-box .line {

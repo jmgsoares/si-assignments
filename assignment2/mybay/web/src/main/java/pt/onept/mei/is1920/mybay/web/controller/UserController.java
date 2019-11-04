@@ -77,9 +77,10 @@ public class UserController implements Serializable {
 
 	public String deleteAcc() {
         try {
-            logger.info("Deleting account: " + email);
+			HttpSession session = SessionUtils.getSession();
+			email = session.getAttribute("email").toString();
+			logger.info("Deleting account: " + email);
             user.delete(email);
-            HttpSession session = SessionUtils.getSession();
             session.invalidate();
             logger.info("Delete successful");
 			loggedIn = false;
