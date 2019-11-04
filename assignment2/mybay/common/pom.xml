@@ -42,6 +42,7 @@
 					<archive>
 						<manifestEntries>
 							<Dependencies>javax.persistence.api, javaee.api, org.slf4j</Dependencies>
+							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>
 				</configuration>

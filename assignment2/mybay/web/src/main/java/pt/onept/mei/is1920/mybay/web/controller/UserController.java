@@ -31,8 +31,6 @@ public class UserController implements Serializable {
 
 	public void register() {
 		try {
-			logger.info("Received user to register with " +
-					"Name: "+ name + " eMail: " + email + " password: " + password + " country: " + countryString);
 			country = CountryConverter.StringToCountry(countryString);
 			User userToRegister = new User(name, email, password, country);
 			logger.info("Trying to register user " + userToRegister.toString());
