@@ -14,6 +14,7 @@ import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.management.Query;
 import java.io.Serializable;
 
 @Named(value = "userController")
@@ -44,7 +45,17 @@ public class UserController implements Serializable {
 
 	}
 
-	public void login() {
-
+	public String login() {
+		try {
+			logger.info("Received user to login with eMail: " + email + " password: " + password);
+			if(user.login(email, password)) {
+				logger.info("Login successful");
+				return "home";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		logger.info("Login failed");
+		return "login";
 	}
 }
