@@ -10,11 +10,13 @@ import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.exception.DuplicatedException;
 import pt.onept.mei.is1920.mybay.common.exception.IncompleteException;
 import pt.onept.mei.is1920.mybay.common.util.CountryConverter;
+import pt.onept.mei.is1920.mybay.common.util.SessionUtils;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.management.Query;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
 @Named(value = "userController")
@@ -41,14 +43,18 @@ public class UserController implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	public void logout() {
-
+	public String logout() {
+		HttpSession session = SessionUtils.getSession();
+		session.invalidate();
+		return "login";
 	}
 
 	public String login() {
 		try {
 			logger.info("Received user to login with eMail: " + email + " password: " + password);
 			if(user.login(email, password)) {
+				HttpSession session = SessionUtils.getSession();
+				session.setAttribute("email", email);
 				logger.info("Login successful");
 				return "home";
 			}
