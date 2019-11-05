@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.common.util;
+package pt.onept.mei.is1920.mybay.common.utility;
 
 import pt.onept.mei.is1920.mybay.common.enums.Country;
 
@@ -6,17 +6,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
-public class CountryConverter implements AttributeConverter <Country, String> {
-
-	@Override
-	public String convertToDatabaseColumn(Country country) {
-		return CountryConverter.CountryToString(country);
-	}
-
-	@Override
-	public Country convertToEntityAttribute(String s) {
-		return CountryConverter.StringToCountry(s);
-	}
+public class CountryConverter implements AttributeConverter<Country, String> {
 
 	public static String CountryToString(Country country) {
 		switch (country) {
@@ -45,5 +35,15 @@ public class CountryConverter implements AttributeConverter <Country, String> {
 		if (s.equals("belgium")) return Country.B;
 		if (s.equals("switzerland")) return Country.CH;
 		else return null;
+	}
+
+	@Override
+	public String convertToDatabaseColumn(Country country) {
+		return CountryConverter.CountryToString(country);
+	}
+
+	@Override
+	public Country convertToEntityAttribute(String s) {
+		return CountryConverter.StringToCountry(s);
 	}
 }

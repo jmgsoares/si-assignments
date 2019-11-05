@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.web.util;
+package pt.onept.mei.is1920.mybay.web.utility;
 
 
 import java.math.BigInteger;
@@ -8,7 +8,8 @@ import java.security.NoSuchAlgorithmException;
 //Adaptation of https://www.geeksforgeeks.org/md5-hash-in-java/
 public final class MD5 {
 
-	private MD5() { }
+	private MD5() {
+	}
 
 	public static String GetMd5(String input) {
 		try {

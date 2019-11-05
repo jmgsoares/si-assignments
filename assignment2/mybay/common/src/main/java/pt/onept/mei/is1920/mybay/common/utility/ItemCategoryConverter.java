@@ -1,14 +1,14 @@
-package pt.onept.mei.is1920.mybay.common.util;
+package pt.onept.mei.is1920.mybay.common.utility;
 
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 
 import javax.persistence.AttributeConverter;
 
-public class ItemCategoryConverter implements AttributeConverter <ItemCategory, String>  {
+public class ItemCategoryConverter implements AttributeConverter<ItemCategory, String> {
 
 	@Override
 	public String convertToDatabaseColumn(ItemCategory itemCategory) {
-		switch (itemCategory){
+		switch (itemCategory) {
 			case INFORMATICS:
 				return "informatics";
 			case KITCHEN:

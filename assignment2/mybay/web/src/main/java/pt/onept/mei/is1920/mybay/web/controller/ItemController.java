@@ -11,7 +11,8 @@ import java.io.Serializable;
 
 @Named(value = "itemController")
 @RequestScoped
-@Getter @Setter
+@Getter
+@Setter
 public class ItemController implements Serializable {
 	@EJB
 	private ItemEJBRemote item;

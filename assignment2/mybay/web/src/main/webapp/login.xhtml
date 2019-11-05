@@ -3,35 +3,35 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>MyBay - Login</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-    <h:outputStylesheet library="css" name="login.css" />
-    <h:outputScript library="js" name="validation.js" />
-    <h:outputScript library="js" name="md5.js" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css"/>
+    <h:outputStylesheet library="css" name="login.css"/>
+    <h:outputScript library="js" name="validation.js"/>
+    <h:outputScript library="js" name="md5.js"/>
 </h:head>
 
 <h:body>
     <f:view>
-        <h:form id="Login" styleClass="form" onsubmit="return validationLogin();" >
+        <h:form id="Login" styleClass="form" onsubmit="return validationLogin();">
             <div class="label">
-                <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
+                <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt"/>
                 <h:inputText id="email" styleClass="input" value="#{userController.email}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
             <div class="label">
-                <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" />
+                <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt"/>
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
-            <h:commandButton action="#{userController.login}" styleClass="button" value="Login" />
+            <h:commandButton action="#{userController.login}" styleClass="button" value="Login"/>
             <p><br/>Not registered yet? <a href="signup.xhtml">Sign up here!</a></p>
         </h:form>
 

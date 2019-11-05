@@ -2,7 +2,7 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
-import pt.onept.mei.is1920.mybay.common.basicType.Item;
+import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 
 import javax.ejb.Stateless;
@@ -10,7 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-@Getter @Setter
+@Getter
+@Setter
 public class ItemEJB implements ItemEJBRemote {
 
 	@PersistenceContext(unitName = "myBayPersistenceUnit")

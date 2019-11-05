@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.common.basicType;
+package pt.onept.mei.is1920.mybay.common.type;
 
 
 import lombok.AllArgsConstructor;

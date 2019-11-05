@@ -8,46 +8,47 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"*.xhtml"})
 public class AuthorizationFilter implements Filter {
-    private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
 
-    private AuthorizationFilter() { }
+	private AuthorizationFilter() {
+	}
 
-    @Override
-    public void init(FilterConfig filterConfig) { }
+	@Override
+	public void init(FilterConfig filterConfig) {
+	}
 
-    @Override
-    public void destroy() { }
+	@Override
+	public void destroy() {
+	}
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
-        try {
-            logger.info("Filtering Request");
-            logger.debug("Filtering: request " + request.toString() + " " + response.toString());
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            HttpSession httpSession = httpServletRequest.getSession(false);
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+		try {
+			logger.info("Filtering Request");
+			logger.debug("Filtering: request " + request.toString() + " " + response.toString());
+			HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+			HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+			HttpSession httpSession = httpServletRequest.getSession(false);
 
-            String requestURI = httpServletRequest.getRequestURI();
+			String requestURI = httpServletRequest.getRequestURI();
 
-            if (
-                requestURI.contains("/login.xhtml") ||
-                requestURI.contains("/signup.xhtml") ||
-                (httpSession != null && httpSession.getAttribute("email") != null)
-            ) {
-                logger.debug("Chaining filters for " + requestURI);
-                chain.doFilter(request, response);
+			if (
+					requestURI.contains("/login.xhtml") ||
+							requestURI.contains("/signup.xhtml") ||
+							(httpSession != null && httpSession.getAttribute("email") != null)
+			) {
+				logger.debug("Chaining filters for " + requestURI);
+				chain.doFilter(request, response);
 
-            }
-            else {
-                logger.debug("Request for " + requestURI + " not accepted");
-                httpServletResponse.sendRedirect("/login.xhtml");
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
+			} else {
+				logger.debug("Request for " + requestURI + " not accepted");
+				httpServletResponse.sendRedirect("/login.xhtml");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
 }

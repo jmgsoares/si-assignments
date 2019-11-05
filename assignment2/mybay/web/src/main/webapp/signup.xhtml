@@ -7,34 +7,35 @@
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>MyBay - Sign Up</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-    <h:outputStylesheet library="css" name="login.css" />
-    <h:outputScript library="js" name="validation.js" />
-    <h:outputScript library="js" name="md5.js" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css"/>
+    <h:outputStylesheet library="css" name="login.css"/>
+    <h:outputScript library="js" name="validation.js"/>
+    <h:outputScript library="js" name="md5.js"/>
 </h:head>
 
 <h:body>
     <f:view>
         <h:form id="SignUp" styleClass="form" onsubmit="return validationSignUp();">
             <div class="label">
-                <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt" />
-                <h:inputText id="name" styleClass="input" value="#{userController.name}" required="true" />
+                <h:outputLabel value="ENTER YOUR NAME" styleClass="label-txt"/>
+                <h:inputText id="name" styleClass="input" value="#{userController.name}" required="true"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
 
             <div class="label">
-                <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt" />
-                <h:inputText id="email" styleClass="input" value="#{userController.email}" required="true" />
+                <h:outputLabel value="ENTER YOUR EMAIL" styleClass="label-txt"/>
+                <h:inputText id="email" styleClass="input" value="#{userController.email}" required="true"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
 
             <div class="label">
-                <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" required="true" />
+                <h:outputLabel value="ENTER YOUR PASSWORD" styleClass="label-txt"/>
+                <h:inputSecret id="password" styleClass="input" value="#{userController.password}" required="true"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
@@ -42,20 +43,20 @@
             </div>
 
             <div class="label">
-                <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt" />
-                <h:inputSecret id="confirm" styleClass="input" required="true" />
+                <h:outputLabel value="CONFIRM YOUR PASSWORD" styleClass="label-txt"/>
+                <h:inputSecret id="confirm" styleClass="input" required="true"/>
                 <div class="line-box">
                     <div class="line"></div>
                 </div>
             </div>
 
             <div class="label">
-                <h:outputLabel value="SELECT YOUR COUNTRY" styleClass="label-txt" required="true" />
-                <h:outputLabel value="" styleClass="input" />
+                <h:outputLabel value="SELECT YOUR COUNTRY" styleClass="label-txt" required="true"/>
+                <h:outputLabel value="" styleClass="input"/>
 
                 <div class="form-group">
                     <h:selectOneMenu styleClass="form-control" value="#{userController.countryString}">
-                       <f:selectItems value="#{countryController.countries}"/>
+                        <f:selectItems value="#{countryController.countries}"/>
                     </h:selectOneMenu>
                 </div>
             </div>
