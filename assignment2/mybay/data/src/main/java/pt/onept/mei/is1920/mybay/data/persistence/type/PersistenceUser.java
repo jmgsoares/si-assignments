@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.mybay.data.persistance.type;
+package pt.onept.mei.is1920.mybay.data.persistence.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

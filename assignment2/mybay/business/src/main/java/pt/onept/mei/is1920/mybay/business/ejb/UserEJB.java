@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
-import pt.onept.mei.is1920.mybay.data.persistance.type.PersistenceUser;
+import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
