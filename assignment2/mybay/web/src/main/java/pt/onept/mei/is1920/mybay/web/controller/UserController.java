@@ -74,7 +74,7 @@ public class UserController implements Serializable {
 	}
 
 	public String update() {
-	    logger.info("Trying to update password");
+	    logger.info("Trying to update user");
         HttpSession session = SessionUtils.getSession();
         email = session.getAttribute("email").toString();
 
