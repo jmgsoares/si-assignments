@@ -45,7 +45,7 @@ public class AuthorizationFilter implements Filter {
 
 			} else {
 				logger.debug("Request for " + requestURI + " not accepted");
-				httpServletResponse.sendRedirect("/login.xhtml");
+				httpServletResponse.sendRedirect("/mybay");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

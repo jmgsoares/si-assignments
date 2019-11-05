@@ -10,7 +10,6 @@ import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.IOException;
