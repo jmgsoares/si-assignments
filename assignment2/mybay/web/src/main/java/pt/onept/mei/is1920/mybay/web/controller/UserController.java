@@ -38,6 +38,8 @@ public class UserController implements Serializable {
 		User userToRegister = new User(name, email, hashPassword(password), country);
 		logger.info("Registering user " + name);
 		logger.debug("User to register -> " + userToRegister.toString());
+		HttpSession session = SessionUtils.getSession();
+		session.invalidate();
 		if (user.create(userToRegister)) {
 			return "signup";
 		} else {
@@ -57,10 +59,11 @@ public class UserController implements Serializable {
 		try {
 			logger.info("Received user to login with eMail: " + email + " password: " + password);
 			if (user.login(email, hashPassword(password))) {
+				User loggedInUser = user.read(new User().setEmail(email));
 				HttpSession session = SessionUtils.getSession();
-				session.setAttribute("email", email);
-				session.setAttribute("name", name);
-				session.setAttribute("country", country);
+				session.setAttribute("email", loggedInUser.getEmail());
+				session.setAttribute("name", loggedInUser.getName());
+				session.setAttribute("country", loggedInUser.getCountry());
 				logger.info("Login successful");
 				loggedIn = true;
 				return "home";
@@ -103,17 +106,22 @@ public class UserController implements Serializable {
 		}
     }
 
-	public String deleteAcc() {
+	public String delete() {
 		try {
 			HttpSession session = SessionUtils.getSession();
 			email = session.getAttribute("email").toString();
 			logger.info("Deleting account: " + email);
-			user.delete(new User().setEmail(email));
-			session.invalidate();
-			logger.info("Delete successful");
-			loggedIn = false;
+			if(user.delete(new User().setEmail(email))) {
+				session.invalidate();
+				logger.debug("Delete successful");
+				loggedIn = false;
+			}
+			else {
+				logger.debug("Something went wrong deleting account");
+				return "profile";
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return "delete";
 	}
