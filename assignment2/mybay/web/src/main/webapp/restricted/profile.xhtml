@@ -8,8 +8,6 @@
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Profile</title>
-    <h:outputScript library="js" name="validation.js"/>
-    <h:outputScript library="js" name="md5.js"/>
 </h:head>
 
 <h:body>
@@ -27,19 +25,19 @@
                     <h:commandButton action="#{userController.update}" styleClass="button" value="Update Name"/>
                 </h:form>
 
-                <h:form id="UpdatePassword" onsubmit="validationUpdate();">
+                <h:form id="UpdatePassword" styleClass="form" onsubmit="validationUpdate();">
                     <div class="label">
                         <h:outputLabel value="OLD PASSWORD" styleClass="label-txt" />
-                        <h:inputSecret id="password" styleClass="input" required="true" />
+                        <h:inputSecret id="oldPassword" styleClass="input" value="#{userController.password}" required="true" />
                         <div class="line-box">
                             <div class="line"></div>
                         </div>
-                        <h:message for="password" style="color:red"/>
+                        <h:message for="oldPassword" style="color:red"/>
                     </div>
 
                     <div class="label">
                         <h:outputLabel value="REPEAT OLD PASSWORD" styleClass="label-txt" />
-                        <h:inputSecret id="confirm" styleClass="input" required="true" />
+                        <h:inputSecret id="confirmOldPassword" styleClass="input" required="true" />
                         <div class="line-box">
                             <div class="line"></div>
                         </div>
@@ -47,7 +45,7 @@
 
                     <div class="label">
                         <h:outputLabel value="NEW PASSWORD" styleClass="label-txt" />
-                        <h:inputSecret id="newPassword" styleClass="input" value="#{userController.password}" required="true" />
+                        <h:inputSecret id="newPassword" styleClass="input" value="#{userController.newPassword}" required="true" />
                         <div class="line-box">
                             <div class="line"></div>
                         </div>

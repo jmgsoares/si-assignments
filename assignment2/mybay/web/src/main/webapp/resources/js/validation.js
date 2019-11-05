@@ -19,9 +19,8 @@ function validationLogin() {
 }
 
 function validationUpdate() {
-    let pwd = document.getElementById("UpdatePassword:password").value;
-    let pwd2 = document.getElementById("UpdatePassword:confirm").value;
-
+    let pwd = document.getElementById("UpdatePassword:oldPassword").value;
+    let pwd2 = document.getElementById("UpdatePassword:confirmOldPassword").value;
     let pwd3 = document.getElementById("UpdatePassword:newPassword").value;
 
     if(pwd !== pwd2) {
@@ -29,6 +28,7 @@ function validationUpdate() {
         return false;
     }
 
+    document.getElementById("UpdatePassword:oldPassword").value = md5(pwd);
     document.getElementById("UpdatePassword:newPassword").value = md5(pwd3);
     return true;
 }

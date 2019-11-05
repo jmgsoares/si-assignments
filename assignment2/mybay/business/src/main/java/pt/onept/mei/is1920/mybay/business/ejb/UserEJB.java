@@ -40,6 +40,7 @@ public class UserEJB implements UserEJBRemote {
 	@Override
 	public boolean update(User userToUpdate) {
 	    try {
+	    	logger.debug("Entered update");
             PersistenceUser persistedUserToUpdate = em.find(PersistenceUser.class, userToUpdate.getEmail());
             if (persistedUserToUpdate == null) {
                 logger.debug("Attempt to update user " + userToUpdate.getEmail() + " unsuccessful. User not found");
@@ -48,9 +49,13 @@ public class UserEJB implements UserEJBRemote {
 
 			if(userToUpdate.getName() != null) {
 				persistedUserToUpdate.setName(userToUpdate.getName());
-			} else if(userToUpdate.getPassword() != null) {
+			}
+
+			if(userToUpdate.getPassword() != null) {
 				persistedUserToUpdate.setPassword(userToUpdate.getPassword());
-            } else if(userToUpdate.getCountry() != null) {
+            }
+
+			if(userToUpdate.getCountry() != null) {
 				persistedUserToUpdate.setCountry(userToUpdate.getCountry());
 			}
 

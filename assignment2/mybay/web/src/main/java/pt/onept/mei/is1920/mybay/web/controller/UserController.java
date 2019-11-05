@@ -31,12 +31,12 @@ public class UserController implements Serializable {
 	private Country country;
 
 	private boolean loggedIn = false;
+	private String newPassword;
 
 	public String register() {
 		country = CountryConverter.StringToCountry(countryString);
 		User userToRegister = new User(name, email, hashPassword(password), country);
 		logger.info("Registering user " + name);
-		email = null; name = null; country = null; password = null;
 		logger.debug("User to register -> " + userToRegister.toString());
 		if (user.create(userToRegister)) {
 			return "signup";
@@ -80,11 +80,27 @@ public class UserController implements Serializable {
 			country = CountryConverter.StringToCountry(countryString);
 		}
 
-        if(user.update(new User().setName(name).setEmail(email).setPassword(password).setCountry(country))) {
-        	logger.debug("Email: " + email + ", name: " + name + ", country:" + country + " ");
-        }
-
-        return "profile";
+		if(newPassword != null) {
+			logger.debug("New password found");
+			if(user.login(email, hashPassword(password))) {
+				logger.debug("Account verified");
+				User userToUpdate = new User(name, email, hashPassword(newPassword), country);
+				logger.debug("BEFORE: Email: " + email + ", name: " + name + ", old password: "+  hashPassword(password) + ", new password: " +  hashPassword(newPassword) + ", country: " + country);
+				if(user.update(userToUpdate)) {
+					logger.debug("AFTER: Email: " + email + ", name: " + name + ", old password: "+  hashPassword(password) + ", new password: " +  hashPassword(newPassword) + ", country: " + country);
+					newPassword = null;
+					return "logout";
+				}
+			}
+			logger.debug("Failed to verify account with email: "+email+" password: "+password+" new: "+newPassword);
+			newPassword = null;
+			return "profile";
+		} else {
+			if(user.update(new User(name, email, hashPassword(password), country))) {
+				logger.debug("Email: " + email + ", name: " + name + ", password:" + password + ", country: " + country);
+			}
+			return "profile";
+		}
     }
 
 	public String deleteAcc() {
