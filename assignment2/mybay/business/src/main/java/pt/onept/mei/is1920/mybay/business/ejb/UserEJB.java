@@ -54,7 +54,7 @@ public class UserEJB implements UserEJBRemote {
 				persistedUserToUpdate.setCountry(userToUpdate.getCountry());
 			}
 
-			em.persist(persistedUserToUpdate);
+			em.merge(persistedUserToUpdate);
             logger.debug("Updated account with email " + userToUpdate.getEmail());
             return true;
         } catch (IllegalArgumentException e) {

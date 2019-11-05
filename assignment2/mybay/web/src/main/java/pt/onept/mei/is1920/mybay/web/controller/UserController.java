@@ -61,7 +61,6 @@ public class UserController implements Serializable {
 				session.setAttribute("email", email);
 				session.setAttribute("name", name);
 				session.setAttribute("country", country);
-				email = null; name = null; country = null; password = null;
 				logger.info("Login successful");
 				loggedIn = true;
 				return "home";
@@ -77,17 +76,14 @@ public class UserController implements Serializable {
 	    logger.info("Trying to update user");
         HttpSession session = SessionUtils.getSession();
         email = session.getAttribute("email").toString();
+        if(countryString != null) {
+			country = CountryConverter.StringToCountry(countryString);
+		}
 
-        if(user.update(new User().setEmail(email).setName(name).setPassword(password).setCountry(country))) {
-        	logger.info("Update successful");
-			session.setAttribute("email", email);
-			session.setAttribute("name", name);
-			session.setAttribute("country", country);
-			name = null; password = null; country = null;
-        	return "profile";
+        if(user.update(new User().setName(name).setEmail(email).setPassword(password).setCountry(country))) {
+        	logger.debug("Email: " + email + ", name: " + name + ", country:" + country + " ");
         }
 
-        logger.info("Update unsuccessful");
         return "profile";
     }
 
