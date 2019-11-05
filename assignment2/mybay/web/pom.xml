@@ -42,11 +42,6 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.cloudinary</groupId>
-			<artifactId>cloudinary-http44</artifactId>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -56,7 +51,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Dependencies>com.cloudinary, javax.faces.api, javaee.api, org.slf4j</Dependencies>
+							<Dependencies>javax.faces.api, javaee.api, org.slf4j</Dependencies>
 							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>

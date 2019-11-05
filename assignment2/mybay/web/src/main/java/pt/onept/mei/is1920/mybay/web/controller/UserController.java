@@ -13,6 +13,7 @@ import pt.onept.mei.is1920.mybay.web.utility.SessionUtils;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.annotation.FacesConfig;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
