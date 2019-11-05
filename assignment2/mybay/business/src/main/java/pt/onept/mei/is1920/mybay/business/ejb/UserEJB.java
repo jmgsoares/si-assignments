@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.business.utility.MapUser;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
@@ -70,6 +71,13 @@ public class UserEJB implements UserEJBRemote {
 
 	@Override
 	public User read(User userToRead) {
+		logger.info("Read request to user  " + userToRead.getEmail());
+		try {
+			PersistenceUser persistedUserToRead = em.find(PersistenceUser.class, userToRead.getEmail());
+			return MapUser.MapPersistenceUserToUser(persistedUserToRead);
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
 		return null;
 	}
 
