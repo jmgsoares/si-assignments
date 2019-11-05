@@ -2,6 +2,8 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
@@ -16,6 +18,7 @@ import java.util.List;
 @Setter
 public class ItemEJB implements ItemEJBRemote {
 
+	private static final Logger logger = LoggerFactory.getLogger(ItemEJB.class);
 	@PersistenceContext(unitName = "myBayPersistenceUnit")
 	private EntityManager em;
 
