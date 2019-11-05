@@ -10,13 +10,12 @@ import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
 
 @Named(value = "itemController")
 @RequestScoped
@@ -32,6 +31,14 @@ public class ItemController implements Serializable {
 
 	@EJB
 	private ItemEJBRemote item;
+
+	public Part getUploadedPicture() {
+		return uploadedPicture;
+	}
+
+	public void setUploadedPicture(Part uploadedPicture) {
+		this.uploadedPicture = uploadedPicture;
+	}
 
 	public void saveFile(){
 

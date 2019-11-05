@@ -27,11 +27,10 @@ public class UserController implements Serializable {
 	@EJB
 	private UserEJBRemote user;
 
-	private String name, email, password, countryString;
+	private String name, email, password, countryString, newPassword;
 	private Country country;
 
 	private boolean loggedIn = false;
-	private String newPassword;
 
 	public String register() {
 		country = CountryConverter.StringToCountry(countryString);
