@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <div class="form">
                     <div class="label">
-                        <h:outputLabel value="Welcome #{userController.email}" styleClass="label-txt"/>
+                        <h:outputLabel value="Welcome #{session.getAttribute(name)}" styleClass="label-txt"/>
                     </div>
                 </div>
             </ui:define>

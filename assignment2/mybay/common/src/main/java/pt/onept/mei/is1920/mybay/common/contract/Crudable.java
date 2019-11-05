@@ -5,7 +5,7 @@ public interface Crudable<T> {
 
 	T read(T t);
 
-	boolean update(T t);
+	boolean update(T t1);
 
 	boolean delete(T t);
 }

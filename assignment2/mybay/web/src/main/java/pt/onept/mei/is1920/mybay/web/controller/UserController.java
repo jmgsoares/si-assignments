@@ -36,6 +36,7 @@ public class UserController implements Serializable {
 		country = CountryConverter.StringToCountry(countryString);
 		User userToRegister = new User(name, email, hashPassword(password), country);
 		logger.info("Registering user " + name);
+		email = null; name = null; country = null; password = null;
 		logger.debug("User to register -> " + userToRegister.toString());
 		if (user.create(userToRegister)) {
 			return "signup";
@@ -60,6 +61,7 @@ public class UserController implements Serializable {
 				session.setAttribute("email", email);
 				session.setAttribute("name", name);
 				session.setAttribute("country", country);
+				email = null; name = null; country = null; password = null;
 				logger.info("Login successful");
 				loggedIn = true;
 				return "home";
@@ -70,6 +72,24 @@ public class UserController implements Serializable {
 		logger.info("Login failed");
 		return "login";
 	}
+
+	public String update() {
+	    logger.info("Trying to update password");
+        HttpSession session = SessionUtils.getSession();
+        email = session.getAttribute("email").toString();
+
+        if(user.update(new User().setEmail(email).setName(name).setPassword(password).setCountry(country))) {
+        	logger.info("Update successful");
+			session.setAttribute("email", email);
+			session.setAttribute("name", name);
+			session.setAttribute("country", country);
+			name = null; password = null; country = null;
+        	return "profile";
+        }
+
+        logger.info("Update unsuccessful");
+        return "profile";
+    }
 
 	public String deleteAcc() {
 		try {

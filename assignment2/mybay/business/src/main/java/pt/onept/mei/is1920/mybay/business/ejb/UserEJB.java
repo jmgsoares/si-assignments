@@ -13,6 +13,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TransactionRequiredException;
+import java.lang.reflect.Field;
 
 @Stateless
 @Getter
@@ -38,7 +39,28 @@ public class UserEJB implements UserEJBRemote {
 
 	@Override
 	public boolean update(User userToUpdate) {
-		return false;
+	    try {
+            PersistenceUser persistedUserToUpdate = em.find(PersistenceUser.class, userToUpdate.getEmail());
+            if (persistedUserToUpdate == null) {
+                logger.debug("Attempt to update user " + userToUpdate.getEmail() + " unsuccessful. User not found");
+                return false;
+            }
+
+			if(userToUpdate.getName() != null) {
+				persistedUserToUpdate.setName(userToUpdate.getName());
+			} else if(userToUpdate.getPassword() != null) {
+				persistedUserToUpdate.setPassword(userToUpdate.getPassword());
+            } else if(userToUpdate.getCountry() != null) {
+				persistedUserToUpdate.setCountry(userToUpdate.getCountry());
+			}
+
+			em.persist(persistedUserToUpdate);
+            logger.debug("Updated account with email " + userToUpdate.getEmail());
+            return true;
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return false;
 	}
 
 	@Override
