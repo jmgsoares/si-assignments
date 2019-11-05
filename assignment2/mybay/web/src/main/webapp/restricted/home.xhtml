@@ -16,7 +16,45 @@
             <ui:define name="content">
                 <div class="form">
                     <div class="label">
-                        <h:outputLabel value="Welcome #{userController.name}" styleClass="label-txt"/>
+                        <div class="row">
+                            <div class="column">
+                                <h:form id="AddItem" styleClass="form" >
+                                    <div class="label">
+                                        <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
+                                        <h:inputText id="name" styleClass="input" value="#{itemController.name}"/>
+                                        <div class="line-box">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                    <div class="label">
+                                        <h:outputLabel value="PRICE" styleClass="label-txt"/>
+                                        <h:inputText id="price" styleClass="input" value="#{itemController.price}"/>
+                                        <div class="line-box">
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="label">
+                                        <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
+                                        <h:outputLabel value="" styleClass="input"/>
+
+                                        <div class="form-group">
+                                            <h:selectOneMenu styleClass="form-control" value="#{itemController.categoryString}">
+                                                <f:selectItems value="#{categoryController.categories}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+    <!--
+	private ItemCategory category;
+	-->
+                                    <h:commandButton action="#{userController.addItem}" styleClass="button" value="Add item"/>
+                                </h:form>
+                            </div>
+                            <div class="column">
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </ui:define>
