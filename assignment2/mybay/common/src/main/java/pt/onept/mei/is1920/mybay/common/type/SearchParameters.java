@@ -27,5 +27,6 @@ public class SearchParameters {
 	private ItemCategory category;
 	private Country country;
 	private String searchQuery;
+	private String userAccount;
 
 }
