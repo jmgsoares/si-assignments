@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Home</title>
@@ -14,47 +15,96 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <div class="form">
-                    <div class="label">
-                        <div class="row">
-                            <div class="column">
-                                <h:form id="AddItem" styleClass="form" >
-                                    <div class="label">
-                                        <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
-                                        <h:inputText id="name" styleClass="input" value="#{itemController.name}"/>
-                                        <div class="line-box">
-                                            <div class="line"></div>
-                                        </div>
-                                    </div>
-                                    <div class="label">
-                                        <h:outputLabel value="PRICE" styleClass="label-txt"/>
-                                        <h:inputText id="price" styleClass="input" value="#{itemController.price}"/>
-                                        <div class="line-box">
-                                            <div class="line"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="label">
-                                        <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
-                                        <h:outputLabel value="" styleClass="input"/>
-
-                                        <div class="form-group">
-                                            <h:selectOneMenu styleClass="form-control" value="#{itemController.categoryString}">
-                                                <f:selectItems value="#{categoryController.categories}"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                    </div>
-    <!--
-	private ItemCategory category;
-	-->
-                                    <h:commandButton action="#{userController.addItem}" styleClass="button" value="Add item"/>
-                                </h:form>
+                <div class="rowHome">
+                    <div class="columnHome">
+                        <h:form id="AddItem" styleClass="form">
+                            <div class="label">
+                                <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
+                                <h:inputText id="name" styleClass="input" value="#{itemController.name}"/>
+                                <div class="line-box">
+                                    <div class="line"></div>
+                                </div>
                             </div>
-                            <div class="column">
-
+                            <div class="label">
+                                <h:outputLabel value="PRICE" styleClass="label-txt"/>
+                                <h:inputText id="price" styleClass="input" value="#{itemController.price}"/>
+                                <div class="line-box">
+                                    <div class="line"></div>
+                                </div>
                             </div>
-                        </div>
 
+                            <div class="label">
+                                <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="" styleClass="input"/>
+
+                                <div class="form-group">
+                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.categoryString}">
+                                        <f:selectItems value="#{categoryController.categories}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <h:commandButton action="#{userController.addItem}" styleClass="button" value="Add item"/>
+                        </h:form>
+                    </div>
+                    <div class="columnHome">
+                        <h:form id="SearchItem" styleClass="form">
+                            <div class="label">
+                                <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
+                                <h:inputText id="nameToSearch" styleClass="input" value="#{itemController.name}"/>
+                                <div class="line-box">
+                                    <div class="line"></div>
+                                </div>
+                            </div>
+
+                            <div class="label">
+                                <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="" styleClass="input"/>
+
+                                <div class="form-group">
+                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.categoryString}">
+                                        <f:selectItem itemValue="#{null}" itemLabel=" " />
+                                        <f:selectItems value="#{categoryController.categories}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="label">
+                                <h:outputLabel value="PRICE" styleClass="label-txt"/>
+                                <h:outputLabel value="" styleClass="input"/>
+                                <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control" value="#{itemController.priceLowerBound}" converterMessage="Please enter digits only."/>
+
+                                <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control" value="#{itemController.priceUpperBound}" converterMessage="Please enter digits only."/>
+                            </div>
+
+                            <div class="label">
+                                <h:outputLabel value="COUNTRY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="" styleClass="input"/>
+
+                                <div class="form-group">
+                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.countryString}">
+                                        <f:selectItem itemValue="#{null}" itemLabel=" " />
+                                        <f:selectItems value="#{countryController.countries}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="label">
+                                <div class="form-group">
+                                    <h:outputLabel value="DATE" styleClass="label-txt" />
+                                    <h:outputLabel value="" styleClass="input"/>
+                                    <h:inputText value="#{itemController.date}" styleClass="form-control datepicker" />
+                                </div>
+                            </div>
+
+                            <div class="label">
+                                <h:selectOneRadio styleClass="formRadio" value="#{itemController.order}" layout="spread" >
+                                    <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
+                                    <f:selectItem itemValue="descending" itemLabel="Descending"/>
+                                </h:selectOneRadio>
+                            </div>
+
+                            <h:commandButton action="#{userController.searchItem}" styleClass="button" value="Search item"/>
+                        </h:form>
                     </div>
                 </div>
             </ui:define>

@@ -6,13 +6,18 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
           id="bootstrap-css"/>
-    <h:outputStylesheet library="css" name="common.css"/>
-    <h:outputStylesheet library="css" name="home.css"/>
 
     <h:outputScript library="js" name="validation.js"/>
     <h:outputScript library="js" name="md5.js"/>
+    <h:outputScript library="js" name="formatDatePicker.js" />
+
+    <h:outputStylesheet library="css" name="common.css"/>
+    <h:outputStylesheet library="css" name="home.css"/>
 </h:head>
 
 <h:body>
