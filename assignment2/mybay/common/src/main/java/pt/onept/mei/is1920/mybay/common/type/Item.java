@@ -20,5 +20,7 @@ public class Item {
 	private Date publishDate;
 	private ItemCategory category;
 	private User seller;
+	private String itemImageUrl;
+	private String itemImageDeleteHash;
 
 }

@@ -24,6 +24,7 @@ public class ItemEJB implements ItemEJBRemote {
 
 	@Override
 	public boolean create(Item itemToCreate) {
+		//get the persistence entity and the fill the persistence user for hibernate to associate
 		return false;
 	}
 
