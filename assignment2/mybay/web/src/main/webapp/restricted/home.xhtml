@@ -17,17 +17,19 @@
             <ui:define name="content">
                 <div class="rowHome">
                     <div class="columnHome">
-                        <h:form id="AddItem" styleClass="form" enctype="multipart/form-data"  prependId="false">
+                        <h:form id="AddItem" styleClass="form" enctype="multipart/form-data" prependId="false">
                             <div class="label">
                                 <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
-                                <h:inputText id="name" styleClass="input" value="#{itemController.itemName}" required="true" />
+                                <h:inputText id="name" styleClass="input" value="#{itemController.itemName}"
+                                             required="true"/>
                                 <div class="line-box">
                                     <div class="line"></div>
                                 </div>
                             </div>
                             <div class="label">
-                                <h:outputLabel value="PRICE" styleClass="label-txt" />
-                                <h:inputText id="price" styleClass="input" value="#{itemController.itemPrice}" required="true" converterMessage="Please enter digits only.">
+                                <h:outputLabel value="PRICE" styleClass="label-txt"/>
+                                <h:inputText id="price" styleClass="input" value="#{itemController.itemPrice}"
+                                             required="true" converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
@@ -37,18 +39,22 @@
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="CATEGORY" styleClass="label-txt" />
+                                <h:outputLabel value="CATEGORY" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
-                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.itemCategoryString}">
+                                    <h:selectOneMenu styleClass="form-control"
+                                                     value="#{itemController.itemCategoryString}">
                                         <f:selectItems value="#{categoryController.categories}"/>
                                     </h:selectOneMenu>
                                 </div>
                             </div>
 
-                            <h:outputText value="IMAGE" styleClass="label-txt"/>
-                            <h:inputFile value="#{itemController.uploadedImage}" required="true" />
+                            <div class="label">
+                                <h:outputText value="IMAGE" styleClass="label-txt"/>
+                                <h:outputLabel value="" styleClass="input"/>
+                                <h:inputFile value="#{itemController.uploadedImage}" required="true"/>
+                            </div>
 
                             <h:commandButton action="#{itemController.create}" styleClass="button" value="Add item"/>
                         </h:form>
@@ -68,8 +74,9 @@
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
-                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.itemCategoryString}">
-                                        <f:selectItem itemValue="#{null}" itemLabel=" " />
+                                    <h:selectOneMenu styleClass="form-control"
+                                                     value="#{itemController.itemCategoryString}">
+                                        <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                         <f:selectItems value="#{categoryController.categories}"/>
                                     </h:selectOneMenu>
                                 </div>
@@ -78,12 +85,16 @@
                             <div class="label">
                                 <h:outputLabel value="PRICE" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
-                                <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control" value="#{itemController.itemSearchPriceLowerBound}" converterMessage="Please enter digits only.">
+                                <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control"
+                                             value="#{itemController.itemSearchPriceLowerBound}"
+                                             converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
 
-                                <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control" value="#{itemController.itemSearchPriceUpperBound}" converterMessage="Please enter digits only.">
+                                <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control"
+                                             value="#{itemController.itemSearchPriceUpperBound}"
+                                             converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
@@ -94,8 +105,9 @@
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
-                                    <h:selectOneMenu styleClass="form-control" value="#{itemController.itemCountryString}">
-                                        <f:selectItem itemValue="#{null}" itemLabel=" " />
+                                    <h:selectOneMenu styleClass="form-control"
+                                                     value="#{itemController.itemCountryString}">
+                                        <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                         <f:selectItems value="#{countryController.countries}"/>
                                     </h:selectOneMenu>
                                 </div>
@@ -103,14 +115,16 @@
 
                             <div class="label">
                                 <div class="form-group">
-                                    <h:outputLabel value="DATE" styleClass="label-txt" />
+                                    <h:outputLabel value="DATE" styleClass="label-txt"/>
                                     <h:outputLabel value="" styleClass="input"/>
-                                    <h:inputText value="#{itemController.itemSearchDateFrom}" styleClass="form-control datepicker" />
+                                    <h:inputText value="#{itemController.itemSearchDateFrom}"
+                                                 styleClass="form-control datepicker"/>
                                 </div>
                             </div>
 
                             <div class="label">
-                                <h:selectOneRadio styleClass="formRadio" value="#{itemController.itemSearchResultOrdering}" layout="spread" >
+                                <h:selectOneRadio styleClass="formRadio"
+                                                  value="#{itemController.itemSearchResultOrdering}" layout="spread">
                                     <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
                                     <f:selectItem itemValue="descending" itemLabel="Descending"/>
                                 </h:selectOneRadio>
