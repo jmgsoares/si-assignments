@@ -14,87 +14,70 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <!--<div class="row">
-                    <div class="column left">
-                        <div class="form">
-                            <div class="label">
-                                <h:outputLabel value="Hello, #{userController.name}" styleClass="label-txt"/>
-                                <br/>
-                                <h:outputLabel value="Your email is: #{userController.email}" styleClass="label-txt"/>
-                                <br/>
-                                <h:outputLabel value="You're from: #{userController.country}" styleClass="label-txt"/>
-                                <br/>
-                            </div>
+                <h:form id="UpdateName" styleClass="form">
+                    <div class="label">
+                        <h:outputLabel value="UPDATE YOUR NAME" styleClass="label-txt"/>
+                        <h:inputText id="name" styleClass="input" value="#{userController.name}"/>
+                        <div class="line-box">
+                            <div class="line"></div>
                         </div>
                     </div>
-                    <div class="column right">-->
-                        <h:form id="UpdateName" styleClass="form">
-                            <div class="label">
-                                <h:outputLabel value="UPDATE YOUR NAME" styleClass="label-txt"/>
-                                <h:inputText id="name" styleClass="input" value="#{userController.name}"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
-                            <h:commandButton action="#{userController.update}" styleClass="button" value="Update Name"/>
-                        </h:form>
+                    <h:commandButton action="#{userController.update}" styleClass="button" value="Update Name"/>
+                </h:form>
 
-                        <h:form id="UpdatePassword" styleClass="form" onsubmit="validationUpdate();">
-                            <div class="label">
-                                <h:outputLabel value="OLD PASSWORD" styleClass="label-txt"/>
-                                <h:inputSecret id="oldPassword" styleClass="input" value="#{userController.password}"
-                                               required="true"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                                <h:message for="oldPassword" style="color:red"/>
-                            </div>
+                <h:form id="UpdatePassword" styleClass="form" onsubmit="validationUpdate();">
+                    <div class="label">
+                        <h:outputLabel value="OLD PASSWORD" styleClass="label-txt"/>
+                        <h:inputSecret id="oldPassword" styleClass="input" value="#{userController.password}"
+                                       required="true"/>
+                        <div class="line-box">
+                            <div class="line"></div>
+                        </div>
+                        <h:message for="oldPassword" style="color:red"/>
+                    </div>
 
-                            <div class="label">
-                                <h:outputLabel value="REPEAT OLD PASSWORD" styleClass="label-txt"/>
-                                <h:inputSecret id="confirmOldPassword" styleClass="input" required="true"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
+                    <div class="label">
+                        <h:outputLabel value="REPEAT OLD PASSWORD" styleClass="label-txt"/>
+                        <h:inputSecret id="confirmOldPassword" styleClass="input" required="true"/>
+                        <div class="line-box">
+                            <div class="line"></div>
+                        </div>
+                    </div>
 
-                            <div class="label">
-                                <h:outputLabel value="NEW PASSWORD" styleClass="label-txt"/>
-                                <h:inputSecret id="newPassword" styleClass="input" value="#{userController.newPassword}"
-                                               required="true"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
+                    <div class="label">
+                        <h:outputLabel value="NEW PASSWORD" styleClass="label-txt"/>
+                        <h:inputSecret id="newPassword" styleClass="input" value="#{userController.newPassword}"
+                                       required="true"/>
+                        <div class="line-box">
+                            <div class="line"></div>
+                        </div>
+                    </div>
 
-                            <h:commandButton action="#{userController.update}" styleClass="button"
-                                             value="Update Password"/>
-                        </h:form>
+                    <h:commandButton action="#{userController.update}" styleClass="button"
+                                     value="Update Password"/>
+                </h:form>
 
-                        <h:form id="UpdateCountry" styleClass="form">
-                            <div class="label">
-                                <h:outputLabel value="UPDATE YOUR COUNTRY" styleClass="label-txt"/>
-                                <h:outputLabel value="" styleClass="input"/>
+                <h:form id="UpdateCountry" styleClass="form">
+                    <div class="label">
+                        <h:outputLabel value="UPDATE YOUR COUNTRY" styleClass="label-txt"/>
+                        <h:outputLabel value="" styleClass="input"/>
 
-                                <div class="form-group">
-                                    <h:selectOneMenu styleClass="form-control" value="#{userController.countryString}">
-                                        <f:selectItems value="#{countryController.countries}"/>
-                                    </h:selectOneMenu>
-                                </div>
-                            </div>
-                            <h:commandButton action="#{userController.update}" styleClass="button"
-                                             value="Update Country"/>
-                        </h:form>
+                        <div class="form-group">
+                            <h:selectOneMenu styleClass="form-control" value="#{userController.countryString}">
+                                <f:selectItems value="#{countryController.countries}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <h:commandButton action="#{userController.update}" styleClass="button"
+                                     value="Update Country"/>
+                </h:form>
 
-                        <h:form id="Delete" styleClass="form">
-                            <div class="label">
-                                <h:commandButton action="#{userController.delete}" styleClass="button"
-                                                 value="Delete Account"/>
-                            </div>
-                        </h:form>
-                    <!--</div>
-                </div>-->
-
+                <h:form id="Delete" styleClass="form">
+                    <div class="label">
+                        <h:commandButton action="#{userController.delete}" styleClass="button"
+                                         value="Delete Account"/>
+                    </div>
+                </h:form>
             </ui:define>
         </ui:composition>
     </f:view>

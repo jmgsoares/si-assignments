@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+    <f:view>
+        <ui:composition template="template/common.xhtml">
+            <ui:define name="content">
+                <h:dataTable id="schoolTable" binding="#{table}" value="#{itemController.search}"
+                             styleClass="table table-striped table-bordered tableUpdated">
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{itemController.itemName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        <h:outputText value="#{itemController.itemPrice}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Category</f:facet>
+                        <h:outputText value="#{itemController.itemCategoryString}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Date of publishing</f:facet>
+                        <h:outputText value="#{itemController.itemSearchDateFrom}"/>
+                    </h:column>
+                </h:dataTable>
+            </ui:define>
+        </ui:composition>
+    </f:view>
+</h:body>
+</html>
