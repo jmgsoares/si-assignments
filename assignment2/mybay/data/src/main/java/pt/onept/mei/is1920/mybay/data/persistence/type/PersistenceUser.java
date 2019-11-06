@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Indexed
 @Table(name = "user")
 @Data
 @Accessors(chain = true)
@@ -27,7 +26,6 @@ public class PersistenceUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "email", nullable = false)
 	private String email;
 
@@ -41,7 +39,6 @@ public class PersistenceUser implements Serializable {
 	@Convert(converter = CountryConverter.class)
 	private Country country;
 
-	@IndexedEmbedded
 	@OneToMany(mappedBy = "seller")
 	private List<PersistenceItem> items;
 
