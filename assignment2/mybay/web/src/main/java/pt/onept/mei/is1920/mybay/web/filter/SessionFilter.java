@@ -35,14 +35,9 @@ public class SessionFilter implements Filter {
 
 			String requestURI = httpServletRequest.getRequestURI();
 
-			if (
-					requestURI.contains("/login.xhtml") ||
-							requestURI.contains("/signup.xhtml") ||
-							(httpSession != null && httpSession.getAttribute("email") != null)
-			) {
+			if (httpSession != null && httpSession.getAttribute("email") != null) {
 				logger.debug("Chaining filters for " + requestURI);
 				chain.doFilter(request, response);
-
 			}
 			else {
 				logger.debug("Request for " + requestURI + " not accepted");

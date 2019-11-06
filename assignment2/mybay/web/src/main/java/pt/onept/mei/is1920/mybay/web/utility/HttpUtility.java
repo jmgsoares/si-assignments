@@ -14,7 +14,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-public final class HttpUtility {
+final class HttpUtility {
 	private static final Logger logger = LoggerFactory.getLogger(HttpUtility.class);
 
 	private HttpUtility() {}
@@ -95,10 +95,9 @@ public final class HttpUtility {
 		catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
+		logger.debug("Response received: " + str.toString());
 		logger.debug("Parsing response to json object");
 		JsonElement jsonElement = new JsonParser().parse(str.toString());
-		JsonObject response = jsonElement.getAsJsonObject().get("data").getAsJsonObject();
-		logger.debug("Parsed response: " + response.toString());
-		return response;
+		return jsonElement.getAsJsonObject();
 	}
 }

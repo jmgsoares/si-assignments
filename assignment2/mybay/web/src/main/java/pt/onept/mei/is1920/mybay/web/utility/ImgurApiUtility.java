@@ -14,13 +14,19 @@ public final class ImgurApiUtility {
 
 	private ImgurApiUtility() { }
 
-	public static JsonObject uploadImage(Part data) {
+	public static JsonObject UploadImage(Part data) {
 		logger.debug("Uploading image");
-		return HttpUtility.UploadHttpDataPart(data,"POST",API_URL+"upload");
+		JsonObject response = HttpUtility.UploadHttpDataPart(data,"POST",API_URL+"upload");
+		JsonObject parsedResponse = response.get("data").getAsJsonObject();
+		logger.debug("Parsed response: " + parsedResponse.toString());
+		return parsedResponse;
 	}
 
-	public static JsonObject deleteImage(String hash) {
+	public static boolean DeleteImage(String hash) {
 		logger.debug("Deleting image");
-		return HttpUtility.MakeRequest("DELETE", API_URL+hash);
+		JsonObject response =  HttpUtility.MakeRequest("DELETE", API_URL+"image/"+hash);
+		boolean responseSuccess = response.get("success").getAsBoolean();
+		logger.debug("Parsed response success:" + responseSuccess);
+		return responseSuccess;
 	}
 }

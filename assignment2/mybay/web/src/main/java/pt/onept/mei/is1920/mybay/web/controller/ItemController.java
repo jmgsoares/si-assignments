@@ -33,13 +33,16 @@ public class ItemController implements Serializable {
 
 		String fileName = uploadedImage.getSubmittedFileName();
 		if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
-			JsonObject result = ImgurApiUtility.uploadImage(uploadedImage);
-			String imageUrl = result.get("link").toString()
-					.substring(1,result.get("link").toString().length()-1);
-			String imageDeleteHash = result.get("deletehash").toString()
-					.substring(1, result.get("deletehash").toString().length()-1);
+			JsonObject uploadResult = ImgurApiUtility.UploadImage(uploadedImage);
+			String uploadedImageUrl = uploadResult.get("link").toString()
+					.substring(1,uploadResult.get("link").toString().length()-1);
+			String uploadedImageDeleteHash = uploadResult.get("deletehash").toString()
+					.substring(1, uploadResult.get("deletehash").toString().length()-1);
+
+			boolean deleteResult = ImgurApiUtility.DeleteImage(uploadedImageDeleteHash);
 
 		}
+
 		else {
 			logger.debug("Invalid file format submitted");
 		}
