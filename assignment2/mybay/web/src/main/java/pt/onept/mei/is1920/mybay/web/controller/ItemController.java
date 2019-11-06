@@ -33,7 +33,7 @@ public class ItemController implements Serializable {
 	@EJB
 	private ItemEJBRemote item;
 
-	public String saveImage() {
+	public String create() {
 
 		logger.info("Uploading image");
 
@@ -44,21 +44,15 @@ public class ItemController implements Serializable {
 					.substring(1,uploadResult.get("link").toString().length()-1);
 			String uploadedImageDeleteHash = uploadResult.get("deletehash").toString()
 					.substring(1, uploadResult.get("deletehash").toString().length()-1);
-
 			boolean deleteResult = ImgurApiUtility.DeleteImage(uploadedImageDeleteHash);
-
 		}
-
 		else {
 			logger.debug("Invalid file format submitted");
 		}
 
-		return "image";
-	}
-
-	public String create() {
 		return "home";
 	}
+
 
 	public String search() {
 		return "home";
