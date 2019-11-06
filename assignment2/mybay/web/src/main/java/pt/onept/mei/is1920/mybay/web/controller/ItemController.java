@@ -25,7 +25,7 @@ public class ItemController implements Serializable {
 
 	private Part uploadedImage;
 
-	private String itemName, itemCategoryString, itemSearchPriceLowerBound,
+	private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
 			itemSearchPriceUpperBound, itemSearchResultOrdering;
 	private Date itemSearchDateFrom;
 	private float itemPrice;
