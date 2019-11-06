@@ -2,11 +2,9 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.mybay.business.utility.MapItem;
+import pt.onept.mei.is1920.mybay.business.utility.MapItemUtility;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
@@ -65,7 +63,7 @@ public class ItemEJB implements ItemEJBRemote {
 		    PersistenceItem persistenceItem = em.find(PersistenceItem.class, searchParameters.getId());
 		    if(persistenceItem != null) {
                 List<Item> items = new ArrayList<>();
-                items.add(MapItem.MapPersistenceItemToItem(persistenceItem));
+                items.add(MapItemUtility.MapPersistenceItemToItem(persistenceItem));
                 return items;
             }
 		    else {
@@ -84,7 +82,7 @@ public class ItemEJB implements ItemEJBRemote {
 			if(!persistenceItems.isEmpty()) {
 				for (PersistenceItem persItem : persistenceItems) {
 					logger.debug("Adding item to list: " + persItem.getName());
-					items.add(MapItem.MapPersistenceItemToItem(persItem));
+					items.add(MapItemUtility.MapPersistenceItemToItem(persItem));
 				}
 			}
 			return items;

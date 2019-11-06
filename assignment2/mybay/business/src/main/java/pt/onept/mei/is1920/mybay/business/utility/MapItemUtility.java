@@ -3,8 +3,8 @@ package pt.onept.mei.is1920.mybay.business.utility;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
 
-public final class MapItem {
-	private MapItem() { }
+public final class MapItemUtility {
+	private MapItemUtility() { }
 
 	public static Item MapPersistenceItemToItem(PersistenceItem persistenceItem) {
 		return new Item()
@@ -15,7 +15,7 @@ public final class MapItem {
 				.setPublishDate(persistenceItem.getPublishDate())
 				.setItemImageUrl(persistenceItem.getImageUrl())
 				.setItemImageDeleteHash(persistenceItem.getImageDeleteHash())
-				.setSeller(MapUser.MapPersistenceUserToUser(persistenceItem.getSeller()));
+				.setSeller(MapUserUtility.MapPersistenceUserToUser(persistenceItem.getSeller()));
 	}
 
 	public static PersistenceItem MapItemToPersistenceItem(Item item) {
