@@ -2,6 +2,8 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.business.utility.MapItem;
@@ -29,7 +31,6 @@ public class ItemEJB implements ItemEJBRemote {
 
 	@Override
 	public boolean create(Item itemToCreate) {
-		//get the persistence entity and the fill the persistence user for hibernate to associate
 		logger.info("Creating item");
 		try {
 			em.persist(new PersistenceItem(itemToCreate));
