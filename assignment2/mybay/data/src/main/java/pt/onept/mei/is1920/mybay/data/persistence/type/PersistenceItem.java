@@ -42,6 +42,12 @@ public class PersistenceItem implements Serializable {
 	@Convert(converter = ItemCategoryConverter.class)
 	private ItemCategory category;
 
+	@Column(name = "image_url", nullable = false)
+	private String imageUrl;
+
+	@Column(name = "image_delete_hash", nullable = false)
+	private String imageDeleteHash;
+
 	@ManyToOne
 	private PersistenceUser seller;
 
