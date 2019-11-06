@@ -1,6 +1,5 @@
 package pt.onept.mei.is1920.mybay.common.type;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.Date;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@AllArgsConstructor
 public class Item {
 	private int id;
 	private String name;
@@ -24,4 +22,14 @@ public class Item {
 	private String itemImageUrl;
 	private String itemImageDeleteHash;
 
+	public Item(String name, float price, Date publishDate, ItemCategory category,
+	            User seller, String itemImageUrl, String itemImageDeleteHash) {
+		this.name = name;
+		this.price = price;
+		this.publishDate = publishDate;
+		this.category = category;
+		this.seller = seller;
+		this.itemImageUrl = itemImageUrl;
+		this.itemImageDeleteHash = itemImageDeleteHash;
+	}
 }

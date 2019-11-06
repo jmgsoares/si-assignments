@@ -5,12 +5,10 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.business.utility.MapItem;
-import pt.onept.mei.is1920.mybay.common.exception.NotFoundException;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
-import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -32,14 +30,14 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	public boolean create(Item itemToCreate) {
 		//get the persistence entity and the fill the persistence user for hibernate to associate
-		logger.info("Creating new item");
+		logger.info("Creating item");
 		try {
 			em.persist(new PersistenceItem(itemToCreate));
 		} catch (EntityExistsException | TransactionRequiredException | IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 			return false;
 		}
-		logger.debug("Added item -> " + itemToCreate.toString());
+		logger.debug("Added item: " + itemToCreate.toString());
 		return true;
 	}
 
@@ -68,7 +66,8 @@ public class ItemEJB implements ItemEJBRemote {
                 List<Item> items = new ArrayList<>();
                 items.add(MapItem.MapPersistenceItemToItem(persistenceItem));
                 return items;
-            } else {
+            }
+		    else {
                 return null;
             }
         }
@@ -83,7 +82,7 @@ public class ItemEJB implements ItemEJBRemote {
 			List<Item> items = new ArrayList<>();
 			if(!persistenceItems.isEmpty()) {
 				for (PersistenceItem persItem : persistenceItems) {
-					logger.debug("Adding item to list -> " + persItem.getName());
+					logger.debug("Adding item to list: " + persItem.getName());
 					items.add(MapItem.MapPersistenceItemToItem(persItem));
 				}
 			}
