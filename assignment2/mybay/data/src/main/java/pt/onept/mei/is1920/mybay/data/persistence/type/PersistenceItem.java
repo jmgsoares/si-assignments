@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.utility.ItemCategoryConverter;
@@ -14,6 +16,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Indexed
 @Table(name = "item")
 @Data
 @Accessors(chain = true)
@@ -29,16 +32,20 @@ public class PersistenceItem implements Serializable {
 	@GeneratedValue(generator = "seq_item", strategy = GenerationType.SEQUENCE)
 	private int id;
 
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "price", nullable = false)
 	private float price;
 
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "publish_date", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date publishDate;
 
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "category", nullable = false)
 	@Convert(converter = ItemCategoryConverter.class)
 	private ItemCategory category;
@@ -49,6 +56,7 @@ public class PersistenceItem implements Serializable {
 	@Column(name = "image_delete_hash", nullable = false)
 	private String imageDeleteHash;
 
+	@IndexedEmbedded
 	@ManyToOne
 	private PersistenceUser seller;
 
