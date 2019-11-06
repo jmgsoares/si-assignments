@@ -8,12 +8,11 @@ import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
 import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.utility.CountryConverter;
-import pt.onept.mei.is1920.mybay.web.utility.MD5;
-import pt.onept.mei.is1920.mybay.web.utility.SessionUtils;
+import pt.onept.mei.is1920.mybay.web.utility.MD5Utility;
+import pt.onept.mei.is1920.mybay.web.utility.SessionUtility;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.annotation.FacesConfig;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
@@ -40,7 +39,7 @@ public class UserController implements Serializable {
 		logger.debug("User to register name:" + name +
 					 " email:" + email + " password:" + hashPassword(password) +
 					 " country", CountryConverter.CountryToString(country));
-		HttpSession session = SessionUtils.getSession();
+		HttpSession session = SessionUtility.getSession();
 		session.invalidate();
 		if (user.create(userToRegister)) {
 			return "signup";
@@ -51,7 +50,7 @@ public class UserController implements Serializable {
 	}
 
 	public String logout() {
-		HttpSession session = SessionUtils.getSession();
+		HttpSession session = SessionUtility.getSession();
 		session.invalidate();
 		loggedIn = false;
 		return "logout";
@@ -62,7 +61,7 @@ public class UserController implements Serializable {
 			logger.info("Received user to login with eMail: " + email + " password: " + hashPassword(password));
 			if (user.login(email, hashPassword(password))) {
 				User loggedInUser = user.read(new User().setEmail(email));
-				HttpSession session = SessionUtils.getSession();
+				HttpSession session = SessionUtility.getSession();
 				session.setAttribute("email", loggedInUser.getEmail());
 				session.setAttribute("name", loggedInUser.getName());
 				session.setAttribute("country", loggedInUser.getCountry());
@@ -79,7 +78,7 @@ public class UserController implements Serializable {
 
 	public String update() {
 	    logger.info("Trying to update user");
-        HttpSession session = SessionUtils.getSession();
+        HttpSession session = SessionUtility.getSession();
         email = session.getAttribute("email").toString();
         if(countryString != null) {
 			country = CountryConverter.StringToCountry(countryString);
@@ -110,7 +109,7 @@ public class UserController implements Serializable {
 
 	public String delete() {
 		try {
-			HttpSession session = SessionUtils.getSession();
+			HttpSession session = SessionUtility.getSession();
 			email = session.getAttribute("email").toString();
 			logger.info("Deleting account: " + email);
 			if(user.delete(new User().setEmail(email))) {
@@ -130,7 +129,7 @@ public class UserController implements Serializable {
 
 	private String hashPassword(String password) {
 		for (int i = 0; i <= 7; i++) {
-			password = MD5.GetMd5(password);
+			password = MD5Utility.GetMd5(password);
 		}
 		return password;
 	}

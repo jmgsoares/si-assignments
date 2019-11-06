@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"*.xhtml"})
-public class AuthorizationFilter implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+@WebFilter(filterName = "SessionFilter", urlPatterns = {"*.xhtml"})
+public class SessionFilter implements Filter {
+	private static final Logger logger = LoggerFactory.getLogger(SessionFilter.class);
 
-	private AuthorizationFilter() {
+	private SessionFilter() {
 	}
 
 	@Override
@@ -43,7 +43,8 @@ public class AuthorizationFilter implements Filter {
 				logger.debug("Chaining filters for " + requestURI);
 				chain.doFilter(request, response);
 
-			} else {
+			}
+			else {
 				logger.debug("Request for " + requestURI + " not accepted");
 				httpServletResponse.sendRedirect("/myBay");
 			}

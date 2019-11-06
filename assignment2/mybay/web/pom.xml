@@ -42,6 +42,16 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -51,7 +61,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Dependencies>javax.faces.api, javaee.api, org.slf4j</Dependencies>
+							<Dependencies>com.google.code.gson, javax.faces.api, javaee.api, org.slf4j</Dependencies>
 							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>

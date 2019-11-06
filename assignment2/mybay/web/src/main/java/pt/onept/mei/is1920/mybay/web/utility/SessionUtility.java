@@ -4,9 +4,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public final class SessionUtils {
+public final class SessionUtility {
 
-	private SessionUtils() {
+	private SessionUtility() {
 	}
 
 	public static HttpSession getSession() {

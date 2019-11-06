@@ -6,9 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 //Adaptation of https://www.geeksforgeeks.org/md5-hash-in-java/
-public final class MD5 {
+public final class MD5Utility {
 
-	private MD5() {
+	private MD5Utility() {
 	}
 
 	public static String GetMd5(String input) {

@@ -10,17 +10,20 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
-
+	
 	<filter>
-		<filter-name>AuthorizationFilter</filter-name>
+		<filter-name>SessionFilter</filter-name>
 		<filter-class>
-			pt.onept.mei.is1920.mybay.web.filter.AuthorizationFilter
+			pt.onept.mei.is1920.mybay.web.filter.SessionFilter
 		</filter-class>
 	</filter>
+
 	<filter-mapping>
-		<filter-name>AuthorizationFilter</filter-name>
+		<filter-name>SessionFilter</filter-name>
 		<url-pattern>/restricted/*</url-pattern>
 	</filter-mapping>
+
+
 
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
