@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
+import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.utility.ItemCategoryConverter;
 
 import javax.persistence.*;
@@ -51,4 +52,13 @@ public class PersistenceItem implements Serializable {
 	@ManyToOne
 	private PersistenceUser seller;
 
+	public PersistenceItem(Item item) {
+		name = item.getName();
+		price = item.getPrice();
+		publishDate = item.getPublishDate();
+		category = item.getCategory();
+		seller = new PersistenceUser(item.getSeller());
+		imageUrl = item.getItemImageUrl();
+		imageDeleteHash = item.getItemImageDeleteHash();
+	}
 }

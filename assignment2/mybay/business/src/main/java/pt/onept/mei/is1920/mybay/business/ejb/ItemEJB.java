@@ -7,10 +7,14 @@ import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
+import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
+import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TransactionRequiredException;
 import java.util.List;
 
 @Stateless
@@ -25,7 +29,15 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	public boolean create(Item itemToCreate) {
 		//get the persistence entity and the fill the persistence user for hibernate to associate
-		return false;
+		logger.info("Creating new item");
+		try {
+			em.persist(new PersistenceItem(itemToCreate));
+		} catch (EntityExistsException | TransactionRequiredException | IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		logger.debug("Added item -> " + itemToCreate.toString());
+		return true;
 	}
 
 	@Override
