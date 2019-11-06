@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.utility.CountryConverter;
@@ -14,6 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Indexed
 @Table(name = "user")
 @Data
 @Accessors(chain = true)
@@ -24,6 +27,7 @@ public class PersistenceUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "email", nullable = false)
 	private String email;
 
@@ -37,6 +41,7 @@ public class PersistenceUser implements Serializable {
 	@Convert(converter = CountryConverter.class)
 	private Country country;
 
+	@IndexedEmbedded
 	@OneToMany(mappedBy = "seller")
 	private List<PersistenceItem> items;
 
