@@ -15,60 +15,16 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <div class="rowHome">
-                    <div class="columnHome">
-                        <h:form id="AddItem" styleClass="form" enctype="multipart/form-data" prependId="false">
-                            <div class="label">
-                                <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
-                                <h:inputText id="name" styleClass="input" value="#{itemController.itemName}"
-                                             required="true"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
-                            <div class="label">
-                                <h:outputLabel value="PRICE" styleClass="label-txt"/>
-                                <h:inputText id="price" styleClass="input" value="#{itemController.itemPrice}"
-                                             required="true" converterMessage="Please enter digits only.">
-                                    <f:convertNumber maxIntegerDigits="15"
-                                                     maxFractionDigits="2"/>
-                                </h:inputText>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
-
-                            <div class="label">
-                                <h:outputLabel value="CATEGORY" styleClass="label-txt"/>
-                                <h:outputLabel value="" styleClass="input"/>
-
-                                <div class="form-group">
-                                    <h:selectOneMenu styleClass="form-control"
-                                                     value="#{itemController.itemCategoryString}">
-                                        <f:selectItems value="#{categoryController.categories}"/>
-                                    </h:selectOneMenu>
-                                </div>
-                            </div>
-
-                            <div class="label">
-                                <h:outputText value="IMAGE" styleClass="label-txt"/>
-                                <h:outputLabel value="" styleClass="input"/>
-                                <h:inputFile value="#{itemController.uploadedImage}" required="true"/>
-                            </div>
-
-                            <h:commandButton action="#{itemController.create}" styleClass="button" value="Add item"/>
-                        </h:form>
+                <h:form id="SearchItem" styleClass="form">
+                    <div class="label">
+                        <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
+                        <h:inputText id="nameToSearch" styleClass="input" value="#{itemController.itemName}"/>
+                        <div class="line-box">
+                            <div class="line"></div>
+                        </div>
                     </div>
-                    <div class="columnHome">
-                        <h:form id="SearchItem" styleClass="form">
-                            <div class="label">
-                                <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
-                                <h:inputText id="nameToSearch" styleClass="input" value="#{itemController.itemName}"/>
-                                <div class="line-box">
-                                    <div class="line"></div>
-                                </div>
-                            </div>
-
+                    <div class="rowHome">
+                        <div class="columnHome">
                             <div class="label">
                                 <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
                                 <h:outputLabel value="" styleClass="input"/>
@@ -99,7 +55,8 @@
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
                             </div>
-
+                        </div>
+                        <div class="columnHome">
                             <div class="label">
                                 <h:outputLabel value="COUNTRY" styleClass="label-txt" required="true"/>
                                 <h:outputLabel value="" styleClass="input"/>
@@ -119,7 +76,7 @@
                                     <h:outputLabel value="" styleClass="input"/>
                                     <h:inputText value="#{itemController.itemSearchDateFrom}"
                                                  styleClass="form-control datepicker">
-                                        <f:convertDateTime pattern="dd/mm/yyyy" />
+                                        <f:convertDateTime pattern="dd/mm/yyyy"/>
                                     </h:inputText>
                                 </div>
                             </div>
@@ -131,11 +88,41 @@
                                     <f:selectItem itemValue="descending" itemLabel="Descending"/>
                                 </h:selectOneRadio>
                             </div>
-
-                            <h:commandButton action="#{itemController.search}" styleClass="button" value="Search item"/>
-                        </h:form>
+                        </div>
                     </div>
-                </div>
+
+                    <h:commandButton action="#{itemController.search}" styleClass="button" value="Search item"/>
+                </h:form>
+
+                <h:dataTable id="itemTable" value="#{itemController.itemList}" var="item"
+                             styleClass="table table-striped table-bordered form">
+                    <h:column>
+                        <f:facet name="header">Image</f:facet>
+                        <h:graphicImage url="#{item.itemImageUrl}" width="200" height="150"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{item.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        <h:outputText value="#{item.price}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Category</f:facet>
+                        <h:outputText value="#{item.category}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"/>
+                        <h:form>
+                            <h:commandButton action="#{itemController.read}" value="View Item"
+                                             styleClass="btn btn-primary">
+                                <f:param name="selectedItemId" value="#{item.id}"/>
+                            </h:commandButton>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+
             </ui:define>
         </ui:composition>
     </f:view>

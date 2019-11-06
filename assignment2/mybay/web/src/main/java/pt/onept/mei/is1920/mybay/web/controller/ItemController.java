@@ -77,16 +77,13 @@ public class ItemController implements Serializable {
         }
     }
 
-    public String search() {
+    public void search() {
         logger.info("Searching items");
         List<Item> itemList = item.search(new SearchParameters());
         if(!itemList.isEmpty()) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;
-
-            return null;
         }
-        return "home";
     }
 
     public String read() {
