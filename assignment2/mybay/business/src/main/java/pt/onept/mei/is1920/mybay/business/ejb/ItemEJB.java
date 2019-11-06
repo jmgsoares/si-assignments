@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.business.utility.MapItem;
+import pt.onept.mei.is1920.mybay.common.exception.NotFoundException;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
@@ -11,10 +13,11 @@ import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TransactionRequiredException;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -57,6 +60,25 @@ public class ItemEJB implements ItemEJBRemote {
 
 	@Override
 	public List<Item> search(SearchParameters searchParameters) {
+		logger.info("Searching for items");
+		try {
+			CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+			CriteriaQuery<PersistenceItem> criteriaQuery = criteriaBuilder.createQuery(PersistenceItem.class);
+			Root<PersistenceItem> from = criteriaQuery.from(PersistenceItem.class);
+			CriteriaQuery<PersistenceItem> all = criteriaQuery.select(from);
+			TypedQuery<PersistenceItem> typedQuery = em.createQuery(all);
+			List<PersistenceItem> persistenceItems = typedQuery.getResultList();
+			List<Item> items = new ArrayList<>();
+			if(!persistenceItems.isEmpty()) {
+				for (PersistenceItem persItem : persistenceItems) {
+					logger.debug("Adding item to list -> " + persItem.getName());
+					items.add(MapItem.MapPersistenceItemToItem(persItem));
+				}
+			}
+			return items;
+		} catch (IllegalArgumentException e){
+			logger.error(e.getMessage(), e);
+		}
 		return null;
 	}
 }

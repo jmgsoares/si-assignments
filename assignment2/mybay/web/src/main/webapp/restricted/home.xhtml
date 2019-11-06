@@ -118,7 +118,9 @@
                                     <h:outputLabel value="DATE" styleClass="label-txt"/>
                                     <h:outputLabel value="" styleClass="input"/>
                                     <h:inputText value="#{itemController.itemSearchDateFrom}"
-                                                 styleClass="form-control datepicker"/>
+                                                 styleClass="form-control datepicker">
+                                        <f:convertDateTime pattern="dd/mm/yyyy" />
+                                    </h:inputText>
                                 </div>
                             </div>
 

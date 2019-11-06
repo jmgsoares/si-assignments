@@ -9,23 +9,35 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <h:dataTable id="itemTable" binding="#{table}" value="#{itemController.itemList}"
-                             styleClass="table table-striped table-bordered tableUpdated">
+                <h:dataTable id="itemTable" binding="#{table}" value="${sessionScope.itemList}" var="item"
+                             styleClass="table table-striped table-bordered form">
+                    <h:column>
+                        <f:facet name="header">Image</f:facet>
+                        <h:graphicImage url="#{item.itemImageUrl}" width="200" height="150"/>
+                    </h:column>
                     <h:column>
                         <f:facet name="header">Name</f:facet>
-                        <h:outputText value="#{itemController.itemName}"/>
+                        <h:outputText value="#{item.name}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Price</f:facet>
-                        <h:outputText value="#{itemController.itemPrice}"/>
+                        <h:outputText value="#{item.price}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Category</f:facet>
-                        <h:outputText value="#{itemController.itemCategoryString}"/>
+                        <h:outputText value="#{item.category}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Date of publishing</f:facet>
-                        <h:outputText value="#{itemController.itemSearchDateFrom}"/>
+                        <h:outputText value="#{item.publishDate}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"/>
+                        <h:form>
+                            <h:commandButton action="#{itemController.viewItem}" value="View Item" styleClass="btn btn-primary">
+                                <f:param name="selectedItemName" value="#{item.name}"/>
+                            </h:commandButton>
+                        </h:form>
                     </h:column>
                 </h:dataTable>
             </ui:define>

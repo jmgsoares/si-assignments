@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.type.Item;
+import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.utility.ItemCategoryConverter;
 import pt.onept.mei.is1920.mybay.web.utility.ImgurApiUtility;
@@ -80,6 +81,16 @@ public class ItemController implements Serializable {
     }
 
     public String search() {
+        itemList = item.search(new SearchParameters());
+        if(!itemList.isEmpty()) {
+            HttpSession session = SessionUtility.getSession();
+            session.setAttribute("itemList", itemList);
+            return "search";
+        }
+        return "home";
+    }
+
+    public String viewItem() {
         return "home";
     }
 }

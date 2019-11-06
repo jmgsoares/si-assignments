@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $(".datepicker").datepicker({
-        dateFormat: 'dd MM, yy',
+        dateFormat: 'dd/mm/yy'/*,
         changeMonth: true,
         changeYear: true,
-        yearRange: "2018:2019"
+        yearRange: "2018:2019"*/
     });
 });
