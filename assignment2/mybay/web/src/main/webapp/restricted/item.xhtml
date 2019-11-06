@@ -9,7 +9,53 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
+                <div class="form">
+                    <div class="ui-icon-image">
+                        <h:graphicImage url="${sessionScope.itemToView.itemImageUrl}" width="400" height="300"/>
+                    </div>
 
+                    <div >
+                        <div >
+                            <h:outputText value="Item id: ${sessionScope.itemToView.id}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Name: ${sessionScope.itemToView.name}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Cost: ${sessionScope.itemToView.price}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Category: ${sessionScope.itemToView.category}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Publish date: ${sessionScope.itemToView.publishDate}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Seller:${sessionScope.itemToView.seller.name}"/>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div >
+                            <h:outputText value="Country of origin: ${sessionScope.itemToView.seller.country}"/>
+                        </div>
+                    </div>
+                </div>
             </ui:define>
         </ui:composition>
     </f:view>

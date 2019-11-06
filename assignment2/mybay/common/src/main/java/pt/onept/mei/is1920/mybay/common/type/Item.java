@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
+	private int id;
 	private String name;
 	private float price;
 	private Date publishDate;

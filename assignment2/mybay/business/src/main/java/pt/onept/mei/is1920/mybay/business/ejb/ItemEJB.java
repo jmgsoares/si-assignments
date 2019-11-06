@@ -61,6 +61,18 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	public List<Item> search(SearchParameters searchParameters) {
 		logger.info("Searching for items");
+
+		if(searchParameters.getId() > 0)  {
+		    PersistenceItem persistenceItem = em.find(PersistenceItem.class, searchParameters.getId());
+		    if(persistenceItem != null) {
+                List<Item> items = new ArrayList<>();
+                items.add(MapItem.MapPersistenceItemToItem(persistenceItem));
+                return items;
+            } else {
+                return null;
+            }
+        }
+
 		try {
 			CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 			CriteriaQuery<PersistenceItem> criteriaQuery = criteriaBuilder.createQuery(PersistenceItem.class);

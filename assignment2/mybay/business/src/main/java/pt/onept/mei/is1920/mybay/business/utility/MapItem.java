@@ -8,6 +8,7 @@ public final class MapItem {
 
 	public static Item MapPersistenceItemToItem(PersistenceItem persistenceItem) {
 		return new Item()
+				.setId(persistenceItem.getId())
 				.setName(persistenceItem.getName())
 				.setPrice(persistenceItem.getPrice())
 				.setCategory(persistenceItem.getCategory())
@@ -19,6 +20,7 @@ public final class MapItem {
 
 	public static PersistenceItem MapItemToPersistenceItem(Item item) {
 		return new PersistenceItem()
+				.setId(item.getId())
 				.setName(item.getName())
 				.setPrice(item.getPrice())
 				.setCategory(item.getCategory())

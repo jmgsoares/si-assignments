@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchParameters {
-
+	private int id;
 	private List<SearchType> searchTypes;
 	private SortType sortType;
 	private Pair<String> priceRange;

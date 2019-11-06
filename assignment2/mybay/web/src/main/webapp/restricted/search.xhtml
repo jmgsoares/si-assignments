@@ -28,14 +28,10 @@
                         <h:outputText value="#{item.category}"/>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Date of publishing</f:facet>
-                        <h:outputText value="#{item.publishDate}"/>
-                    </h:column>
-                    <h:column>
                         <f:facet name="header"/>
                         <h:form>
                             <h:commandButton action="#{itemController.viewItem}" value="View Item" styleClass="btn btn-primary">
-                                <f:param name="selectedItemName" value="#{item.name}"/>
+                                <f:param name="selectedItemId" value="#{item.id}"/>
                             </h:commandButton>
                         </h:form>
                     </h:column>
