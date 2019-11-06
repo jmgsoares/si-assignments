@@ -9,7 +9,7 @@ import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.web.utility.ImgurApiUtility;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.*;
@@ -17,7 +17,7 @@ import java.util.Date;
 
 
 @Named(value = "itemController")
-@RequestScoped
+@ViewScoped
 @Getter
 @Setter
 public class ItemController implements Serializable {
@@ -52,7 +52,6 @@ public class ItemController implements Serializable {
 
 		return "home";
 	}
-
 
 	public String search() {
 		return "home";
