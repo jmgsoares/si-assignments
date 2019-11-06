@@ -29,4 +29,15 @@ public final class ImgurApiUtility {
 		logger.debug("Parsed response success:" + responseSuccess);
 		return responseSuccess;
 	}
+
+	public static String GetImageUrlFromResponse(JsonObject response) {
+		return response.get("link").toString()
+				.substring(1, response.get("link").toString().length() - 1);
+	}
+
+	public static String GetImageDeleteHashFromResponse(JsonObject response) {
+		return  response.get("deletehash").toString()
+				.substring(1, response.get("deletehash").toString().length() - 1);
+	}
+
 }

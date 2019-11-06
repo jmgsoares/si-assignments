@@ -9,7 +9,7 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                <h:dataTable id="itemTable" binding="#{table}" value="${sessionScope.itemList}" var="item"
+                <h:dataTable id="itemTable" value="#{itemController.itemName}" var="item"
                              styleClass="table table-striped table-bordered form">
                     <h:column>
                         <f:facet name="header">Image</f:facet>
@@ -30,7 +30,7 @@
                     <h:column>
                         <f:facet name="header"/>
                         <h:form>
-                            <h:commandButton action="#{itemController.viewItem}" value="View Item" styleClass="btn btn-primary">
+                            <h:commandButton action="#{itemController.read}" value="View Item" styleClass="btn btn-primary">
                                 <f:param name="selectedItemId" value="#{item.id}"/>
                             </h:commandButton>
                         </h:form>

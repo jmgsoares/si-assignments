@@ -24,7 +24,6 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 
-
 @Named(value = "itemController")
 @ViewScoped
 @Getter
@@ -34,8 +33,11 @@ public class ItemController implements Serializable {
 
     private Part uploadedImage;
 
+    private List<Item> itemList;
+    private Item itemToView;
+
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering;
+            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView;
     private ItemCategory itemCategory;
     private Date itemSearchDateFrom;
     private float itemPrice;
@@ -53,64 +55,44 @@ public class ItemController implements Serializable {
         String fileName = uploadedImage.getSubmittedFileName();
         if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
             JsonObject uploadResult = ImgurApiUtility.UploadImage(uploadedImage);
-            uploadedImageUrl = uploadResult.get("link").toString()
-                    .substring(1, uploadResult.get("link").toString().length() - 1);
-            uploadedImageDeleteHash = uploadResult.get("deletehash").toString()
-                    .substring(1, uploadResult.get("deletehash").toString().length() - 1);
-            //boolean deleteResult = ImgurApiUtility.DeleteImage(uploadedImageDeleteHash);
+            uploadedImageUrl = ImgurApiUtility.GetImageUrlFromResponse(uploadResult);
+            uploadedImageDeleteHash = ImgurApiUtility.GetImageDeleteHashFromResponse(uploadResult);
         } else {
             logger.debug("Invalid file format submitted");
             return "home";
         }
 
-        Date itemDate = new Date(System.currentTimeMillis());
-        String email = session.getAttribute("email").toString();
-        User userAddingItem = new User().setEmail(email);
+        User seller = new User().setEmail(session.getAttribute("email").toString());
 
-        logger.debug("Item to add: " + itemName + ", price: " + itemPrice + ", date: " + itemDate
-                + ", category: " + itemCategory + ", user: " + userAddingItem.getEmail()
-                + ", url: " + uploadedImageUrl + ", delete url: " + uploadedImageDeleteHash);
-        Item itemToAdd = new Item()
-                .setName(itemName)
-                .setPrice(itemPrice)
-                .setPublishDate(itemDate)
-                .setCategory(itemCategory)
-                .setSeller(userAddingItem)
-                .setItemImageUrl(uploadedImageUrl)
-                .setItemImageDeleteHash(uploadedImageDeleteHash);
+        Item newItem = new Item(itemName, itemPrice, new Date(),
+                itemCategory, seller, uploadedImageUrl, uploadedImageDeleteHash);
 
-        if (item.create(itemToAdd)) {
+        logger.debug(newItem.toString());
+
+        if (item.create(newItem)) {
             return "home";
         } else {
-            logger.info("Failed to create new item");
+            logger.error("Failed to create new item");
             return "home";
         }
     }
 
     public String search() {
+        logger.info("Searching items");
         List<Item> itemList = item.search(new SearchParameters());
         if(!itemList.isEmpty()) {
-            HttpSession session = SessionUtility.getSession();
-            session.setAttribute("itemList", itemList);
-            return "search";
+            logger.debug("Got " + itemList.size() + " items");
+            this.itemList = itemList;
+
+            return null;
         }
         return "home";
     }
 
-    public String viewItem() {
-        int itemId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectedItemId"));
-        if(itemId != 0) {
-            // Search for the item and put on the session the Item
-            List<Item> itemToView = item.search(new SearchParameters().setId(itemId));
-            if(!itemToView.isEmpty()) {
-                HttpSession session = SessionUtility.getSession();
-                session.setAttribute("itemToView", itemToView.get(0));
-                return "item";
-            } else {
-                return "home";
-            }
-        } else {
-            return "home";
-        }
+    public String read() {
+        int itemId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext()
+                .getRequestParameterMap().get("selectedItemId"));
+
+        return "home";
     }
 }
