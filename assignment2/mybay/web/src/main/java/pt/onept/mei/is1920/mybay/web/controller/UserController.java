@@ -32,7 +32,7 @@ public class UserController implements Serializable {
 
 	private boolean loggedIn = false;
 
-	public String register() {
+	public String create() {
 		country = CountryConverter.StringToCountry(countryString);
 		User userToRegister = new User(name, email, hashPassword(password), country);
 		logger.info("Registering user " + name);

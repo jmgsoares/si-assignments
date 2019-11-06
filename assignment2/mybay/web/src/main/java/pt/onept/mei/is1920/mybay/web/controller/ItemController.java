@@ -13,6 +13,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.*;
+import java.util.Date;
 
 
 @Named(value = "itemController")
@@ -23,6 +24,11 @@ public class ItemController implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
 	private Part uploadedImage;
+
+	private String itemName, itemCategoryString, itemSearchPriceLowerBound,
+			itemSearchPriceUpperBound, itemSearchResultOrdering;
+	private Date itemSearchDateFrom;
+	private float itemPrice;
 
 	@EJB
 	private ItemEJBRemote item;
@@ -48,5 +54,13 @@ public class ItemController implements Serializable {
 		}
 
 		return "image";
+	}
+
+	public String create() {
+		return "home";
+	}
+
+	public String search() {
+		return "home";
 	}
 }
