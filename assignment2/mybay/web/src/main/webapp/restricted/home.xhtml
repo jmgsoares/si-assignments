@@ -17,7 +17,7 @@
             <ui:define name="content">
                 <div class="rowHome">
                     <div class="columnHome">
-                        <h:form id="AddItem" styleClass="form">
+                        <h:form id="AddItem" styleClass="form" enctype="multipart/form-data"  prependId="false">
                             <div class="label">
                                 <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
                                 <h:inputText id="name" styleClass="input" value="#{itemController.itemName}" required="true" />
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                             <div class="label">
-                                <h:outputLabel value="PRICE" styleClass="label-txt"/>
+                                <h:outputLabel value="PRICE" styleClass="label-txt" />
                                 <h:inputText id="price" styleClass="input" value="#{itemController.itemPrice}" required="true" converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="CATEGORY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="CATEGORY" styleClass="label-txt" />
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
@@ -46,6 +46,10 @@
                                     </h:selectOneMenu>
                                 </div>
                             </div>
+
+                            <h:outputText value="IMAGE" styleClass="label-txt"/>
+                            <h:inputFile value="#{itemController.uploadedImage}" required="true" />
+
                             <h:commandButton action="#{itemController.create}" styleClass="button" value="Add item"/>
                         </h:form>
                     </div>
@@ -74,9 +78,15 @@
                             <div class="label">
                                 <h:outputLabel value="PRICE" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
-                                <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control" value="#{itemController.itemSearchPriceLowerBound}" converterMessage="Please enter digits only."/>
+                                <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control" value="#{itemController.itemSearchPriceLowerBound}" converterMessage="Please enter digits only.">
+                                    <f:convertNumber maxIntegerDigits="15"
+                                                     maxFractionDigits="2"/>
+                                </h:inputText>
 
-                                <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control" value="#{itemController.itemSearchPriceUpperBound}" converterMessage="Please enter digits only."/>
+                                <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control" value="#{itemController.itemSearchPriceUpperBound}" converterMessage="Please enter digits only.">
+                                    <f:convertNumber maxIntegerDigits="15"
+                                                     maxFractionDigits="2"/>
+                                </h:inputText>
                             </div>
 
                             <div class="label">
