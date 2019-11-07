@@ -34,7 +34,6 @@ public class AccountEJB implements AccountEJBRemote {
 		}
 		logger.debug("User couldn't be created");
 		return false;
-
 	}
 
 	@Override
@@ -55,8 +54,13 @@ public class AccountEJB implements AccountEJBRemote {
 
 	@Override
 	public boolean removeAccount(User user) {
-		return false;
-	}
+        logger.info("Processing remove request");
+        if(userEJBRemote.delete(user)) {
+            logger.debug("User deleted successfully");
+            return true;
+        }
+        logger.debug("User couldn't be deleted");
+        return false;	}
 
 	@Override
 	public boolean updateAccount(User user) {
