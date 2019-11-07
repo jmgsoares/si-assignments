@@ -88,6 +88,19 @@
                                     <f:selectItem itemValue="descending" itemLabel="Descending"/>
                                 </h:selectOneRadio>
                             </div>
+
+                            <div class="label">
+                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchType}">
+                                    <f:selectItem itemValue="#{null}" itemLabel=""/>
+                                    <f:selectItems value="#{searchTypeController.searchTypes}"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="label">
+                                <h:selectOneMenu styleClass="formRadio" value="#{itemController.itemsFromUser}">
+                                    <f:selectItem itemValue="true" itemLabel="Search only my items"/>
+                                </h:selectOneMenu>
+                            </div>
                         </div>
                     </div>
 

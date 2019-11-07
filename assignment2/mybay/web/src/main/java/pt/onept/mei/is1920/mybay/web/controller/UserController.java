@@ -58,7 +58,7 @@ public class UserController implements Serializable {
 
 	public String login() {
 		try {
-			logger.info("Received user to login with eMail: " + email + " password: " + hashPassword(password));
+			logger.info("Logging in user: " + email);
 			if (user.login(email, hashPassword(password))) {
 				User loggedInUser = user.read(new User().setEmail(email));
 				HttpSession session = SessionUtility.getSession();

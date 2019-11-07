@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
+import pt.onept.mei.is1920.mybay.common.enums.SearchType;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.type.User;
@@ -39,8 +40,10 @@ public class ItemController implements Serializable {
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
             itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView;
     private ItemCategory itemCategory;
+    private SearchType searchType;
     private Date itemSearchDateFrom;
     private float itemPrice;
+    private boolean itemsFromUser;
 
     @EJB
     private ItemEJBRemote item;
@@ -90,6 +93,14 @@ public class ItemController implements Serializable {
         int itemId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext()
                 .getRequestParameterMap().get("selectedItemId"));
 
+        return "home";
+    }
+
+    public String update() {
+        return "home";
+    }
+
+    public String delete() {
         return "home";
     }
 }
