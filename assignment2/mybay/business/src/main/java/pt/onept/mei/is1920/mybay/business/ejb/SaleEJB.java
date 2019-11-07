@@ -41,13 +41,24 @@ public class SaleEJB implements SaleEJBRemote {
 
 	@Override
 	public boolean deleteSale(Item item) {
+		logger.info("Processing delete sale");
+		if(itemEJBRemote.delete(item)) {
+			logger.debug("Sale deleted successfully");
+			return true;
+		}
+		logger.debug("Sale couldn't be deleted");
 		return false;
 	}
 
 	@Override
 	public boolean updateSale(Item item) {
-		return false;
-	}
+		logger.info("Processing update request");
+		if(itemEJBRemote.update(item)) {
+			logger.debug("Sale update successfully");
+			return true;
+		}
+		logger.debug("Sale couldn't be updated");
+		return false;	}
 
 	@Override
 	public List<Item> listAccountSales(User user) {
