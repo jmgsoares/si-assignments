@@ -31,7 +31,7 @@ public class ItemEJB implements ItemEJBRemote {
 	public boolean create(Item itemToCreate) {
 		logger.info("Creating item");
 		try {
-			em.persist(new PersistenceItem(itemToCreate));
+			em.persist(MapItemUtility.MapItemToPersistenceItem(itemToCreate));
 		} catch (EntityExistsException | TransactionRequiredException | IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 			return false;

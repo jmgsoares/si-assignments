@@ -30,7 +30,7 @@ public class UserEJB implements UserEJBRemote {
 	public boolean create(User user) {
 		logger.info("Registering new user");
 		try {
-			em.persist(new PersistenceUser(user));
+			em.persist(MapUserUtility.MapUserToPersistenceUser(user));
 		} catch (EntityExistsException | TransactionRequiredException | IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 			return false;

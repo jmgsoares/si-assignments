@@ -2,6 +2,7 @@ package pt.onept.mei.is1920.mybay.business.utility;
 
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
+import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
 public final class MapItemUtility {
 	private MapItemUtility() { }
@@ -24,6 +25,7 @@ public final class MapItemUtility {
 				.setName(item.getName())
 				.setPrice(item.getPrice())
 				.setCategory(item.getCategory())
+				.setSeller(MapUserUtility.MapUserToPersistenceUser(item.getSeller()))
 				.setPublishDate(item.getPublishDate())
 				.setImageUrl(item.getItemImageUrl())
 				.setImageDeleteHash(item.getItemImageDeleteHash());

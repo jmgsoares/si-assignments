@@ -60,13 +60,4 @@ public class PersistenceItem implements Serializable {
 	@ManyToOne
 	private PersistenceUser seller;
 
-	public PersistenceItem(Item item) {
-		name = item.getName();
-		price = item.getPrice();
-		publishDate = item.getPublishDate();
-		category = item.getCategory();
-		seller = new PersistenceUser(item.getSeller());
-		imageUrl = item.getItemImageUrl();
-		imageDeleteHash = item.getItemImageDeleteHash();
-	}
 }

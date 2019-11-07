@@ -42,11 +42,4 @@ public class PersistenceUser implements Serializable {
 	@OneToMany(mappedBy = "seller")
 	private List<PersistenceItem> items;
 
-	public PersistenceUser(User user) {
-		this.name = user.getName();
-		this.country = user.getCountry();
-		this.email = user.getEmail();
-		this.password = user.getPassword();
-	}
-
 }
