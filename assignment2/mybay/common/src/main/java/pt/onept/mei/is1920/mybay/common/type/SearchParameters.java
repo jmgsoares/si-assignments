@@ -18,7 +18,13 @@ import java.util.List;
 public class SearchParameters {
 	private SearchType searchType;
 	private List<SearchFilter> searchFilters;
-	private SortType sortType;
+	private SortOrder sortOrder;
+
+
+
+
+
+
 	private Pair<String> priceRange;
 	private Pair<Date> dateRange;
 	private ItemCategory category;

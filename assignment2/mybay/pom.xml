@@ -13,8 +13,9 @@
 		<module>web</module>
 		<module>business</module>
 		<module>ear</module>
-		<module>cli</module>
 		<module>common</module>
+		<module>common_data</module>
+		<module>common_business</module>
 	</modules>
 
 	<name>MyBay</name>
@@ -27,14 +28,45 @@
 		<dependencies>
 			<dependency>
 				<groupId>pt.onept.mei.is1920.mybay</groupId>
+				<artifactId>web</artifactId>
+				<version>0.0.1</version>
+				<type>war</type>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>pt.onept.mei.is1920.mybay</groupId>
+				<artifactId>business</artifactId>
+				<version>0.0.1</version>
+				<type>ejb</type>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>pt.onept.mei.is1920.mybay</groupId>
 				<artifactId>data</artifactId>
 				<version>0.0.1</version>
+				<type>ejb</type>
 				<scope>compile</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>pt.onept.mei.is1920.mybay</groupId>
 				<artifactId>common</artifactId>
+				<version>0.0.1</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>pt.onept.mei.is1920.mybay</groupId>
+				<artifactId>common_data</artifactId>
+				<version>0.0.1</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>pt.onept.mei.is1920.mybay</groupId>
+				<artifactId>common_business</artifactId>
 				<version>0.0.1</version>
 				<scope>compile</scope>
 			</dependency>
@@ -64,13 +96,6 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>5.3.12.Final</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.persistence</groupId>
-				<artifactId>javax.persistence-api</artifactId>
-				<version>2.2</version>
 				<scope>provided</scope>
 			</dependency>
 

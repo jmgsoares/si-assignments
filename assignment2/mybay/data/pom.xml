@@ -11,7 +11,7 @@
 
 	<artifactId>data</artifactId>
 
-	<packaging>jar</packaging>
+	<packaging>ejb</packaging>
 
 	<dependencies>
 		<dependency>
@@ -30,6 +30,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>pt.onept.mei.is1920.mybay</groupId>
+			<artifactId>common_data</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
@@ -39,12 +44,18 @@
 			<artifactId>hibernate-search-orm</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
 				<configuration>
 					<archive>
 						<manifestEntries>

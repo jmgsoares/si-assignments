@@ -8,10 +8,9 @@ import java.security.NoSuchAlgorithmException;
 //Adaptation of https://www.geeksforgeeks.org/md5-hash-in-java/
 public final class MD5Utility {
 
-	private MD5Utility() {
-	}
+	private MD5Utility() {	}
 
-	public static String GetMd5(String input) {
+	private static String GetMd5(String input) {
 		try {
 
 			// Static getInstance method is called with hashing MD5
@@ -36,5 +35,12 @@ public final class MD5Utility {
 		catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String HashPassword(String password) {
+		for (int i = 0; i <= 7; i++) {
+			password = MD5Utility.GetMd5(password);
+		}
+		return password;
 	}
 }

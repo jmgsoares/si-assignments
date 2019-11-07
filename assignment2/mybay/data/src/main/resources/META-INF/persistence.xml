@@ -8,8 +8,8 @@
 	<persistence-unit name="myBayPersistenceUnit" transaction-type="JTA">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/jdbc/mybayDS</jta-data-source>
-		<class>pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser</class>
-		<class>pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem</class>
+		<class>pt.onept.mei.is1920.mybay.data.type.PersistenceUser</class>
+		<class>pt.onept.mei.is1920.mybay.data.type.PersistenceItem</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.dialect"
@@ -26,6 +26,10 @@
 			          value="filesystem"/>
 			<property name="hibernate.search.default.indexBase"
 			          value="/tmp/indexes"/>
+			<property name="hibernate.search.default.exclusive_index_use" 
+			          value="false"/>
+			<property name="hibernate.search.default.reader.strategy"
+			          value="shared"/>
 		</properties>
 	</persistence-unit>
 

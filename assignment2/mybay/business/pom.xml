@@ -26,7 +26,12 @@
 
 		<dependency>
 			<groupId>pt.onept.mei.is1920.mybay</groupId>
-			<artifactId>data</artifactId>
+			<artifactId>common_data</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>pt.onept.mei.is1920.mybay</groupId>
+			<artifactId>common_business</artifactId>
 		</dependency>
 
 		<dependency>
@@ -37,11 +42,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search-orm</artifactId>
 		</dependency>
 
 	</dependencies>
