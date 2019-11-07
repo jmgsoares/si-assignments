@@ -1,0 +1,3 @@
+INSERT INTO public.item (id, category, image_delete_hash, image_url, name, price, publish_date, seller_email) VALUES (2, 'informatics', 'NQxnuZAhQl3kUjv', 'https://i.imgur.com/kx8OEze.png', 'pc', 521, '2019-11-06', 'moreira');
+INSERT INTO public.item (id, category, image_delete_hash, image_url, name, price, publish_date, seller_email) VALUES (3, 'kitchen', 'EXGVeyWEcstaMOd', 'https://i.imgur.com/ATUBUQT.jpg', 'knifes', 35.99, '2019-11-06', 'asd');
+INSERT INTO public.item (id, category, image_delete_hash, image_url, name, price, publish_date, seller_email) VALUES (4, 'wc', 'vPOflbT3449i3gK', 'https://i.imgur.com/oIkyVrZ.png', 'Golden Toilet', 1000000000, '2019-11-06', 'asd');
