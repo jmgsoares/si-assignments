@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mybay [undeploy]" type="MavenRunConfiguration" factoryName="Maven" activateToolWindowBeforeRun="false">
+  <configuration default="false" name="mybay [install]" type="MavenRunConfiguration" factoryName="Maven" activateToolWindowBeforeRun="false" nameIsGenerated="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,7 +10,7 @@
           </option>
           <option name="goals">
             <list>
-              <option value="wildfly:undeploy" />
+              <option value="install" />
             </list>
           </option>
           <option name="pomFileName" />
@@ -18,7 +18,7 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/ear" />
+          <option name="workingDirPath" value="$PROJECT_DIR$" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
