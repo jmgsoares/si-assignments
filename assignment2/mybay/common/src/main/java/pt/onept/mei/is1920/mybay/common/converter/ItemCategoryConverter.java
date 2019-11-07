@@ -3,7 +3,9 @@ package pt.onept.mei.is1920.mybay.common.converter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 
 
-public class ItemCategoryConverter {
+public final class ItemCategoryConverter {
+
+	private ItemCategoryConverter() { }
 
 	public static String CategoryToString(ItemCategory itemCategory) {
 		switch (itemCategory) {
