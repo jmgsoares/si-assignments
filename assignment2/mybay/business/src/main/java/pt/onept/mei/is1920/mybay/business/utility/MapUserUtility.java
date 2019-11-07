@@ -14,8 +14,10 @@ public final class MapUserUtility {
 							  .setPassword(null);
 	}
 
-	//TODO Implement this
 	public static PersistenceUser MapUserToPersistenceUser(User user) {
-		return null;
+		return new PersistenceUser().setEmail(user.getEmail())
+									.setName(user.getName())
+									.setPassword(user.getPassword())
+									.setCountry(user.getCountry());
 	}
 }
