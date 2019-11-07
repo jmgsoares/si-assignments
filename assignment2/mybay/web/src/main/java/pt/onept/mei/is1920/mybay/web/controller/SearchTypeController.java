@@ -2,9 +2,7 @@ package pt.onept.mei.is1920.mybay.web.controller;
 
 import lombok.Getter;
 import lombok.Setter;
-import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.enums.SearchType;
-import pt.onept.mei.is1920.mybay.common.utility.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.utility.SearchTypeConverter;
 
 import javax.enterprise.context.RequestScoped;
