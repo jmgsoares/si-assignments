@@ -65,7 +65,7 @@ public class ItemEJB implements ItemEJBRemote {
 
 		logger.debug("Search parameters: " + searchParameters.toString());
 
-		Query jpaQuery = QueryBuilderUtility.QueryBuilder(em, searchParameters);
+		Query jpaQuery = QueryBuilderUtility.BuildQuery(em, PersistenceItem.class, searchParameters);
 
 		List result = jpaQuery.getResultList();
 
