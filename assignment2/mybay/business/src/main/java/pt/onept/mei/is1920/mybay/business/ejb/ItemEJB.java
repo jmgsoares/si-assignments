@@ -2,22 +2,17 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.business.utility.MapItemUtility;
+import pt.onept.mei.is1920.mybay.business.utility.QueryBuilderUtility;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
 
 import javax.ejb.*;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TransactionRequiredException;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,19 +65,7 @@ public class ItemEJB implements ItemEJBRemote {
 
 		logger.debug("Search parameters: " + searchParameters.toString());
 
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
-
-		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
-				.forEntity(PersistenceItem.class).get();
-
-		org.apache.lucene.search.Query luceneQuery = queryBuilder
-				.keyword()
-				.onField("name")
-				//TODO make this generic
-				.matching("caldas")
-				.createQuery();
-
-		javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, PersistenceItem.class);
+		Query jpaQuery = QueryBuilderUtility.QueryBuilder(em, searchParameters);
 
 		List result = jpaQuery.getResultList();
 
