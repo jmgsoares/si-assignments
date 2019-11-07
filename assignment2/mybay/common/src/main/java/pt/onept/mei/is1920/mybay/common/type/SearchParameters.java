@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchParameters {
-	private SearchType searchType;
 	private SearchFilter searchFilter;
 	private SortOrder sortOrder;
 	private Pair<String> priceRange;

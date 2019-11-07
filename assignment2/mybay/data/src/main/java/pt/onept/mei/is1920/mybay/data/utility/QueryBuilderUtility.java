@@ -5,6 +5,8 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
+import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceItem;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
@@ -17,51 +19,107 @@ public final class QueryBuilderUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(QueryBuilderUtility.class);
 
-	private static String something(SearchParameters searchParameters) {
-
-
-
-		return null;
-	}
-
 	public static Query BuildQuery(EntityManager em, Class tClass, SearchParameters searchParameters) {
+		logger.debug("Building query for: " + tClass.toString() + " parameters: " + searchParameters.toString());
 
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(tClass).get();
 
-		org.apache.lucene.search.Query luceneQuery;
+		QueryBuilder userQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
+				.forEntity(PersistenceUser.class).get();
+
+		org.apache.lucene.search.Query luceneQuery = null;
+
+		if(searchParameters.getSearchQuery() == null) searchParameters.setSearchQuery("");
 
 		if(tClass == PersistenceItem.class) {
 
-			switch (searchParameters.getSearchType()) {
-				case ALL:
+			//TODO add sorting by capability
+
+			switch (searchParameters.getSearchFilter()) {
+				case PRICE:
+					logger.debug("Price range query");
+					luceneQuery =  queryBuilder
+							.bool()
+							.must(queryBuilder
+									.keyword()
+									.onField("name")
+									.matching("*" + searchParameters.getSearchQuery() + "*")
+									.createQuery()
+							).must(queryBuilder
+									.range()
+									.onField("price")
+									.from(Float.parseFloat(searchParameters.getPriceRange().from))
+									.to(Float.parseFloat(searchParameters.getPriceRange().to))
+									.createQuery()
+							).createQuery();
+					logger.debug("Query result: " + luceneQuery.toString());
 					break;
-				case USER:
+
+				case CATEGORY:
+					logger.debug("Category query");
+					luceneQuery =  queryBuilder
+							.bool()
+							.must(queryBuilder
+									.keyword()
+									.onField("name")
+									.matching("*" + searchParameters.getSearchQuery() + "*")
+									.createQuery()
+							).must(queryBuilder
+									.keyword()
+									.onField("category")
+									.matching(ItemCategoryConverter.CategoryToString(searchParameters.getCategory()))
+									.createQuery()
+							).createQuery();
+					logger.debug("Query result: " + luceneQuery.toString());
 					break;
+
+				case COUNTRY:
+					logger.debug("Country query");
+					luceneQuery =  queryBuilder
+							.bool()
+							.must(queryBuilder
+									.keyword()
+									.onField("name")
+									.matching("*" + searchParameters.getSearchQuery() + "*")
+									.createQuery()
+							).must(userQueryBuilder
+									.keyword()
+									.onField("country")
+									.matching(CountryConverter.CountryToString(searchParameters.getCountry()))
+									.createQuery()
+							).createQuery();
+					logger.debug("Query result: " + luceneQuery.toString());
+					break;
+
+				case DATE:
+					logger.debug("Date range query");
+					luceneQuery =  queryBuilder
+							.bool()
+							.must(queryBuilder
+									.keyword()
+									.onField("name")
+									.matching("*" + searchParameters.getSearchQuery() + "*")
+									.createQuery()
+							).must(queryBuilder
+									.range()
+									.onField("date")
+									.from(Float.parseFloat(searchParameters.getPriceRange().from))
+									.to(Float.parseFloat(searchParameters.getPriceRange().to))
+									.createQuery()
+							).createQuery();
+					logger.debug("Query result: " + luceneQuery.toString());
+					break;
+
 			}
-
-
-
-
-
-
-
-			luceneQuery =  queryBuilder
-					.keyword()
-					.onField("name")
-					//TODO make this generic
-					.matching("caldas")
-					.createQuery();
 		}
 		else if (tClass == PersistenceUser.class) {
 			//TODO If we want to also do custom searches on the user
-			luceneQuery = null;
 		}
 		else {
 			logger.error("Unknown class type " + tClass.toString() + " to build query");
-			luceneQuery = null;
 		}
 
 		return fullTextEntityManager.createFullTextQuery(luceneQuery, tClass);

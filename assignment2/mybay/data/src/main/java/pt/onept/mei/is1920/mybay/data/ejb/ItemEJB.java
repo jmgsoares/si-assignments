@@ -62,7 +62,6 @@ public class ItemEJB implements ItemEJBRemote {
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public List<Item> search(SearchParameters searchParameters) {
 		logger.info("Searching for items");
-
 		logger.debug("Search parameters: " + searchParameters.toString());
 
 		Query jpaQuery = QueryBuilderUtility.BuildQuery(em, PersistenceItem.class, searchParameters);
