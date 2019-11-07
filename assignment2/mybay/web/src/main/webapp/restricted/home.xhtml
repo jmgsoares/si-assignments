@@ -23,6 +23,12 @@
                             <div class="line"></div>
                         </div>
                     </div>
+                    <div class="label">
+                        <h:selectOneRadio styleClass="formRadio" value="#{itemController.itemsFromUser}">
+                            <f:selectItem itemValue="#{false}" itemLabel="Search everything" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Search only my items"/>
+                        </h:selectOneRadio>
+                    </div>
                     <div class="rowHome">
                         <div class="columnHome">
                             <div class="label">
@@ -55,8 +61,7 @@
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
                             </div>
-                        </div>
-                        <div class="columnHome">
+
                             <div class="label">
                                 <h:outputLabel value="COUNTRY" styleClass="label-txt" required="true"/>
                                 <h:outputLabel value="" styleClass="input"/>
@@ -70,6 +75,8 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="columnHome">
                             <div class="label">
                                 <div class="form-group">
                                     <h:outputLabel value="DATE" styleClass="label-txt"/>
@@ -82,24 +89,17 @@
                             </div>
 
                             <div class="label">
+                                <h:outputLabel value="ORDER BY" styleClass="label-txt"/>
+                                <h:outputLabel value="" styleClass="input"/>
+                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchTypeString}">
+                                    <f:selectItem itemValue="#{null}" itemLabel=" "/>
+                                    <f:selectItems value="#{searchTypeController.searchTypes}"/>
+                                </h:selectOneMenu>
                                 <h:selectOneRadio styleClass="formRadio"
                                                   value="#{itemController.itemSearchResultOrdering}" layout="spread">
                                     <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
                                     <f:selectItem itemValue="descending" itemLabel="Descending"/>
                                 </h:selectOneRadio>
-                            </div>
-
-                            <div class="label">
-                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchType}">
-                                    <f:selectItem itemValue="#{null}" itemLabel=""/>
-                                    <f:selectItems value="#{searchTypeController.searchTypes}"/>
-                                </h:selectOneMenu>
-                            </div>
-
-                            <div class="label">
-                                <h:selectOneMenu styleClass="formRadio" value="#{itemController.itemsFromUser}">
-                                    <f:selectItem itemValue="true" itemLabel="Search only my items"/>
-                                </h:selectOneMenu>
                             </div>
                         </div>
                     </div>
