@@ -28,7 +28,7 @@ public class SessionFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
 		try {
 			logger.info("Filtering Request");
-			logger.debug("Filtering: request " + request.toString() + " " + response.toString());
+			logger.debug("Filtering: request " + request.toString());
 			HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 			HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 			HttpSession httpSession = httpServletRequest.getSession(false);
