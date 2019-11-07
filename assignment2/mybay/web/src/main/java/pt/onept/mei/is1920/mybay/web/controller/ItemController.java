@@ -38,7 +38,7 @@ public class ItemController implements Serializable {
     private Item itemToView;
 
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView;
+            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, searchTypeString;
     private ItemCategory itemCategory;
     private SearchType searchType;
     private Date itemSearchDateFrom;
