@@ -18,18 +18,7 @@ public class Item {
 	private float price;
 	private Date publishDate;
 	private ItemCategory category;
-	private User seller;
-	private String itemImageUrl;
-	private String itemImageDeleteHash;
-
-	public Item(String name, float price, Date publishDate, ItemCategory category,
-	            User seller, String itemImageUrl, String itemImageDeleteHash) {
-		this.name = name;
-		this.price = price;
-		this.publishDate = publishDate;
-		this.category = category;
-		this.seller = seller;
-		this.itemImageUrl = itemImageUrl;
-		this.itemImageDeleteHash = itemImageDeleteHash;
-	}
+	private String photoUrl;
+	private String photoDeleteHash;
+	private String sellerEmail;
 }

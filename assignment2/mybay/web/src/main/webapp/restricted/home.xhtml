@@ -91,7 +91,7 @@
                             <div class="label">
                                 <h:outputLabel value="ORDER BY" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
-                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchTypeString}">
+                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchFilterString}">
                                     <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                     <f:selectItems value="#{searchTypeController.searchTypes}"/>
                                 </h:selectOneMenu>
@@ -110,7 +110,7 @@
                              styleClass="table table-striped table-bordered form">
                     <h:column>
                         <f:facet name="header">Image</f:facet>
-                        <h:graphicImage url="#{item.itemImageUrl}" width="200" height="150"/>
+                        <h:graphicImage url="#{item.photoUrl}" width="200" height="150"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">Name</f:facet>

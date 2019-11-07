@@ -22,7 +22,7 @@
                             <div class="line"></div>
                         </div>
                     </div>
-                    <h:commandButton action="#{userController.update}" styleClass="button" value="Update Name"/>
+                    <h:commandButton action="#{userController.updateAccount}" styleClass="button" value="Update Name"/>
                 </h:form>
 
                 <h:form id="UpdatePassword" styleClass="form" onsubmit="validationUpdate();">
@@ -53,7 +53,7 @@
                         </div>
                     </div>
 
-                    <h:commandButton action="#{userController.update}" styleClass="button"
+                    <h:commandButton action="#{userController.updateAccount}" styleClass="button"
                                      value="Update Password"/>
                 </h:form>
 
@@ -68,13 +68,13 @@
                             </h:selectOneMenu>
                         </div>
                     </div>
-                    <h:commandButton action="#{userController.update}" styleClass="button"
+                    <h:commandButton action="#{userController.updateAccount}" styleClass="button"
                                      value="Update Country"/>
                 </h:form>
 
                 <h:form id="Delete" styleClass="form">
                     <div class="label">
-                        <h:commandButton action="#{userController.delete}" styleClass="button"
+                        <h:commandButton action="#{userController.deleteAccount}" styleClass="button"
                                          value="Delete Account"/>
                     </div>
                 </h:form>

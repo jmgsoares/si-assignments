@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.enums.SearchType;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
-import pt.onept.mei.is1920.mybay.common.type.User;
-import pt.onept.mei.is1920.mybay.common.utility.ItemCategoryConverter;
+import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
+import pt.onept.mei.is1920.mybay.common_business.contract.SaleEJBRemote;
 import pt.onept.mei.is1920.mybay.web.utility.ImgurApiUtility;
 import pt.onept.mei.is1920.mybay.web.utility.SessionUtility;
 
@@ -39,7 +38,7 @@ public class ItemController implements Serializable {
     private Item itemToView;
 
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, searchTypeString;
+            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, searchFilterString;
     private ItemCategory itemCategory;
     private SearchType searchType;
     private Date itemSearchDateFrom;
@@ -47,7 +46,7 @@ public class ItemController implements Serializable {
     private boolean itemsFromUser;
 
     @EJB
-    private ItemEJBRemote item;
+    private SaleEJBRemote sale;
 
     public String create() {
         itemCategory = ItemCategoryConverter.StringToItemCategory(itemCategoryString);
@@ -66,14 +65,18 @@ public class ItemController implements Serializable {
             return "home";
         }
 
-        User seller = new User().setEmail(session.getAttribute("email").toString());
-
-        Item newItem = new Item(itemName, itemPrice, new Date(),
-                itemCategory, seller, uploadedImageUrl, uploadedImageDeleteHash);
+        Item newItem = new Item()
+                .setName(itemName)
+                .setPrice(itemPrice)
+                .setPublishDate(new Date())
+                .setCategory(itemCategory)
+                .setSellerEmail(session.getAttribute("email").toString())
+                .setPhotoUrl(uploadedImageUrl)
+                .setPhotoDeleteHash(uploadedImageDeleteHash);
 
         logger.debug(newItem.toString());
 
-        if (item.create(newItem)) {
+        if (sale.createSale(newItem)) {
             return "home";
         } else {
             logger.error("Failed to create new item");
@@ -83,7 +86,7 @@ public class ItemController implements Serializable {
 
     public void search() {
         logger.info("Searching items");
-        List<Item> itemList = item.search(new SearchParameters());
+        List<Item> itemList = sale.searchSales(new SearchParameters());
         if(!itemList.isEmpty()) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;

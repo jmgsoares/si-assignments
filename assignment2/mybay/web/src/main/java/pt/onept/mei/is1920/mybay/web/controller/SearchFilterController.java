@@ -3,7 +3,7 @@ package pt.onept.mei.is1920.mybay.web.controller;
 import lombok.Getter;
 import lombok.Setter;
 import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
-import pt.onept.mei.is1920.mybay.common.utility.SearchFilterConverter;
+import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;

@@ -10,9 +10,14 @@
         <module name="data" />
         <module name="common" />
         <module name="business" />
-        <module name="cli" />
+        <module name="common_data" />
+        <module name="common_business" />
         <module name="ear" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cli" target="13" />
+      <module name="commondata" target="13" />
+    </bytecodeTargetLevel>
   </component>
 </project>
