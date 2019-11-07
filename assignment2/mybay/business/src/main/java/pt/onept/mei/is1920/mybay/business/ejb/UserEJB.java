@@ -9,7 +9,7 @@ import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common.contract.UserEJBRemote;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceUser;
 
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +18,7 @@ import javax.persistence.TransactionRequiredException;
 @Stateless
 @Getter
 @Setter
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class UserEJB implements UserEJBRemote {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserEJB.class);
@@ -25,6 +26,7 @@ public class UserEJB implements UserEJBRemote {
 	private EntityManager em;
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean create(User user) {
 		logger.info("Registering new user");
 		try {
@@ -38,6 +40,7 @@ public class UserEJB implements UserEJBRemote {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean update(User userToUpdate) {
 	    try {
 	    	logger.debug("Entered update");
@@ -69,6 +72,7 @@ public class UserEJB implements UserEJBRemote {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public User read(User userToRead) {
 		logger.info("Read request to user  " + userToRead.getEmail());
 		try {
@@ -81,6 +85,7 @@ public class UserEJB implements UserEJBRemote {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean login(String email, String password) {
 		logger.info("Login request from " + email);
 		PersistenceUser userToLogIn = em.find(PersistenceUser.class, email);
@@ -98,6 +103,7 @@ public class UserEJB implements UserEJBRemote {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean delete(User userToDelete) {
 		logger.info("Delete account request from " + userToDelete.getEmail());
 		try {

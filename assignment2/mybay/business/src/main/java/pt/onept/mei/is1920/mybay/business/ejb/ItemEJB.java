@@ -2,25 +2,29 @@ package pt.onept.mei.is1920.mybay.business.ejb;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.business.utility.MapItemUtility;
-import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.contract.ItemEJBRemote;
+import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.data.persistence.type.PersistenceItem;
 
-import javax.ejb.Stateless;
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.ejb.*;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TransactionRequiredException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
 @Getter
 @Setter
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ItemEJB implements ItemEJBRemote {
 
 	private static final Logger logger = LoggerFactory.getLogger(ItemEJB.class);
@@ -28,6 +32,7 @@ public class ItemEJB implements ItemEJBRemote {
 	private EntityManager em;
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean create(Item itemToCreate) {
 		logger.info("Creating item");
 		try {
@@ -41,54 +46,54 @@ public class ItemEJB implements ItemEJBRemote {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Item read(Item itemToRead) {
 		return null;
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean update(Item itemToUpdate) {
 		return false;
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean delete(Item itemToDelete) {
 		return false;
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public List<Item> search(SearchParameters searchParameters) {
 		logger.info("Searching for items");
 
-		if(searchParameters.getId() > 0)  {
-		    PersistenceItem persistenceItem = em.find(PersistenceItem.class, searchParameters.getId());
-		    if(persistenceItem != null) {
-                List<Item> items = new ArrayList<>();
-                items.add(MapItemUtility.MapPersistenceItemToItem(persistenceItem));
-                return items;
-            }
-		    else {
-                return null;
-            }
-        }
+		logger.debug("Search parameters: " + searchParameters.toString());
 
-		try {
-			CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-			CriteriaQuery<PersistenceItem> criteriaQuery = criteriaBuilder.createQuery(PersistenceItem.class);
-			Root<PersistenceItem> from = criteriaQuery.from(PersistenceItem.class);
-			CriteriaQuery<PersistenceItem> all = criteriaQuery.select(from);
-			TypedQuery<PersistenceItem> typedQuery = em.createQuery(all);
-			List<PersistenceItem> persistenceItems = typedQuery.getResultList();
-			List<Item> items = new ArrayList<>();
-			if(!persistenceItems.isEmpty()) {
-				for (PersistenceItem persItem : persistenceItems) {
-					logger.debug("Adding item to list: " + persItem.getName());
-					items.add(MapItemUtility.MapPersistenceItemToItem(persItem));
-				}
-			}
-			return items;
-		} catch (IllegalArgumentException e){
-			logger.error(e.getMessage(), e);
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
+
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
+				.forEntity(PersistenceItem.class).get();
+
+		org.apache.lucene.search.Query luceneQuery = queryBuilder
+				.keyword()
+				.onField("name")
+				//TODO make this generic
+				.matching("caldas")
+				.createQuery();
+
+		javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, PersistenceItem.class);
+
+		List result = jpaQuery.getResultList();
+
+		logger.debug("Search results count: " + result.size());
+
+		List<Item> itemList = new ArrayList<>();
+
+		for (Object o : result) {
+			itemList.add(MapItemUtility.MapPersistenceItemToItem((PersistenceItem) o));
 		}
-		return null;
+
+		return itemList;
 	}
 }
