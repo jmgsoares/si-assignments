@@ -101,10 +101,42 @@ public class ItemController implements Serializable {
     }
 
     public String update() {
+        logger.info("Trying to update sale");
+
+        if(itemName != null) {
+            itemToView.setName(itemName);
+        }
+
+        if(itemPrice > 0.0f) {
+            itemToView.setPrice(itemPrice);
+        }
+
+        if(itemCategory != null) {
+            itemToView.setCategory(itemCategory);
+        }
+
+        if(uploadedImage != null) {
+            String fileName = uploadedImage.getSubmittedFileName();
+            if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                JsonObject uploadResult = ImgurApiUtility.UploadImage(uploadedImage);
+                itemToView.setPhotoUrl(ImgurApiUtility.GetImageUrlFromResponse(uploadResult));
+                itemToView.setPhotoDeleteHash(ImgurApiUtility.GetImageDeleteHashFromResponse(uploadResult));
+            } else {
+                logger.debug("Invalid file format submitted");
+                return "home";
+            }
+        }
+
+        if(sale.updateSale(itemToView)) {
+            logger.debug("Sale updated successfully");
+            return "home";
+        }
+        logger.debug("Couldn't update sale");
         return "home";
     }
 
     public String deleteSale() {
+        logger.info("Trying to delete sale");
         try {
             if(sale.deleteSale(itemToView)) {
                 logger.debug("Deleted sale successfully");
