@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
-import pt.onept.mei.is1920.mybay.common.enums.SearchType;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
@@ -38,9 +37,8 @@ public class ItemController implements Serializable {
     private Item itemToView;
 
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, searchFilterString;
+            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, sortByString;
     private ItemCategory itemCategory;
-    private SearchType searchType;
     private Date itemSearchDateFrom;
     private float itemPrice;
     private boolean itemsFromUser;

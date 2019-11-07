@@ -89,11 +89,11 @@
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="ORDER BY" styleClass="label-txt"/>
+                                <h:outputLabel value="SORT BY" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
-                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchFilterString}">
+                                <h:selectOneMenu styleClass="form-control" value="#{itemController.sortByString}">
                                     <f:selectItem itemValue="#{null}" itemLabel=" "/>
-                                    <f:selectItems value="#{searchTypeController.searchTypes}"/>
+                                    <f:selectItems value="#{sortByController.sortBy}"/>
                                 </h:selectOneMenu>
                                 <h:selectOneRadio styleClass="formRadio"
                                                   value="#{itemController.itemSearchResultOrdering}" layout="spread">
