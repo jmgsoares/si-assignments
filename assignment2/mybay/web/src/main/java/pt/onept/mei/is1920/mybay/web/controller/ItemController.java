@@ -24,6 +24,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Named(value = "itemController")
 @ViewScoped
@@ -102,5 +103,11 @@ public class ItemController implements Serializable {
 
     public String delete() {
         return "home";
+    }
+
+    public int getParam(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+        return Integer.parseInt(paramMap.get("itemId"));
     }
 }
