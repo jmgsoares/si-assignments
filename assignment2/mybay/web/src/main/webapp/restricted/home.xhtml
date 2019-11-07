@@ -25,7 +25,7 @@
                     </div>
                     <div class="label">
                         <h:selectOneRadio styleClass="formRadio" value="#{itemController.itemsFromUser}">
-                            <f:selectItem itemValue="#{false}" itemLabel="Search everything" />
+                            <f:selectItem itemValue="#{false}" itemLabel="Search everything"/>
                             <f:selectItem itemValue="#{true}" itemLabel="Search only my items"/>
                         </h:selectOneRadio>
                     </div>
@@ -103,7 +103,6 @@
                             </div>
                         </div>
                     </div>
-
                     <h:commandButton action="#{itemController.search}" styleClass="button" value="Search item"/>
                 </h:form>
 
@@ -127,12 +126,9 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header"/>
-                        <h:form>
-                            <h:commandButton action="#{itemController.read}" value="View Item"
-                                             styleClass="btn btn-primary">
-                                <f:param name="selectedItemId" value="#{item.id}"/>
-                            </h:commandButton>
-                        </h:form>
+                        <h:button value="View item" outcome="item">
+                            <f:param name="itemId" value="#{item.id}"/>
+                        </h:button>
                     </h:column>
                 </h:dataTable>
 
