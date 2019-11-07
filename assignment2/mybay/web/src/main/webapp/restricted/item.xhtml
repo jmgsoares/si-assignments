@@ -9,6 +9,14 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
+
+                <!-- Examples of ways to get the itemId -->
+                <!--
+                <h:outputText value="2=#{param['itemId']}" />
+                <br/>
+                <h:outputText value="3=#{itemController.param}" />
+                -->
+
                 <div class="form">
                     <div class="ui-icon-image">
                         <h:graphicImage url="#{itemController.itemToView.itemImageUrl}" width="400" height="300"/>
@@ -100,10 +108,11 @@
 
                 <h:form id="DeleteItem" rendered="#{itemController.itemToView.seller.email eq sessionScope.email}">
                     <div class="label">
-                       <h:commandButton action="#{itemController.delete}" styleClass="button"
+                        <h:commandButton action="#{itemController.delete}" styleClass="button"
                                          value="Delete Account"/>
                     </div>
                 </h:form>
+
             </ui:define>
         </ui:composition>
     </f:view>
