@@ -104,7 +104,17 @@ public class ItemController implements Serializable {
         return "home";
     }
 
-    public String delete() {
+    public String deleteSale() {
+        try {
+            if(sale.deleteSale(itemToView)) {
+                logger.debug("Deleted sale successfully");
+            } else {
+                logger.debug("Couldn't delete sale");
+                return "home";
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return "home";
     }
 
