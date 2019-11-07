@@ -60,10 +60,17 @@ public class AccountEJB implements AccountEJBRemote {
             return true;
         }
         logger.debug("User couldn't be deleted");
-        return false;	}
+        return false;
+	}
 
 	@Override
 	public boolean updateAccount(User user) {
+		logger.info("Processing update request");
+		if(userEJBRemote.update(user)) {
+			logger.debug("User update successfully");
+			return true;
+		}
+		logger.debug("User couldn't be updated");
 		return false;
 	}
 }
