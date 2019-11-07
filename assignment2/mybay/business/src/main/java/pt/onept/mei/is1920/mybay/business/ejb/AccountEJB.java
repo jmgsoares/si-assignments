@@ -27,7 +27,14 @@ public class AccountEJB implements AccountEJBRemote {
 
 	@Override
 	public boolean signUp(User user) {
+		logger.info("Processing signUp request");
+		if(userEJBRemote.create(user)) {
+			logger.debug("User created successfully");
+			return true;
+		}
+		logger.debug("User couldn't be created");
 		return false;
+
 	}
 
 	@Override
