@@ -20,8 +20,10 @@ public class SearchTypeController {
 
 	public List<String> getSearchTypes() {
 		List<String> searchTypes = new ArrayList<>();
-		for (SearchType c : SearchType.values())
-			searchTypes.add(SearchTypeConverter.SearchTypeToString(c));
+		for (SearchType c : SearchType.values()) {
+			String searchType = SearchTypeConverter.SearchTypeToString(c);
+			if(searchType != null) searchTypes.add(searchType);
+		}
 		return searchTypes;
 	}
 }
