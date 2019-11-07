@@ -66,6 +66,7 @@ public class ItemController implements Serializable {
         Item newItem = new Item()
                 .setName(itemName)
                 .setPrice(itemPrice)
+                /*.setCountry()*/ // TODO: add country (mapped from session like email)
                 .setPublishDate(new Date())
                 .setCategory(itemCategory)
                 .setSellerEmail(session.getAttribute("email").toString())
