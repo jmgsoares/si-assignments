@@ -1,8 +1,7 @@
 package pt.onept.mei.is1920.mybay.common.enums;
 
-public enum SearchFilter {
+public enum SortBy {
+	NAME,
 	PRICE,
-	CATEGORY,
-	COUNTRY,
-	DATE,
+	DATE
 }
