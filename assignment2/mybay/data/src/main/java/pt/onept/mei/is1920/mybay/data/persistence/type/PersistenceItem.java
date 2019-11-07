@@ -5,10 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
-import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.utility.ItemCategoryConverter;
 
 import javax.persistence.*;
@@ -58,6 +59,7 @@ public class PersistenceItem implements Serializable {
 
 	@IndexedEmbedded
 	@ManyToOne
+	@OnDelete( action = OnDeleteAction.CASCADE )
 	private PersistenceUser seller;
 
 }
