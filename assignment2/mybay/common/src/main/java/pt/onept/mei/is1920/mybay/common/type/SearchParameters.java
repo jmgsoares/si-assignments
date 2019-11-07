@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import pt.onept.mei.is1920.mybay.common.enums.Country;
-import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
-import pt.onept.mei.is1920.mybay.common.enums.SearchType;
-import pt.onept.mei.is1920.mybay.common.enums.SortType;
+import pt.onept.mei.is1920.mybay.common.enums.*;
 
 import java.util.Date;
 import java.util.List;
@@ -19,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchParameters {
-	private int id;
-	private List<SearchType> searchTypes;
+	private SearchType searchType;
+	private List<SearchFilter> searchFilters;
 	private SortType sortType;
 	private Pair<String> priceRange;
 	private Pair<Date> dateRange;

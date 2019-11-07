@@ -2,40 +2,24 @@ package pt.onept.mei.is1920.mybay.common.utility;
 
 import pt.onept.mei.is1920.mybay.common.enums.SearchType;
 
-import javax.persistence.AttributeConverter;
+public final class SearchTypeConverter {
 
-public class SearchTypeConverter implements AttributeConverter<SearchType, String> {
+	private SearchTypeConverter() { }
 
 	public static String SearchTypeToString(SearchType searchType) {
 		switch (searchType) {
-			case PRICE:
-				return "price";
-			case CATEGORY:
-				return "category";
-			case COUNTRY:
-				return "country";
-			case DATE:
-				return "date";
+			case ALL:
+				return "all";
+			case USER:
+				return "user";
 			default:
 				return null;
 		}
 	}
 
 	public static SearchType StringToSearchType(String s) {
-		if (s.equals("price")) return SearchType.PRICE;
-		if (s.equals("category")) return SearchType.CATEGORY;
-		if (s.equals("country")) return SearchType.COUNTRY;
-		if (s.equals("date")) return SearchType.DATE;
+		if (s.equals("all")) return SearchType.ALL;
+		if (s.equals("user")) return SearchType.USER;
 		else return null;
-	}
-
-	@Override
-	public String convertToDatabaseColumn(SearchType searchType) {
-		return SearchTypeToString(searchType);
-	}
-
-	@Override
-	public SearchType convertToEntityAttribute(String s) {
-		return StringToSearchType(s);
 	}
 }
