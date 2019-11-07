@@ -9,7 +9,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
+import pt.onept.mei.is1920.mybay.data.converter.CountryConverter;
 import pt.onept.mei.is1920.mybay.data.converter.ItemCategoryConverter;
 
 
@@ -37,6 +39,11 @@ public class PersistenceItem implements Serializable {
 	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "name", nullable = false)
 	private String name;
+
+	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Column(name = "country", nullable = false)
+	@Convert(converter = CountryConverter.class)
+	private Country country;
 
 	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
 	@Column(name = "price", nullable = false)

@@ -83,6 +83,7 @@ public class ItemController implements Serializable {
     }
 
     public void search() {
+    	//TODO when the price is not set on one of the fields from should be 0 and 2 max double...
         logger.info("Searching items");
         List<Item> itemList = sale.searchSales(new SearchParameters());
         if(!itemList.isEmpty()) {
