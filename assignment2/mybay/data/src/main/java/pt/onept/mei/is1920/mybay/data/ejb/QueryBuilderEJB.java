@@ -1,5 +1,7 @@
-package pt.onept.mei.is1920.mybay.data.utility;
+package pt.onept.mei.is1920.mybay.data.ejb;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -7,28 +9,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
+import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceItem;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
 
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-public final class QueryBuilderUtility {
-	private QueryBuilderUtility() { }
+@Stateless
+@Getter
+@Setter
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class QueryBuilderEJB {
 
-	private static final Logger logger = LoggerFactory.getLogger(QueryBuilderUtility.class);
+	private static final Logger logger = LoggerFactory.getLogger(QueryBuilderEJB.class);
 
-	public static Query BuildQuery(EntityManager em, Class tClass, SearchParameters searchParameters) {
+	@PersistenceContext(unitName = "myBayPersistenceUnit")
+	private EntityManager em;
+
+	public Query buildQuery(Class tClass, SearchParameters searchParameters) {
+
 		logger.debug("Building query for: " + tClass.toString() + " parameters: " + searchParameters.toString());
 
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 				.forEntity(tClass).get();
-
-		QueryBuilder userQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
-				.forEntity(PersistenceUser.class).get();
 
 		org.apache.lucene.search.Query luceneQuery = null;
 
@@ -45,6 +56,7 @@ public final class QueryBuilderUtility {
 							.bool()
 							.must(queryBuilder
 									.keyword()
+									.wildcard()
 									.onField("name")
 									.matching("*" + searchParameters.getSearchQuery() + "*")
 									.createQuery()
@@ -64,6 +76,7 @@ public final class QueryBuilderUtility {
 							.bool()
 							.must(queryBuilder
 									.keyword()
+									.wildcard()
 									.onField("name")
 									.matching("*" + searchParameters.getSearchQuery() + "*")
 									.createQuery()
@@ -82,10 +95,11 @@ public final class QueryBuilderUtility {
 							.bool()
 							.must(queryBuilder
 									.keyword()
+									.wildcard()
 									.onField("name")
 									.matching("*" + searchParameters.getSearchQuery() + "*")
 									.createQuery()
-							).must(userQueryBuilder
+							).must(queryBuilder
 									.keyword()
 									.onField("country")
 									.matching(CountryConverter.CountryToString(searchParameters.getCountry()))
@@ -100,6 +114,7 @@ public final class QueryBuilderUtility {
 							.bool()
 							.must(queryBuilder
 									.keyword()
+									.wildcard()
 									.onField("name")
 									.matching("*" + searchParameters.getSearchQuery() + "*")
 									.createQuery()

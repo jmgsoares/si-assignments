@@ -36,25 +36,25 @@ public class PersistenceItem implements Serializable {
 	@GeneratedValue(generator = "seq_item", strategy = GenerationType.SEQUENCE)
 	private int id;
 
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Field(index= Index.YES, analyze= Analyze.NO, store= Store.NO)
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Field(index= Index.YES, analyze= Analyze.NO, store= Store.NO)
 	@Column(name = "country", nullable = false)
 	@Convert(converter = CountryConverter.class)
 	private Country country;
 
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Field(index= Index.YES, analyze= Analyze.NO, store= Store.NO)
 	@Column(name = "price", nullable = false)
 	private float price;
 
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Field(index= Index.YES, analyze= Analyze.NO, store= Store.NO)
 	@Column(name = "publish_date", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date publishDate;
 
-	@Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
+	@Field(index= Index.YES, analyze= Analyze.NO, store= Store.NO)
 	@Column(name = "category", nullable = false)
 	@Convert(converter = ItemCategoryConverter.class)
 	private ItemCategory category;
