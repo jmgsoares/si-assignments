@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
 import pt.onept.mei.is1920.mybay.common.type.Item;
+import pt.onept.mei.is1920.mybay.common.type.Pair;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
 import pt.onept.mei.is1920.mybay.common.type.User;
@@ -98,17 +100,34 @@ public class ItemController implements Serializable {
             if (searchFilter != null) {
                 switch (searchFilter) {
                     case PRICE:
+                        if (itemSearchPriceLowerBound != null && itemSearchPriceUpperBound != null) {
+                            searchParameters.setPriceRange(
+                                    new Pair<>(itemSearchPriceLowerBound, itemSearchPriceUpperBound)
+                            );
+                        } else {
+                            searchParameters.setPriceRange(new Pair<>("0", "999999999999"));
+                        }
                         break;
                     case CATEGORY:
+                        if (itemCategoryString != null) {
+                            searchParameters.setCategory(ItemCategoryConverter
+                                    .StringToItemCategory(itemCategoryString));
+                        }
                         break;
                     case COUNTRY:
+                        if (itemCountryString != null) {
+                            searchParameters.setCountry(CountryConverter
+                                    .StringToCountry(itemCountryString));
+                        }
                         break;
                     case DATE:
+                        if (itemSearchDateFrom != null) {
+                            searchParameters.setDateRange(new Pair<>(itemSearchDateFrom, new Date()));
+                        }
                         break;
                 }
             }
-        }
-        else {
+        } else {
             //Search without filters - Just by queryname
             searchParameters.setSearchQuery(this.itemName);
         }
@@ -116,7 +135,7 @@ public class ItemController implements Serializable {
 
 
         List<Item> itemList = sale.searchSales(searchParameters);
-        if(!itemList.isEmpty()) {
+        if (!itemList.isEmpty()) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;
         }
@@ -126,7 +145,7 @@ public class ItemController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Item itemToFind = sale.listSale(new Item().setId(Integer.parseInt(paramMap.get("itemId"))));
-        if(itemToFind != null) {
+        if (itemToFind != null) {
             this.itemToView = itemToFind;
         }
     }
@@ -134,22 +153,22 @@ public class ItemController implements Serializable {
     public String updateSale() {
         logger.info("Updating sale " + itemToView.getId());
 
-        if(itemName != null) {
+        if (itemName != null) {
             logger.debug("Item name is not null, length: " + itemName.length());
-            if(itemName.length() > 0) {
+            if (itemName.length() > 0) {
                 itemToView.setName(itemName);
             }
         }
 
-        if(itemPrice > 0.0f) {
+        if (itemPrice > 0.0f) {
             itemToView.setPrice(itemPrice);
         }
 
-        if(itemCategoryString != null) {
+        if (itemCategoryString != null) {
             itemToView.setCategory(ItemCategoryConverter.StringToItemCategory(itemCategoryString));
         }
 
-        if(uploadedImage != null) {
+        if (uploadedImage != null) {
             String fileName = uploadedImage.getSubmittedFileName();
             if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
                 ImgurApiUtility.DeleteImage(itemToView.getPhotoDeleteHash());
@@ -164,7 +183,7 @@ public class ItemController implements Serializable {
 
         logger.debug(itemToView.toString());
 
-        if(sale.updateSale(itemToView)) {
+        if (sale.updateSale(itemToView)) {
             logger.debug("Sale updated successfully");
             return "home";
         }
@@ -175,7 +194,7 @@ public class ItemController implements Serializable {
     public String deleteSale() {
         logger.info("Deleting sale " + itemToView.getId());
         try {
-            if(sale.deleteSale(itemToView)) {
+            if (sale.deleteSale(itemToView)) {
                 logger.debug("Deleted sale successfully");
             } else {
                 logger.debug("Couldn't delete sale");
@@ -190,7 +209,7 @@ public class ItemController implements Serializable {
     public void listMySales() {
         logger.info("Listing account sales");
         List<Item> itemList = sale.listAccountSales(user.getLoggedInAccount());
-        if(itemList != null) {
+        if (itemList != null) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;
         }
