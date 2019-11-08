@@ -43,7 +43,18 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Item read(Item itemToRead) {
-		return null;
+		logger.info("Reading item");
+		try {
+			PersistenceItem persistenceItemToRead = em.find(PersistenceItem.class, itemToRead.getId());
+			if(persistenceItemToRead != null) {
+				logger.debug("Found item " + persistenceItemToRead.getName());
+				return MapItemUtility.MapPersistenceItemToItem(persistenceItemToRead);
+			}
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
+		logger.debug("Returning null item");
+		return null;                          
 	}
 
 	@Override
