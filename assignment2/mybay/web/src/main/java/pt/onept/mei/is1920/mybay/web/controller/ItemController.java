@@ -9,6 +9,7 @@ import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
+import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common_business.contract.SaleEJBRemote;
 import pt.onept.mei.is1920.mybay.web.utility.ImgurApiUtility;
 import pt.onept.mei.is1920.mybay.web.utility.SessionUtility;
@@ -96,11 +97,11 @@ public class ItemController implements Serializable {
         }
     }
 
-    public String read() {
-        int itemId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext()
-                .getRequestParameterMap().get("selectedItemId"));
-
-        return "home";
+    public void read() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+        Item itemToFind = new Item().setId(Integer.parseInt(paramMap.get("itemId")));
+        // TODO the read has to give me the Item i'm searching for
     }
 
     public String update() {
@@ -154,9 +155,4 @@ public class ItemController implements Serializable {
         return "home";
     }
 
-    public int getParam(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
-        return Integer.parseInt(paramMap.get("itemId"));
-    }
 }
