@@ -60,6 +60,22 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean update(Item itemToUpdate) {
+		try {
+			logger.debug("Entered item update");
+			PersistenceItem persistenceItemToUpdate = em.find(PersistenceItem.class, itemToUpdate.getId());
+			if(persistenceItemToUpdate == null) {
+				logger.debug("Item not found -> " + itemToUpdate.getId());
+				return false;
+			}
+
+			persistenceItemToUpdate = MapItemUtility.MapItemToPersistenceItem(itemToUpdate);
+
+			em.merge(persistenceItemToUpdate);
+			logger.debug("Updated item with name -> " + persistenceItemToUpdate.getName());
+			return true;
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
 		return false;
 	}
 
