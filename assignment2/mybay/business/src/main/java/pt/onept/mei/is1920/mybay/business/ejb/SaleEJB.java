@@ -67,7 +67,11 @@ public class SaleEJB implements SaleEJBRemote {
 
 	@Override
 	public List<Item> searchSales(SearchParameters searchParameters) {
-		return null;
+		logger.info("Searching sales");
+		logger.debug("Search Parameters " + searchParameters.toString());
+		List<Item> searchResult = itemEJBRemote.search(searchParameters);
+		logger.info("Found " + searchResult.size() + " items");
+		return searchResult;
 	}
 
 	@Override
@@ -78,7 +82,6 @@ public class SaleEJB implements SaleEJBRemote {
 			logger.debug("Found matching item: " + persistedItem.getName());
 			return persistedItem;
 		}
-		logger.debug("Returning null item");
 		return null;
 	}
 }
