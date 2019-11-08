@@ -71,7 +71,26 @@ public class ItemEJB implements ItemEJBRemote {
 				return false;
 			}
 
-			persistenceItemToUpdate = MapItemUtility.MapItemToPersistenceItem(itemToUpdate);
+			logger.debug("Item to update: " + persistenceItemToUpdate.getName());
+			logger.debug("New information: " + itemToUpdate);
+
+			if(itemToUpdate.getName() != null) {
+				persistenceItemToUpdate.setName(itemToUpdate.getName());
+			}
+
+			if(itemToUpdate.getPrice() > 0.0f) {
+				persistenceItemToUpdate.setPrice(itemToUpdate.getPrice());
+			}
+
+			if(itemToUpdate.getCategory() != null) {
+				persistenceItemToUpdate.setCategory(itemToUpdate.getCategory());
+			}
+
+			if(itemToUpdate.getPhotoUrl() != null) {
+				persistenceItemToUpdate
+						.setImageUrl(itemToUpdate.getPhotoUrl())
+						.setImageDeleteHash(itemToUpdate.getPhotoDeleteHash());
+			}
 
 			em.merge(persistenceItemToUpdate);
 			logger.debug("Updated item with name -> " + persistenceItemToUpdate.getName());

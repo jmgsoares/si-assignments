@@ -136,15 +136,18 @@ public class ItemController implements Serializable {
         logger.info("Updating sale " + itemToView.getId());
 
         if(itemName != null) {
-            itemToView.setName(itemName);
+            logger.debug("Item name is not null, length: " + itemName.length());
+            if(itemName.length() > 0) {
+                itemToView.setName(itemName);
+            }
         }
 
         if(itemPrice > 0.0f) {
             itemToView.setPrice(itemPrice);
         }
 
-        if(itemCategory != null) {
-            itemToView.setCategory(itemCategory);
+        if(itemCategoryString != null) {
+            itemToView.setCategory(ItemCategoryConverter.StringToItemCategory(itemCategoryString));
         }
 
         if(uploadedImage != null) {
@@ -159,6 +162,8 @@ public class ItemController implements Serializable {
                 return "home";
             }
         }
+
+        logger.debug(itemToView.toString());
 
         if(sale.updateSale(itemToView)) {
             logger.debug("Sale updated successfully");
