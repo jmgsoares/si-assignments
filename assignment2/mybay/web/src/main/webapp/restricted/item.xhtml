@@ -4,12 +4,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 <h:body>
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-                #{itemController.readSale}
+                #{itemController.readSale()}
 
                 <div class="form">
                     <div class="ui-icon-image">
@@ -45,13 +46,7 @@
                             <h:outputText value="Publish date: #{itemController.itemToView.publishDate}" style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
-                    <!--
-                    <div >
-                        <div >
-                            <h:outputText value="Seller:#{itemController.itemToView.seller.name}" style="font-family: sans-serif; font-size: .8em;" />
-                        </div>
-                    </div>
-                    -->
+
                     <div >
                         <div >
                             <h:outputText value="Country of origin: #{itemController.itemToView.country}" style="font-family: sans-serif; font-size: .8em;" />
@@ -60,7 +55,8 @@
 
                 </div>
 
-                <h:form id="UpdateItem" rendered="#{itemController.itemToView.sellerEmail eq sessionScope.email}">
+                <h:form id="UpdateItem" rendered="#{itemController.itemToView.sellerEmail eq sessionScope.email}" styleClass="form"
+                        enctype="multipart/form-data" prependId="false">
                     <div class="label">
                         <h:outputLabel value="CHANGE ITEM NAME" styleClass="label-txt"/>
                         <h:inputText id="name" styleClass="input" value="#{itemController.itemName}"/>
@@ -70,8 +66,8 @@
                     </div>
                     <div class="label">
                         <h:outputLabel value="PRICE" styleClass="label-txt"/>
-                        <h:inputText id="price" styleClass="input" value="#{itemController.itemPrice}"
-                                     converterMessage="Please enter digits only.">
+                        <h:inputText id="price" styleClass="input"  p:placeholder="Price"
+                                     value="#{itemController.itemPrice}" converterMessage="Please enter digits only.">
                             <f:convertNumber maxIntegerDigits="15"
                                              maxFractionDigits="2"/>
                         </h:inputText>
@@ -87,7 +83,8 @@
                         <div class="form-group">
                             <h:selectOneMenu styleClass="form-control"
                                              value="#{itemController.itemCategoryString}">
-                                <f:selectItems value="#{categoryController.categories}"/>
+                                <f:selectItem value="#{null}" itemLabel=" " />
+                                <f:selectItems value="#{categoryController.categories}" />
                             </h:selectOneMenu>
                         </div>
                     </div>
@@ -98,13 +95,13 @@
                         <h:inputFile value="#{itemController.uploadedImage}" />
                     </div>
 
-                    <h:commandButton action="#{itemController.updateSale}" styleClass="button" value="Add item"/>
+                    <h:commandButton action="#{itemController.updateSale}" styleClass="button" value="Update item"/>
                 </h:form>
 
                 <h:form id="DeleteItem" rendered="#{itemController.itemToView.sellerEmail eq sessionScope.email}">
                     <div class="label">
                         <h:commandButton action="#{itemController.deleteSale}" styleClass="button"
-                                         value="Delete Item"/>
+                                         value="Delete item"/>
                     </div>
                 </h:form>
 
