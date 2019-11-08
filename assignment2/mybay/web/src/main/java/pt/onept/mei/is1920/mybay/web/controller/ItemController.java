@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
+import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
@@ -89,9 +91,32 @@ public class ItemController implements Serializable {
     }
 
     public void search() {
-    	//TODO when the price is not set on one of the fields from should be 0 and 2 max double...
         logger.info("Searching items");
-        List<Item> itemList = sale.searchSales(new SearchParameters());
+        SearchParameters searchParameters = new SearchParameters();
+        if (this.filterByString != null) {
+            //Search with filters
+            SearchFilter searchFilter = SearchFilterConverter.StringToSearchFilter(this.filterByString);
+            if (searchFilter != null) {
+                switch (searchFilter) {
+                    case PRICE:
+                        break;
+                    case CATEGORY:
+                        break;
+                    case COUNTRY:
+                        break;
+                    case DATE:
+                        break;
+                }
+            }
+        }
+        else {
+            //Search without filters - Just by queryname
+            searchParameters.setSearchQuery(this.itemName);
+        }
+        logger.debug(searchParameters.toString());
+
+
+        List<Item> itemList = sale.searchSales(searchParameters);
         if(!itemList.isEmpty()) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;
