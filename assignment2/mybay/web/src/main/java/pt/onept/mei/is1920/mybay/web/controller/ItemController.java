@@ -39,7 +39,8 @@ public class ItemController implements Serializable {
     private Item itemToView;
 
     private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, sortByString;
+            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, sortByString,
+            filterByString;
     private ItemCategory itemCategory;
     private Date itemSearchDateFrom;
     private float itemPrice;
@@ -100,8 +101,10 @@ public class ItemController implements Serializable {
     public void readSale() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
-        Item itemToFind = new Item().setId(Integer.parseInt(paramMap.get("itemId")));
-        // TODO the read has to give me the Item i'm searching for
+        Item itemToFind = sale.listSale(new Item().setId(Integer.parseInt(paramMap.get("itemId"))));
+        if(itemToFind != null) {
+            this.itemToView = itemToFind;
+        }
     }
 
     public String updateSale() {
@@ -155,4 +158,13 @@ public class ItemController implements Serializable {
         return "home";
     }
 
+    public void listMySales() {
+        logger.info("Listing account sales");
+        itemsFromUser = true;
+        List<Item> itemList = sale.listAccountSales(user.getLoggedInAccount());
+        if(!itemList.isEmpty()) {
+            logger.debug("Got " + itemList.size() + " items");
+            this.itemList = itemList;
+        }
+    }
 }
