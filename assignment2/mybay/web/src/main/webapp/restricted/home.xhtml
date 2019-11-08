@@ -15,6 +15,12 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
+                <h:form id="SearchMyItems" styleClass="form">
+                    <div class="label">
+                        <h:commandButton action="#{itemController.listMySales}" styleClass="button" value="My sales"/>
+                    </div>
+                </h:form>
+
                 <h:form id="SearchItem" styleClass="form">
                     <div class="label">
                         <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
@@ -22,13 +28,23 @@
                         <div class="line-box">
                             <div class="line"></div>
                         </div>
-                    </div>
-                    <div class="label">
-                        <h:selectOneRadio styleClass="formRadio" value="#{itemController.itemsFromUser}">
-                            <f:selectItem itemValue="#{false}" itemLabel="Search everything"/>
-                            <f:selectItem itemValue="#{true}" itemLabel="Search only my items"/>
+                        <h:selectOneRadio styleClass="formRadio"
+                                          value="#{itemController.itemSearchResultOrdering}" layout="spread">
+                            <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
+                            <f:selectItem itemValue="descending" itemLabel="Descending"/>
                         </h:selectOneRadio>
-                    </div>
+
+                    <h:form>
+                        <div class="label">
+                            <h:outputLabel value="FILTER BY" styleClass="label-txt"/>
+                            <h:outputLabel value="" styleClass="input"/>
+                            <h:selectOneMenu styleClass="form-control" value="#{itemController.filterByString}">
+                                <f:selectItem itemValue="#{null}" itemLabel=" "/>
+                                <f:selectItems value="#{searchFilterController.searchFilters}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </h:form>
+
                     <div class="rowHome">
                         <div class="columnHome">
                             <div class="label">
@@ -63,7 +79,7 @@
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="COUNTRY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="COUNTRY" styleClass="label-txt" />
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
@@ -95,15 +111,11 @@
                                     <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                     <f:selectItems value="#{sortByController.sortBy}"/>
                                 </h:selectOneMenu>
-                                <h:selectOneRadio styleClass="formRadio"
-                                                  value="#{itemController.itemSearchResultOrdering}" layout="spread">
-                                    <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
-                                    <f:selectItem itemValue="descending" itemLabel="Descending"/>
-                                </h:selectOneRadio>
                             </div>
                         </div>
                     </div>
                     <h:commandButton action="#{itemController.search}" styleClass="button" value="Search item"/>
+                    </div>
                 </h:form>
 
                 <h:dataTable id="itemTable" value="#{itemController.itemList}" var="item"
