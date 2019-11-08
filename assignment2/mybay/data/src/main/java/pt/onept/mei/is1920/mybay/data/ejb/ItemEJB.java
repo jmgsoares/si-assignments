@@ -43,18 +43,58 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Item read(Item itemToRead) {
-		return null;
+		logger.info("Reading item");
+		try {
+			PersistenceItem persistenceItemToRead = em.find(PersistenceItem.class, itemToRead.getId());
+			if(persistenceItemToRead != null) {
+				logger.debug("Found item " + persistenceItemToRead.getName());
+				return MapItemUtility.MapPersistenceItemToItem(persistenceItemToRead);
+			}
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
+		logger.debug("Returning null item");
+		return null;                          
 	}
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean update(Item itemToUpdate) {
+		try {
+			logger.info("Updating item");
+			PersistenceItem persistenceItemToUpdate = em.find(PersistenceItem.class, itemToUpdate.getId());
+			if(persistenceItemToUpdate == null) {
+				logger.debug("Item not found -> " + itemToUpdate.getId());
+				return false;
+			}
+
+			persistenceItemToUpdate = MapItemUtility.MapItemToPersistenceItem(itemToUpdate);
+
+			em.merge(persistenceItemToUpdate);
+			logger.debug("Updated item with name -> " + persistenceItemToUpdate.getName());
+			return true;
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
 		return false;
 	}
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean delete(Item itemToDelete) {
+	    logger.info("Deleting item");
+	    try {
+	        PersistenceItem persistenceItem = em.find(PersistenceItem.class, itemToDelete.getId());
+	        if(persistenceItem == null) {
+	            logger.debug("Attempt to delete item failed. Item not found -> " + itemToDelete.getId());
+	            return false;
+            }
+	        em.remove(persistenceItem);
+	        logger.debug("Deleted item " + itemToDelete.getId());
+	        return true;
+        } catch (IllegalArgumentException e) {
+	        logger.error(e.getMessage(), e);
+        }
 		return false;
 	}
 
