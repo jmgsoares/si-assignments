@@ -16,6 +16,7 @@ import pt.onept.mei.is1920.mybay.web.utility.SessionUtility;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
@@ -46,9 +47,11 @@ public class ItemController implements Serializable {
     @EJB
     private SaleEJBRemote sale;
 
+    @Inject
+    private UserController user;
+
     public String create() {
         itemCategory = ItemCategoryConverter.StringToItemCategory(itemCategoryString);
-        HttpSession session = SessionUtility.getSession();
 
         logger.info("Uploading image");
         String uploadedImageUrl, uploadedImageDeleteHash;
@@ -66,10 +69,10 @@ public class ItemController implements Serializable {
         Item newItem = new Item()
                 .setName(itemName)
                 .setPrice(itemPrice)
-                /*.setCountry()*/ // TODO: add country (mapped from session like email)
+                .setCountry(user.getLoggedInAccount().getCountry())
                 .setPublishDate(new Date())
                 .setCategory(itemCategory)
-                .setSellerEmail(session.getAttribute("email").toString())
+                .setSellerEmail(user.getLoggedInAccount().getEmail())
                 .setPhotoUrl(uploadedImageUrl)
                 .setPhotoDeleteHash(uploadedImageDeleteHash);
 
@@ -101,7 +104,7 @@ public class ItemController implements Serializable {
     }
 
     public String update() {
-        logger.info("Trying to update sale");
+        logger.info("Updating sale " + itemToView.getId());
 
         if(itemName != null) {
             itemToView.setName(itemName);
@@ -118,6 +121,7 @@ public class ItemController implements Serializable {
         if(uploadedImage != null) {
             String fileName = uploadedImage.getSubmittedFileName();
             if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                ImgurApiUtility.DeleteImage(itemToView.getPhotoDeleteHash());
                 JsonObject uploadResult = ImgurApiUtility.UploadImage(uploadedImage);
                 itemToView.setPhotoUrl(ImgurApiUtility.GetImageUrlFromResponse(uploadResult));
                 itemToView.setPhotoDeleteHash(ImgurApiUtility.GetImageDeleteHashFromResponse(uploadResult));
@@ -136,7 +140,7 @@ public class ItemController implements Serializable {
     }
 
     public String deleteSale() {
-        logger.info("Trying to delete sale");
+        logger.info("Deleting sale " + itemToView.getId());
         try {
             if(sale.deleteSale(itemToView)) {
                 logger.debug("Deleted sale successfully");

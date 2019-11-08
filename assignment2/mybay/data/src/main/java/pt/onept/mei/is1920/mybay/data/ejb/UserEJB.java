@@ -42,13 +42,17 @@ public class UserEJB implements UserEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public User read(User userToRead) {
-		logger.info("Read request to user  " + userToRead.getEmail());
+		logger.info("Read request to user " + userToRead.getEmail());
 		try {
 			PersistenceUser persistedUserToRead = em.find(PersistenceUser.class, userToRead.getEmail());
-			return MapUserUtility.MapPersistenceUserToUser(persistedUserToRead);
+			if(persistedUserToRead != null) {
+				logger.debug("Found user " + persistedUserToRead.getEmail());
+				return MapUserUtility.MapPersistenceUserToUser(persistedUserToRead);
+			}
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 		}
+		logger.debug("Returning null user");
 		return null;
 	}
 

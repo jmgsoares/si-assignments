@@ -107,7 +107,8 @@
                 </h:form>
 
                 <h:dataTable id="itemTable" value="#{itemController.itemList}" var="item"
-                             styleClass="table table-striped table-bordered form">
+                             styleClass="table table-striped table-bordered form"
+                             rendered="#{itemController.itemList ne null}">
                     <h:column>
                         <f:facet name="header">Image</f:facet>
                         <h:graphicImage url="#{item.photoUrl}" width="200" height="150"/>
