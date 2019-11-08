@@ -4,6 +4,7 @@
 
 
 <web-app>
+
 	<display-name>MyBay</display-name>
 
 	<context-param>
@@ -40,7 +41,16 @@
 			30
 		</session-timeout>
 	</session-config>
+
+	<mime-mapping>
+		<extension>jsp <!--{or the extension of file}--></extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+
 	<welcome-file-list>
 		<welcome-file>login.xhtml</welcome-file>
 	</welcome-file-list>
+
+
+
 </web-app>
