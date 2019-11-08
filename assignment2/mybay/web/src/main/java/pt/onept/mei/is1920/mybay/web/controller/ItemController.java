@@ -51,7 +51,7 @@ public class ItemController implements Serializable {
     @Inject
     private UserController user;
 
-    public String create() {
+    public String createSale() {
         itemCategory = ItemCategoryConverter.StringToItemCategory(itemCategoryString);
 
         logger.info("Uploading image");
@@ -97,14 +97,14 @@ public class ItemController implements Serializable {
         }
     }
 
-    public void read() {
+    public void readSale() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Item itemToFind = new Item().setId(Integer.parseInt(paramMap.get("itemId")));
         // TODO the read has to give me the Item i'm searching for
     }
 
-    public String update() {
+    public String updateSale() {
         logger.info("Updating sale " + itemToView.getId());
 
         if(itemName != null) {

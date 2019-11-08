@@ -105,7 +105,7 @@
                         <h:inputFile value="#{itemController.uploadedImage}" />
                     </div>
 
-                    <h:commandButton action="#{itemController.update}" styleClass="button" value="Add item"/>
+                    <h:commandButton action="#{itemController.updateSale}" styleClass="button" value="Add item"/>
                 </h:form>
 
                 <h:form id="DeleteItem" rendered="#{itemController.itemToView.sellerEmail eq sessionScope.email}">
