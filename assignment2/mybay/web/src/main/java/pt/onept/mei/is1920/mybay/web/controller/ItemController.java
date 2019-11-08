@@ -46,7 +46,6 @@ public class ItemController implements Serializable {
     private ItemCategory itemCategory;
     private Date itemSearchDateFrom;
     private float itemPrice;
-    private boolean itemsFromUser;
 
     @EJB
     private SaleEJBRemote sale;
@@ -190,9 +189,8 @@ public class ItemController implements Serializable {
 
     public void listMySales() {
         logger.info("Listing account sales");
-        itemsFromUser = true;
         List<Item> itemList = sale.listAccountSales(user.getLoggedInAccount());
-        if(!itemList.isEmpty()) {
+        if(itemList != null) {
             logger.debug("Got " + itemList.size() + " items");
             this.itemList = itemList;
         }
