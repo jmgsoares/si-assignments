@@ -61,7 +61,7 @@ public class ItemEJB implements ItemEJBRemote {
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean update(Item itemToUpdate) {
 		try {
-			logger.debug("Entered item update");
+			logger.info("Updating item");
 			PersistenceItem persistenceItemToUpdate = em.find(PersistenceItem.class, itemToUpdate.getId());
 			if(persistenceItemToUpdate == null) {
 				logger.debug("Item not found -> " + itemToUpdate.getId());
@@ -82,6 +82,19 @@ public class ItemEJB implements ItemEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean delete(Item itemToDelete) {
+	    logger.info("Deleting item");
+	    try {
+	        PersistenceItem persistenceItem = em.find(PersistenceItem.class, itemToDelete.getId());
+	        if(persistenceItem == null) {
+	            logger.debug("Attempt to delete item failed. Item not found -> " + itemToDelete.getId());
+	            return false;
+            }
+	        em.remove(persistenceItem);
+	        logger.debug("Deleted item " + itemToDelete.getId());
+	        return true;
+        } catch (IllegalArgumentException e) {
+	        logger.error(e.getMessage(), e);
+        }
 		return false;
 	}
 
