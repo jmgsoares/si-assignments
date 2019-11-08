@@ -120,7 +120,6 @@ public class ItemEJB implements ItemEJBRemote {
 		for (Object o : result) {
 			itemList.add(MapItemUtility.MapPersistenceItemToItem((PersistenceItem) o));
 		}
-
 		return itemList;
 	}
 }
