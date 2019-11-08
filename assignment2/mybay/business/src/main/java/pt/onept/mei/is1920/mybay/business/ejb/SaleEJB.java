@@ -69,4 +69,16 @@ public class SaleEJB implements SaleEJBRemote {
 	public List<Item> searchSales(SearchParameters searchParameters) {
 		return null;
 	}
+
+	@Override
+	public Item listSale(Item item) {
+		logger.info("Processing list item request");
+		Item persistedItem = itemEJBRemote.read(item);
+		if(persistedItem != null) {
+			logger.debug("Found matching item: " + persistedItem.getName());
+			return persistedItem;
+		}
+		logger.debug("Returning null item");
+		return null;
+	}
 }

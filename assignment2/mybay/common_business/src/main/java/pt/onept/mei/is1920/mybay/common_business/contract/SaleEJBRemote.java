@@ -14,4 +14,5 @@ public interface SaleEJBRemote {
 	boolean updateSale(Item item);
 	List<Item> listAccountSales(User user);
 	List<Item> searchSales(SearchParameters searchParameters);
+	Item listSale(Item item);
 }
