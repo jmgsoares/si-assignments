@@ -9,14 +9,7 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
-
-                <!-- Get itemId:
-
-                <h:outputText value="#{itemController.param}" />
-
-                ^ use this method to populate itemToView on load of the image
-                and use itemToView on the rest.
-                -->
+                #{itemController.readSale}
 
                 <div class="form">
                     <div class="ui-icon-image">
