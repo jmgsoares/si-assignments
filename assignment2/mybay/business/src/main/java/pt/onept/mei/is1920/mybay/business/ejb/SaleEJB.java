@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import java.util.List;
 
 @Stateless
@@ -68,7 +69,7 @@ public class SaleEJB implements SaleEJBRemote {
 	@Override
 	public List<Item> searchSales(SearchParameters searchParameters) {
 		logger.info("Searching sales");
-		logger.debug("Search Parameters " + searchParameters.toString());
+		logger.debug(searchParameters.toString());
 		List<Item> searchResult = itemEJBRemote.search(searchParameters);
 		logger.info("Found " + searchResult.size() + " items");
 		return searchResult;
