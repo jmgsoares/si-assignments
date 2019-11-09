@@ -9,6 +9,7 @@ import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common_business.contract.SaleEJBRemote;
 import pt.onept.mei.is1920.mybay.common_data.contract.ItemEJBRemote;
+import pt.onept.mei.is1920.mybay.common_data.contract.UserEJBRemote;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -25,9 +26,11 @@ public class SaleEJB implements SaleEJBRemote {
 
 	private static final Logger logger = LoggerFactory.getLogger(SaleEJB.class);
 
-
 	@EJB
 	private ItemEJBRemote itemEJBRemote;
+
+	@EJB
+	private UserEJBRemote userEJBRemote;
 
 	@Override
 	public boolean createSale(Item item) {
@@ -59,11 +62,12 @@ public class SaleEJB implements SaleEJBRemote {
 			return true;
 		}
 		logger.debug("Sale couldn't be updated");
-		return false;	}
+		return false;
+	}
 
 	@Override
 	public List<Item> listAccountSales(User user) {
-		return null;
+		return userEJBRemote.listSales(user);
 	}
 
 	@Override

@@ -67,12 +67,12 @@ public class ItemEJB implements ItemEJBRemote {
 			logger.info("Updating item");
 			PersistenceItem persistenceItemToUpdate = em.find(PersistenceItem.class, itemToUpdate.getId());
 			if(persistenceItemToUpdate == null) {
-				logger.debug("Item not found -> " + itemToUpdate.getId());
+				logger.debug("Item id " + itemToUpdate.getId() + " not found" );
 				return false;
 			}
 
-			logger.debug("Item to update: " + persistenceItemToUpdate.getName());
-			logger.debug("New information: " + itemToUpdate);
+			logger.debug("Item to update: " + persistenceItemToUpdate.toString());
+			logger.debug("New information: " + itemToUpdate.toString());
 
 			if(itemToUpdate.getName() != null) {
 				persistenceItemToUpdate.setName(itemToUpdate.getName());
@@ -108,11 +108,11 @@ public class ItemEJB implements ItemEJBRemote {
 	    try {
 	        PersistenceItem persistenceItem = em.find(PersistenceItem.class, itemToDelete.getId());
 	        if(persistenceItem == null) {
-	            logger.debug("Attempt to delete item failed. Item not found -> " + itemToDelete.getId());
+	            logger.debug("Attempt to delete item failed. Item id not found: " + itemToDelete.getId());
 	            return false;
             }
 	        em.remove(persistenceItem);
-	        logger.debug("Deleted item " + itemToDelete.getId());
+	        logger.debug("Deleted item id " + itemToDelete.getId());
 	        return true;
         } catch (IllegalArgumentException e) {
 	        logger.error(e.getMessage(), e);
