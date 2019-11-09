@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
 import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
+import pt.onept.mei.is1920.mybay.common.converter.SortOrderConverter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
+import pt.onept.mei.is1920.mybay.common.enums.SortOrder;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.Pair;
 import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
@@ -131,6 +133,12 @@ public class ItemController implements Serializable {
             //Search without filters - Just by queryname
             searchParameters.setSearchQuery(this.itemName);
         }
+
+        if (itemSearchResultOrdering != null) {
+            searchParameters.setSortOrder(SortOrderConverter
+                    .StringToSortOrder(itemSearchResultOrdering));
+        }
+
         logger.debug(searchParameters.toString());
 
 
