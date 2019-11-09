@@ -25,21 +25,22 @@ João Soares - 2009113071 }
 
 \section{Introduction}
 
-\qquad The intent of this assignment is to develop a web application to manage an online store os secondhand items, called MyBay and deploy it using WildFly Application Server. In order to develop this application, we build a Maven architecture and used \ac{Java EE} and divided the system into three layers: presentation, business and data.
+\qquad The intent of this assignment is to develop a web application to manage an online store of secondhand items, called MyBay and deploy it using WildFly Application Server. In order to develop this application, we build a Maven architecture and used \ac{Java EE}, dividing the system into three layers: presentation, business and data.
 
 \section{Presentation layer}
 
 \qquad To develop the presentation layer we used \ac{JSF} because it is a MVC (model, view, control) framework.
 
-\qquad The passwords in this layer go always through MD5 encryption when they are inserted, only after this they are sent to the server. This prevents attacks that display the password to the attacker in plain text.
+\qquad A none logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to the restricted folder to logged in users. The filter is defined on the web xml.
 
-\qquad A none logged in user can go to the landing page, in this case the login, and access the sign up page, so he sign up and latter login to see the contents of the web-page. After logging in, the user is presented with the home page (figure 1). All of the pages, from this point forward, use a template that we created so that they can have the same header, giving access to the user to the home page, add item page, profile page and logout option anywhere on the system. 
+\qquad All of the passwords written on this layer go through MD5 encryption. This prevents attacks that display plain text passwords to attackers. Only after this, they are sent to the business layer for further encryption.
+
+\qquad After logging in, the user is presented with the home page (figure 1). All of the pages, from this point forward, use a template that we created so that they can have the same header, giving access to the user to the home page, add item page, profile page and logout option anywhere on the system. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.20]{homePage.png}
-    \caption{Home page layout }
-    \label{fig:homePage}
+    \caption{Home page layout after a search.}
    \end{figure}
 
 \qquad In the home page is where the user makes his searches. He's able to search for all items, by simply pressing the Search item button, he can see his own items, with the button my sales and can create various searches by using the input boxes, buttons and drop-down menus.
@@ -50,15 +51,17 @@ João Soares - 2009113071 }
 
 \qquad By logging out, the session is invalidated, so that the user needs to login again to see all of the pages above. 
 
+\qquad All of the information that the user inserts for searches, updates, etc. is treated in the controllers we've implemented to communicate with the business layer. This controllers call functions that are exposed by the business \ac{EJB}s interfaces and pass information through contracts that are known throughout the system.
+
 \qquad One of the most challenging parts of the interface's implementation was the search part. We wanted to make it obvious to the user how the categories to search by are selected, so we made a drop-down menu where the user selects the category he wants to search by. E.g.: I only want to see the items in the category wc. To do that, I need to click filter by, select categories and in the categories drop-down menu select the category wc. After this, I press Search item and will get all items in this category.
 
-
+\qquad Another challenge was the item's image, resolved with an external API that lets us upload images and gives us the URL and the delete hash, for when the item is removed.
 
 
 
 \section{Business layer}
 
-\qquad The connection to the data layer is performed by the business layer, whom has three local stateless \ac{EJB}s implemented. The account, sale and email. They are local because they are running in the same \ac{JVM} as the rest of the system and stateless sense we don't need to maintain a conversational state, we only need to perform simple operations. The transactions for this beans are managed by the container, although we don't make any transactions on this layer, hence the transactions to the database are handled on the level of the data layer.
+\qquad The connection to the data layer is performed by the business layer, whom has three local stateless \ac{EJB}s implemented. The account, sale and email. They are local because they are running in the same \ac{JVM} as the rest of the system and stateless sense we don't need to maintain a conversational state, we only need to perform simple operations. The transactions for this beans are managed by the container, although we don't make any transactions on this layer, the transactions to the database are handled on the level of the data layer.
 
 \qquad On the AccountEJB, most of the information that goes to the presentation layer is boolean, sense the operations mainly need confirmations on said layer, exceptionally on the login, where we send a User class, created for this purpose, containing the information's about the user logged in (name, email, encrypted password and country).
 
@@ -66,7 +69,7 @@ João Soares - 2009113071 }
 
 \qquad The SaleEJB, just like the AccountEJB, gathers booleans from the data layer, although, instead of User classes it collects Item classes to send to the presentation layer, and sends the mapped information to the presentation layer. The operations performed are create, list, update and delete sales, list an users items for sale and search sales. 
 
-\qquad To send the emails to the users with the three newest items, we have a third \ac{EJB} called EmailEJB, a singleton that initiates upon deployment with a method called newsletter that is scheduled to run every Friday at 8AM,  that gets the emails and three newest items from the data layer (UserEJB and ItemEJB) sends an email with this new items through an API . 
+\qquad To send the emails to the users with the three newest items, we have a third \ac{EJB} called EmailEJB, a singleton that initiates upon deployment with a method called newsletter that is scheduled to run every Friday at 8AM. It gets the emails and the three newest items from the data layer (UserEJB and ItemEJB) and sends the emails with this new items through an API. 
 
 
 
@@ -78,7 +81,7 @@ João Soares - 2009113071 }
 \begin{figure}[H]
  \centering
  \includegraphics[scale=0.4]{ER_MyBay.png}
- \caption{MyBay \ac{EJB} \ac{ER} diagram }
+ \caption{MyBay \ac{EJB} \ac{ER} diagram.}
  \label{fig:er}
 \end{figure}
 
