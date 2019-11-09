@@ -13,10 +13,7 @@ import pt.onept.mei.is1920.mybay.data.utility.MapItemUtility;
 import pt.onept.mei.is1920.mybay.data.utility.MapUserUtility;
 
 import javax.ejb.*;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TransactionRequiredException;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,5 +128,22 @@ public class UserEJB implements UserEJBRemote {
 			logger.error(e.getMessage(), e);
 		}
 		return null;
+	}
+
+	@Override
+	public List<String> getUsersEmails() {
+		logger.debug("Getting user email list");
+		Query jpaQuery = em.createQuery("SELECT u.email FROM PersistenceUser u");
+
+		logger.debug(jpaQuery.toString());
+
+		List result = jpaQuery.getResultList();
+
+		List<String> emailList = new ArrayList<>();
+
+		for (Object o : result) {
+			emailList.add((String) o);
+		}
+		return emailList;
 	}
 }

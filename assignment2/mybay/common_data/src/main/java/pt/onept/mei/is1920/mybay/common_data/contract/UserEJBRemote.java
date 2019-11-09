@@ -9,4 +9,5 @@ import java.util.List;
 @Local
 public interface UserEJBRemote extends Crudable<User> {
 	List<Item> listSales(User user);
+	List<String> getUsersEmails();
 }

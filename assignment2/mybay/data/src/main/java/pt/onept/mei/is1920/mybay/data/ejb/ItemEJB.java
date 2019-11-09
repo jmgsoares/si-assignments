@@ -121,7 +121,7 @@ public class ItemEJB implements ItemEJBRemote {
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public List<Item> search(SearchParameters searchParameters) {
+	public List<Item> search(SearchParameters searchParameters, int resultCount) {
 		logger.info("Searching for items");
 		logger.debug(searchParameters.toString());
 
@@ -129,7 +129,15 @@ public class ItemEJB implements ItemEJBRemote {
 
 		logger.debug(jpaQuery.toString());
 
-		List result = jpaQuery.getResultList();
+		List result;
+
+		if (resultCount == -1) {
+			result = jpaQuery.getResultList();
+		}
+		else {
+			result = jpaQuery.setMaxResults(resultCount).getResultList();
+		}
+
 
 		logger.debug("Search results count: " + result.size());
 

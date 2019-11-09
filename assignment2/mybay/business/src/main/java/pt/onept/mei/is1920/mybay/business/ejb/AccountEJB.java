@@ -21,7 +21,6 @@ public class AccountEJB implements AccountEJBRemote {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountEJB.class);
 
-
     @EJB
     private UserEJBRemote userEJBRemote;
 

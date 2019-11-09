@@ -74,7 +74,7 @@ public class SaleEJB implements SaleEJBRemote {
 	public List<Item> searchSales(SearchParameters searchParameters) {
 		logger.info("Searching sales");
 		logger.debug(searchParameters.toString());
-		List<Item> searchResult = itemEJBRemote.search(searchParameters);
+		List<Item> searchResult = itemEJBRemote.search(searchParameters, -1);
 		logger.info("Found " + searchResult.size() + " items");
 		return searchResult;
 	}
