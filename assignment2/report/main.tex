@@ -33,7 +33,7 @@ João Soares - 2009113071 }
 
 \qquad A none logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to the restricted folder to logged in users. The filter is defined on the web xml.
 
-\qquad All of the passwords written on this layer go through MD5 encryption. This prevents attacks that display plain text passwords to attackers. Only after this, they are sent to the business layer for further encryption.
+\qquad In the relation of the password storage we have done this program thinking in the security from the front-end, all the way down to the persistence. The actual password never gets transmitted to our application as it goes under a MD5 hash on the clients browser using a JavaScript program, then we pass the hashed password received on more MD5 hashing rounds, so the password saved on the database can't be used to login even if the database information would get exposed.
 
 \qquad After logging in, the user is presented with the home page (figure 1). All of the pages, from this point forward, use a template that we created so that they can have the same header, giving access to the user to the home page, add item page, profile page and logout option anywhere on the system. 
 
@@ -76,7 +76,15 @@ João Soares - 2009113071 }
 
 \section{Data layer}
 
-\qquad The data layer works atop a database and exposes CRUD functionalities for the \ac{EJB}s ItemEJB and UserEJB. The database interactions use two other entities to be performed, PersistenceUser and PersistenceItem.  We can see how they interact in the following \ac{ER} (figure 2).
+\qquad The data layer works atop a database and exposes CRUD functionalities for the \ac{EJB}s ItemEJB and UserEJB. Regarding transactions, we have left the management of all the transactions to the application container and on the data module specified the methods that require a new transaction to run  (mainly all the crud operations) and by default all the \ac{EJB} methods star an implicit transaction when called and end it upon returning from the method.
+
+\qquad We've separated the entities from the persistence layer and the rest of the layers. This is why all the layers only know the user and item object classes that are not persistence entities, doing this we ensured isolation from the persistence entities from the rest of the application maintaining full control over them, performing all persistence operations in this layer.
+
+\qquad To handle all the persistence we used hibernate 5.3 and javax.persistence. 
+
+\qquad We have created interfaces (contracts) to expose the \ac{EJB}s methods and have put them in common modules with the name of the layer, this way the data layer exposes crud, search (to allow the reception of search parameters to refine searches) and list (to perform some list operations). The only layer that has the common data as a dependency is the business layer. This way only in the business layer the data \ac{EJB}s are available. The same was done for the business / web interfaces.
+
+\qquad The database interactions use two other entities to be performed, PersistenceUser and PersistenceItem.  We can see how they interact in the following \ac{ER} (figure 2).
 
 \begin{figure}[H]
  \centering
@@ -87,14 +95,17 @@ João Soares - 2009113071 }
 
 \qquad Both \ac{EJB}s interface extends the crudable interface and the ItemEJB's extends Searchable, meaning they both implement create, read, update and delete, while user also implements a listing of the user's items for sale and the item implementing a search method that has parameters as it's input.
 
+\qquad In terms of the \ac{EJB} security we have researched the use of role access base (but due to some problems trying to configure the users within WildFly with RBAC and the lack of time we couldn't persue this path)
 
 
 
 \section{Project management and packaging}
 
+\qquad All the cycle of (compiling packing and deployment) is done via Maven. The development system was a remote server running WildFly version 18 with java 13 under Ubuntu server 18.04lts. We've performed some configurations to the WildFly server in order to further customize the deployment and inserted the PostgreSQL driver in order to use a database (and configured a data source).
+
 \qquad The project is divided into 7 folders common, data, common\_data, business, common\_business, web and ear. The common folder has support functions, such as enumerations, converters from and to enumerations and types, it's here where we have the Item and User class used to transfer data between layers. The common\_data and common\_business it where we store the interfaces of the \ac{EJB}s of each layer. In the common\_data we also have the Crudable and Searchable interface. The web, data and business store each of our layers. The ear folder has the pom file that creates the deployable file, packaged has an ear file.
 
-\qquad For logging we used the tool \ac{SLF4J}
+\qquad For logging we used the tool \ac{SLF4J} and created a logging profile to divide the logs by hierarchy and modules. We have a log-file common to all modules that registers all the information and above messages (this way we have a high level view of what's happening within our application). Then we have a separate logging file per module that records all the logs from trace and above, this way if we need to do some more deep investigation of what's happened within the system on a particular layer it's easier. The logging profile is operating in a rolling log files per day of operation.
 
 \qquad Each of our folders has a pom fille. The root pom file has the modules of the project and the dependencies for the project, as well as the WildFly plugin configurations for the server that we're running WildFly on. The web pom has the URL where the system will be accessible from. The rest of the pom filles are used to define the packaging of the modules they're in, in this case both business and data are packaged has ejb, the web module is a war file and the common folders are jar files.\newline\newline
 
@@ -111,10 +122,9 @@ João Soares - 2009113071 }
 \acro{JSF}{JavaServer Faces}
 \acro{EJB}{Enterprise JavaBeans}
 \acro{JPA}{Java Persistence API}
-\acro{JPQL}{Java Persistence Query Language}
-\acro{ORM}{Object/Relational Mapping}
 \acro{SLF4J}{Simple Logging Facade for Java}
 \acro{ER}{Entity-Relationship}
+\acro{RBAC}{Role-Based Access Control}
 \end{acronym}
 
 \end{document}
