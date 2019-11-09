@@ -69,8 +69,8 @@ public class QueryBuilderEJB {
 								).must(queryBuilder
 										.range()
 										.onField("price")
-										.from(Float.parseFloat(searchParameters.getPriceRange().from))
-										.to(Float.parseFloat(searchParameters.getPriceRange().to))
+										.from(searchParameters.getPriceRange().from)
+										.to(searchParameters.getPriceRange().to)
 										.createQuery()
 								).createQuery();
 						logger.debug("Query result: " + luceneQuery.toString());
@@ -89,7 +89,7 @@ public class QueryBuilderEJB {
 								).must(queryBuilder
 										.keyword()
 										.onField("category")
-										.matching(ItemCategoryConverter.CategoryToString(searchParameters.getCategory()))
+										.matching(searchParameters.getCategory())
 										.createQuery()
 								).createQuery();
 						logger.debug("Query result: " + luceneQuery.toString());
@@ -108,7 +108,7 @@ public class QueryBuilderEJB {
 								).must(queryBuilder
 										.keyword()
 										.onField("country")
-										.matching(CountryConverter.CountryToString(searchParameters.getCountry()))
+										.matching(searchParameters.getCountry())
 										.createQuery()
 								).createQuery();
 						logger.debug("Query result: " + luceneQuery.toString());
@@ -127,8 +127,8 @@ public class QueryBuilderEJB {
 								).must(queryBuilder
 										.range()
 										.onField("date")
-										.from(Float.parseFloat(searchParameters.getPriceRange().from))
-										.to(Float.parseFloat(searchParameters.getPriceRange().to))
+										.from(searchParameters.getDateRange().from)
+										.to(searchParameters.getDateRange().to)
 										.createQuery()
 								).createQuery();
 						logger.debug("Query result: " + luceneQuery.toString());
