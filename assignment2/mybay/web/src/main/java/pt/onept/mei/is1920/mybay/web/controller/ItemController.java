@@ -5,35 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
-import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
-import pt.onept.mei.is1920.mybay.common.converter.SortOrderConverter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
-import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
-import pt.onept.mei.is1920.mybay.common.enums.SortOrder;
 import pt.onept.mei.is1920.mybay.common.type.Item;
-import pt.onept.mei.is1920.mybay.common.type.Pair;
-import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
-import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common_business.contract.SaleEJBRemote;
 import pt.onept.mei.is1920.mybay.web.utility.ImgurApiUtility;
-import pt.onept.mei.is1920.mybay.web.utility.SessionUtility;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Named(value = "itemController")
-@ViewScoped
+@RequestScoped
 @Getter
 @Setter
 public class ItemController implements Serializable {
@@ -41,12 +30,9 @@ public class ItemController implements Serializable {
 
     private Part uploadedImage;
 
-    private List<Item> itemList;
     private Item itemToView;
 
-    private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound,
-            itemSearchPriceUpperBound, itemSearchResultOrdering, itemIdToView, sortByString,
-            filterByString;
+    private String itemName, itemCategoryString;
     private ItemCategory itemCategory;
     private Date itemSearchDateFrom;
     private float itemPrice;
@@ -90,62 +76,6 @@ public class ItemController implements Serializable {
         } else {
             logger.error("Failed to create new item");
             return "home";
-        }
-    }
-
-    public void search() {
-        logger.info("Searching items");
-        SearchParameters searchParameters = new SearchParameters();
-        if (this.filterByString != null) {
-            //Search with filters
-            SearchFilter searchFilter = SearchFilterConverter.StringToSearchFilter(this.filterByString);
-            if (searchFilter != null) {
-                switch (searchFilter) {
-                    case PRICE:
-                        if (itemSearchPriceLowerBound != null && itemSearchPriceUpperBound != null) {
-                            searchParameters.setPriceRange(
-                                    new Pair<>(itemSearchPriceLowerBound, itemSearchPriceUpperBound)
-                            );
-                        } else {
-                            searchParameters.setPriceRange(new Pair<>("0", "999999999999"));
-                        }
-                        break;
-                    case CATEGORY:
-                        if (itemCategoryString != null) {
-                            searchParameters.setCategory(ItemCategoryConverter
-                                    .StringToItemCategory(itemCategoryString));
-                        }
-                        break;
-                    case COUNTRY:
-                        if (itemCountryString != null) {
-                            searchParameters.setCountry(CountryConverter
-                                    .StringToCountry(itemCountryString));
-                        }
-                        break;
-                    case DATE:
-                        if (itemSearchDateFrom != null) {
-                            searchParameters.setDateRange(new Pair<>(itemSearchDateFrom, new Date()));
-                        }
-                        break;
-                }
-            }
-        } else {
-            //Search without filters - Just by queryname
-            searchParameters.setSearchQuery(this.itemName);
-        }
-
-        if (itemSearchResultOrdering != null) {
-            searchParameters.setSortOrder(SortOrderConverter
-                    .StringToSortOrder(itemSearchResultOrdering));
-        }
-
-        logger.debug(searchParameters.toString());
-
-
-        List<Item> itemList = sale.searchSales(searchParameters);
-        if (!itemList.isEmpty()) {
-            logger.debug("Got " + itemList.size() + " items");
-            this.itemList = itemList;
         }
     }
 
@@ -214,12 +144,5 @@ public class ItemController implements Serializable {
         return "home";
     }
 
-    public void listMySales() {
-        logger.info("Listing account sales");
-        List<Item> itemList = sale.listAccountSales(user.getLoggedInAccount());
-        if (itemList != null) {
-            logger.debug("Got " + itemList.size() + " items");
-            this.itemList = itemList;
-        }
-    }
+
 }
