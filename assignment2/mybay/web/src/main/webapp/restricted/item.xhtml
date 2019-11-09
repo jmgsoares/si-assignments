@@ -31,13 +31,16 @@
 
                     <div >
                         <div >
-                            <h:outputText value="Cost: #{itemController.itemToView.price}" style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText value="Price: #{itemController.itemToView.price}" style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
 
                     <div >
                         <div >
-                            <h:outputText value="Category: #{itemController.itemToView.category}" style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText
+                                    value="Category: #{itemController.itemToView.category}"
+                                    converter="itemCategoryConverter"
+                                    style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
 
@@ -49,7 +52,9 @@
 
                     <div >
                         <div >
-                            <h:outputText value="Country of origin: #{itemController.itemToView.country}" style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText value="Country of origin: #{itemController.itemToView.country}"
+                                          converter="countryConverter"
+                                          style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
 
