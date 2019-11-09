@@ -31,7 +31,7 @@ João Soares - 2009113071 }
 
 \qquad To develop the presentation layer we used \ac{JSF} because it is a MVC (model, view, control) framework.
 
-\qquad A none logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to the restricted folder to logged in users. The filter is defined on the web xml.
+\qquad A none logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to a restricted folder to logged in users. The filter is defined on the web xml.
 
 \qquad In the relation of the password storage we have done this program thinking in the security from the front-end, all the way down to the persistence. The actual password never gets transmitted to our application as it goes under a MD5 hash on the clients browser using a JavaScript program, then we pass the hashed password received on more MD5 hashing rounds, so the password saved on the database can't be used to login even if the database information would get exposed.
 
@@ -101,7 +101,7 @@ João Soares - 2009113071 }
 
 \section{Project management and packaging}
 
-\qquad All the cycle of (compiling packing and deployment) is done via Maven. The development system was a remote server running WildFly version 18 with java 13 under Ubuntu server 18.04lts. We've performed some configurations to the WildFly server in order to further customize the deployment and inserted the PostgreSQL driver in order to use a database (and configured a data source).
+\qquad All the cycle of (compiling packing and deployment) is done via Maven. The development system was a remote server running WildFly version 18 with java 13 under Ubuntu server 18.04lts. We've performed some configurations to the WildFly server in order to further customize the deployment and inserted the PostgreSQL driver in order to use a database (and configured a data source). Also, we've managed all our dependencies using WildFly. This way we have achieved a small deployment unit.
 
 \qquad The project is divided into 7 folders common, data, common\_data, business, common\_business, web and ear. The common folder has support functions, such as enumerations, converters from and to enumerations and types, it's here where we have the Item and User class used to transfer data between layers. The common\_data and common\_business it where we store the interfaces of the \ac{EJB}s of each layer. In the common\_data we also have the Crudable and Searchable interface. The web, data and business store each of our layers. The ear folder has the pom file that creates the deployable file, packaged has an ear file.
 
