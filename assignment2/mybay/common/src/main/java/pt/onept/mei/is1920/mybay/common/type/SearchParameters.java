@@ -17,6 +17,7 @@ import java.util.Date;
 public class SearchParameters {
 	private SearchFilter searchFilter;
 	private SortOrder sortOrder;
+	private SortBy sortBy;
 	private Pair<Float> priceRange;
 	private Pair<Date> dateRange;
 	private ItemCategory category;

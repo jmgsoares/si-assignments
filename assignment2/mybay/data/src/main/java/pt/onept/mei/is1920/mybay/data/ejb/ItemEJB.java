@@ -9,9 +9,9 @@ import pt.onept.mei.is1920.mybay.common.type.SearchParameters;
 import pt.onept.mei.is1920.mybay.common_data.contract.ItemEJBRemote;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceItem;
 import pt.onept.mei.is1920.mybay.data.utility.MapItemUtility;
+import pt.onept.mei.is1920.mybay.data.utility.QueryBuilder;
 
 import javax.ejb.*;
-import javax.inject.Inject;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,6 @@ public class ItemEJB implements ItemEJBRemote {
 	@PersistenceContext(unitName = "myBayPersistenceUnit")
 	private EntityManager em;
 
-	@Inject
-	private QueryBuilderEJB queryBuilder;
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -127,7 +125,7 @@ public class ItemEJB implements ItemEJBRemote {
 		logger.info("Searching for items");
 		logger.debug(searchParameters.toString());
 
-		Query jpaQuery = queryBuilder.buildQuery(PersistenceItem.class, searchParameters);
+		Query jpaQuery = em.createQuery(QueryBuilder.BuildQuery(searchParameters));
 
 		logger.debug(jpaQuery.toString());
 

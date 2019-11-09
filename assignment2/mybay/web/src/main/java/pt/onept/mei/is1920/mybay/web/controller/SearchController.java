@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.mybay.common.converter.CountryConverter;
-import pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter;
-import pt.onept.mei.is1920.mybay.common.converter.SearchFilterConverter;
-import pt.onept.mei.is1920.mybay.common.converter.SortOrderConverter;
+import pt.onept.mei.is1920.mybay.common.converter.*;
 import pt.onept.mei.is1920.mybay.common.enums.SearchFilter;
 import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.Pair;
@@ -21,6 +18,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Named(value = "searchController")
 @RequestScoped
@@ -31,7 +29,7 @@ public class SearchController implements Serializable {
 
 	private List<Item> itemList;
 
-	private String itemName,itemCategoryString, itemCountryString, itemSearchPriceLowerBound, itemSearchPriceUpperBound,
+	private String itemName, itemCategoryString, itemCountryString, itemSearchPriceLowerBound, itemSearchPriceUpperBound,
 			itemSearchResultOrdering = "descending", itemIdToView, sortByString = "date", filterByString;
 
 	private Date itemSearchDateFrom;
@@ -45,11 +43,13 @@ public class SearchController implements Serializable {
 	public void search() {
 		logger.info("Searching items");
 		SearchParameters searchParameters = new SearchParameters();
+		searchParameters.setSearchQuery(this.itemName);
+		searchParameters.setSortBy(SortByConverter.StringToSortBy(this.sortByString));
+		searchParameters.setSortOrder(SortOrderConverter.StringToSortOrder(itemSearchResultOrdering));
 		if (this.filterByString != null) {
 			//Search with filters
 			SearchFilter searchFilter = SearchFilterConverter.StringToSearchFilter(this.filterByString);
 			searchParameters.setSearchFilter(searchFilter);
-			searchParameters.setSortOrder(SortOrderConverter.StringToSortOrder(itemSearchResultOrdering));
 			if (searchFilter != null) {
 				switch (searchFilter) {
 					case PRICE:
@@ -76,18 +76,15 @@ public class SearchController implements Serializable {
 						break;
 					case DATE:
 						if (itemSearchDateFrom != null) {
+							logger.debug(itemSearchDateFrom.toString());
 							searchParameters.setDateRange(new Pair<>(itemSearchDateFrom, new Date()));
 						}
 						break;
 				}
 			}
-		} else {
-			//Search without filters - Just by queryname
-			searchParameters.setSearchQuery(this.itemName);
 		}
 
 		logger.debug(searchParameters.toString());
-
 
 		List<Item> itemList = sale.searchSales(searchParameters);
 		if (!itemList.isEmpty()) {

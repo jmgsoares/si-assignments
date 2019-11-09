@@ -29,12 +29,9 @@ public class ItemController implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
     private Part uploadedImage;
-
     private Item itemToView;
-
     private String itemName, itemCategoryString;
     private ItemCategory itemCategory;
-    private Date itemSearchDateFrom;
     private float itemPrice;
 
     @EJB
