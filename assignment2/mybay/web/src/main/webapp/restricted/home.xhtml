@@ -16,9 +16,7 @@
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
                 <h:form id="SearchMyItems" styleClass="form">
-                    <div class="label">
-                        <h:commandButton action="#{searchController.listMySales}" styleClass="button" value="My sales"/>
-                    </div>
+                    <h:commandButton action="#{searchController.listMySales}" styleClass="button" value="My sales"/>
                 </h:form>
 
                 <h:form id="SearchItem" styleClass="form">

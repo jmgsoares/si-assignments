@@ -29,20 +29,66 @@ João Soares - 2009113071 }
 
 \section{Presentation layer}
 
-\qquad This layer was developed using \ac{JSF}.
-\qquad To develop the presentation layer we used \{JSF}
+\qquad To develop the presentation layer we used \ac{JSF}.
+
+\qquad structure of the webpage -> layout and templates
+
+\begin{figure}[hbt!]
+ \centering
+ \includegraphics[scale=0.30]{homePage.png}
+ \caption{Home page layout }
+\end{figure}
+
+\qquad details that were most complex to implement in the interface
+
+\qquad password storage
+
+
+
 
 \section{Business layer}
 
 \qquad This layer interacts with the data layer, built with \ac{EJB}.
 
+\qquad describe the time of ejbs (stateless, interface types, transaction management)
+
+\qquad what data is being transferred from the business layer to the presentation (how)
+
+\qquad what data do we collect from the data layer to the business layer
+
+
+
+
+
 \section{Data layer}
 
 \qquad This layer works atop a database (postgres) and exposes CRUD functionalities using \ac{EJB}s
 
+\qquad Include ER
+
+\begin{figure}[hbt!]
+ \centering
+ \includegraphics[scale=0.4]{ER_MyBay.png}
+ \caption{MyBay \ac{EJB} \ac{ER} diagram }
+\end{figure}
+
+\qquad listing of entities
+
+
+
+
+
+
 \section{Project management and packaging}
 
 \qquad The logging tool used was \ac{SLF4J}
+
+\qquad description of poms and structure of the project
+
+
+
+
+
 
 \textbf{Acronym list:}
 
@@ -54,6 +100,7 @@ João Soares - 2009113071 }
 \acro{JPQL}{Java Persistence Query Language}
 \acro{ORM}{Object/Relational Mapping}
 \acro{SLF4J}{Simple Logging Facade for Java}
+\acro{ER}{Entity-Relationship}
 \end{acronym}
 
 \end{document}
