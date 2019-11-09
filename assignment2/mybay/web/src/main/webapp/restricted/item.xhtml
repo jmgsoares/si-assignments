@@ -19,12 +19,6 @@
 
                     <div >
                         <div >
-                            <h:outputText value="Item id: #{itemController.itemToView.id}" style="font-family: sans-serif; font-size: .8em;" />
-                        </div>
-                    </div>
-
-                    <div >
-                        <div >
                             <h:outputText value="Name: #{itemController.itemToView.name}" style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
@@ -37,10 +31,11 @@
 
                     <div >
                         <div >
-                            <h:outputText
-                                    value="Category: #{itemController.itemToView.category}"
-                                    converter="itemCategoryConverter"
-                                    style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText value="Category: "
+                                          style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText value="#{itemController.itemToView.category}"
+                                          converter="itemCategoryConverter"
+                                          style="font-family: sans-serif; font-size: .8em;" />
                         </div>
                     </div>
 
@@ -52,9 +47,11 @@
 
                     <div >
                         <div >
-                            <h:outputText value="Country of origin: #{itemController.itemToView.country}"
-                                          converter="countryConverter"
+                            <h:outputText value="Country of origin: "
                                           style="font-family: sans-serif; font-size: .8em;" />
+                            <h:outputText value="#{itemController.itemToView.country}"
+                                          converter="countryConverter"
+                                          style="font-family: sans-serif; font-size: .8em;"/>
                         </div>
                     </div>
 
