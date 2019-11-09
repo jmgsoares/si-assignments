@@ -25,17 +25,17 @@ João Soares - 2009113071 }
 
 \section{Introduction}
 
-\qquad The intent of this assignment is to develop a web application to manage an online store of secondhand items, called MyBay and deploy it using WildFly Application Server. In order to develop this application, we build a Maven architecture and used \ac{Java EE}, dividing the system into three layers: presentation, business and data.
+\qquad The intent of this assignment is to develop a web application to manage an online store of secondhand items, called MyBay and deploy it using WildFly Application Server. In order to develop this application, we used Maven to build and manage dependencies and \ac{Java EE}, dividing the system into three layers: presentation, business and data.
 
 \section{Presentation layer}
 
 \qquad To develop the presentation layer we used \ac{JSF} because it is a MVC (model, view, control) framework.
 
-\qquad A none logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to a restricted folder to logged in users. The filter is defined on the web xml.
+\qquad A non logged in user can only go to the landing page, in this case the login, and access the sign up page, giving him the ability to register in the system and latter login to see the contents of the web-page. This is because we've created a session filter that only gives access to a restricted folder to logged in users. The filter is defined on the web xml.
 
-\qquad In the relation of the password storage we have done this program thinking in the security from the front-end, all the way down to the persistence. The actual password never gets transmitted to our application as it goes under a MD5 hash on the clients browser using a JavaScript program, then we pass the hashed password received on more MD5 hashing rounds, so the password saved on the database can't be used to login even if the database information would get exposed.
+\qquad In relation to the password storage. We've implemented this system thinking in the security from the front-end, all the way down to the persistence. The actual password never gets transmitted to our application as it goes under a MD5 hash on the clients browser using a JavaScript program, then we pass the hashed password received on more MD5 hashing rounds, so the password saved on the database can't be used to login even if the database information would get exposed.
 
-\qquad After logging in, the user is presented with the home page (figure 1). All of the pages, from this point forward, use a template that we created so that they can have the same header, giving access to the user to the home page, add item page, profile page and logout option anywhere on the system. 
+\qquad After logging in, the user is presented with the home page (figure 1). From this point forward, all the pages use a template created so that they have the same header, giving access to the user to the home, add item and profile page and logout option anywhere on the system. 
 
 \begin{figure}[H]
     \centering
@@ -43,15 +43,15 @@ João Soares - 2009113071 }
     \caption{Home page layout after a search.}
    \end{figure}
 
-\qquad In the home page is where the user makes his searches. He's able to search for all items, by simply pressing the Search item button, he can see his own items, with the button my sales and can create various searches by using the input boxes, buttons and drop-down menus.
+\qquad In the home page is where the user makes his searches. He's able to search for all items by pressing the "Search item" button, he can see his own items with the button "My sales" and can create various searches by using the input boxes, buttons and drop-down menus.
 
 \qquad The add item section is the place where a new item can be created, and after that, by searching for his own sales, and clicking the view item button, the user can edit and delete his items.
 
-\qquad In the profile area, the user can edit it's own name, country and password, as well as delete his account, deleting also his items for sale.
+\qquad In the profile area, the user can edit his name, country and password, as well as delete his account, deleting also all of his items for sale.
 
 \qquad By logging out, the session is invalidated, so that the user needs to login again to see all of the pages above. 
 
-\qquad All of the information that the user inserts for searches, updates, etc. is treated in the controllers we've implemented to communicate with the business layer. This controllers call functions that are exposed by the business \ac{EJB}s interfaces and pass information through contracts that are known throughout the system.
+\qquad All of the information that the user inserts for searches, updates, etc... is treated in the controllers we've implemented to communicate with the business layer. This controllers call functions that are exposed by the business \ac{EJB}s interfaces and pass information through contracts that are known throughout the system. The item controller is view scoped, the user controller is session scoped and the rest of the controllers implemented are request scoped. 
 
 \qquad One of the most challenging parts of the interface's implementation was the search part. We wanted to make it obvious to the user how the categories to search by are selected, so we made a drop-down menu where the user selects the category he wants to search by. E.g.: I only want to see the items in the category wc. To do that, I need to click filter by, select categories and in the categories drop-down menu select the category wc. After this, I press Search item and will get all items in this category.
 
