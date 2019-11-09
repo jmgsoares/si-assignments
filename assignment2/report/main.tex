@@ -58,7 +58,7 @@ João Soares - 2009113071 }
 
 \section{Business layer}
 
-\qquad The connection to the data layer is performed by the business layer, whom has two local stateless \ac{EJB}s implemented. The account and sale. They are local because they are running in the same \ac{JVM} as the rest of the system and stateless sense we don't need to maintain a conversational state, we only need to perform simple operations. The transactions for this beans are managed by the container, although we don't make any transactions on this layer, hence the transactions to the database are handled on the level of the data layer.
+\qquad The connection to the data layer is performed by the business layer, whom has three local stateless \ac{EJB}s implemented. The account, sale and email. They are local because they are running in the same \ac{JVM} as the rest of the system and stateless sense we don't need to maintain a conversational state, we only need to perform simple operations. The transactions for this beans are managed by the container, although we don't make any transactions on this layer, hence the transactions to the database are handled on the level of the data layer.
 
 \qquad On the AccountEJB, most of the information that goes to the presentation layer is boolean, sense the operations mainly need confirmations on said layer, exceptionally on the login, where we send a User class, created for this purpose, containing the information's about the user logged in (name, email, encrypted password and country).
 
@@ -66,6 +66,7 @@ João Soares - 2009113071 }
 
 \qquad The SaleEJB, just like the AccountEJB, gathers booleans from the data layer, although, instead of User classes it collects Item classes to send to the presentation layer, and sends the mapped information to the presentation layer. The operations performed are create, list, update and delete sales, list an users items for sale and search sales. 
 
+\qquad To send the emails to the users with the three newest items, we have a third \ac{EJB} called EmailEJB, a singleton that initiates upon deployment with a method called newsletter that is scheduled to run every Friday at 8AM,  that gets the emails and three newest items from the data layer (UserEJB and ItemEJB) sends an email with this new items through an API . 
 
 
 
