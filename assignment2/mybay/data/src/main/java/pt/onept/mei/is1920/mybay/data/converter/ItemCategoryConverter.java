@@ -10,7 +10,7 @@ public class ItemCategoryConverter implements AttributeConverter<ItemCategory, S
 
 	@Override
 	public String convertToDatabaseColumn(ItemCategory ic) {
-		return pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter.CategoryToString(ic);
+		return pt.onept.mei.is1920.mybay.common.converter.ItemCategoryConverter.ItemCategoryToString(ic);
 	}
 
 	@Override

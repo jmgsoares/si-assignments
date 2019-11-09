@@ -7,7 +7,7 @@ public final class ItemCategoryConverter {
 
 	private ItemCategoryConverter() { }
 
-	public static String CategoryToString(ItemCategory itemCategory) {
+	public static String ItemCategoryToString(ItemCategory itemCategory) {
 		switch (itemCategory) {
 			case INFORMATICS:
 				return "informatics";

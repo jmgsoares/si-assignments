@@ -19,7 +19,7 @@ public class CategoryController {
 	public List<String> getCategories() {
 		List<String> categories = new ArrayList<>();
 		for (ItemCategory c : ItemCategory.values())
-			categories.add(ItemCategoryConverter.CategoryToString(c));
+			categories.add(ItemCategoryConverter.ItemCategoryToString(c));
 		return categories;
 	}
 }
