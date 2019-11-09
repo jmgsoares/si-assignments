@@ -71,7 +71,8 @@ public class ItemEJB implements ItemEJBRemote {
 				return false;
 			}
 
-			logger.debug("Item to update: " + persistenceItemToUpdate.toString());
+			logger.debug("Item to update: " +
+					MapItemUtility.MapPersistenceItemToItem(persistenceItemToUpdate).toString());
 			logger.debug("New information: " + itemToUpdate.toString());
 
 			if(itemToUpdate.getName() != null) {
