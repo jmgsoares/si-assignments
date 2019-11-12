@@ -1,0 +1,38 @@
+version: '3'
+
+networks:
+  is-assign3-net:
+    driver: bridge
+
+services:
+  db-server:   
+    image: 'postgres'
+    networks:
+      - is-assign3-net
+    ports:
+      - '51433:5432'
+    environment:
+      - POSTGRES_USER=ISKAFKA2019user3
+      - POSTGRES_PASSWORD=ISKAFKA2019USER3passW0RD
+      - POSTGRES_DB=kafka
+  zookeeper-server:
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      - is-assign3-net
+    ports:
+      - '51623:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka-server:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - is-assign3-net
+    ports:
+      - '51722:9092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://onept.pt:51722
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper-server
+
