@@ -1,3 +1,0 @@
-INSERT INTO public."user" (email, country, name, password) VALUES ('moreira', 'portugal', 'moreira', '7aa5bc6f6871ee2d4f90d645e703f92b');
-INSERT INTO public."user" (email, country, name, password) VALUES ('soares', 'portugal', 'soares', '71a4ad59782537b8b761e4b43daea7b5');
-INSERT INTO public."user" (email, country, name, password) VALUES ('asd', 'portugal', 'asd', 'cf0bdcb70f37132d0e996a79d6b08fdc');

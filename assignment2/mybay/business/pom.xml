@@ -50,6 +50,11 @@
 			<version>4.2.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -60,7 +65,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Dependencies>javaee.api, org.slf4j</Dependencies>
+							<Dependencies>com.google.code.gson, javaee.api, org.slf4j</Dependencies>
 							<Logging-Profile>myBay</Logging-Profile>
 						</manifestEntries>
 					</archive>

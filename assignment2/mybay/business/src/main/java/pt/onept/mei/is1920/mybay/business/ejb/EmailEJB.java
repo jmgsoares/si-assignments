@@ -1,5 +1,7 @@
 package pt.onept.mei.is1920.mybay.business.ejb;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
@@ -33,7 +35,7 @@ public class EmailEJB {
 	private ItemEJBRemote itemEJBRemote;
 
 
-	@Schedule(dayOfWeek="Fri", hour="08")
+	@Schedule(dayOfWeek="Sat", hour="08")
 	public void sendNewsletter() {
 		logger.info("Sending newsletter to users");
 
@@ -48,12 +50,13 @@ public class EmailEJB {
 
 		List<Item> newsLetterItems = itemEJBRemote.search(searchParameters, 3);
 
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
 		logger.debug("Got " + newsLetterItems.size() + " items.");
 
 		JSONArray emailJsonArray = new JSONArray();
 
-		for (String s: emails
-		     ) {
+		for (String s : emails) {
 			JSONObject dest = new JSONObject();
 			dest.put("Email", s);
 			dest.put("Name", s);
@@ -73,10 +76,14 @@ public class EmailEJB {
 								.put(Emailv31.Message.FROM, new JSONObject()
 										.put("Email", "mailjet@onept.pt")
 										.put("Name", "JG"))
-								.put(Emailv31.Message.TO, emailJsonArray)
+								.put(Emailv31.Message.TO, new JSONArray()
+										.put(new JSONObject()
+										.put("Email", "mailjet@onept.pt")
+										.put("Name", "JG")))
+								.put(Emailv31.Message.BCC, emailJsonArray)
 								.put(Emailv31.Message.SUBJECT, "MYBAY NEWEST ITEMS!!")
 								.put(Emailv31.Message.TEXTPART, "CHECKOUT THE HOTTEST NEWS IN TOWN")
-								.put(Emailv31.Message.HTMLPART, newsLetterItems.toString())
+								.put(Emailv31.Message.HTMLPART, gson.toJson(newsLetterItems))
 								.put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
 		try {
 			logger.debug("Sending API request");
