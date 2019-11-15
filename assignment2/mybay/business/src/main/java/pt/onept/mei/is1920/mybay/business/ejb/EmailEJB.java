@@ -33,7 +33,7 @@ public class EmailEJB {
 	private ItemEJBRemote itemEJBRemote;
 
 
-	@Schedule(dayOfWeek="Fri", hour="15")
+	@Schedule(dayOfWeek="Fri", hour="08")
 	public void sendNewsletter() {
 		logger.info("Sending newsletter to users");
 
@@ -65,8 +65,8 @@ public class EmailEJB {
 		MailjetClient client;
 		MailjetRequest request;
 		MailjetResponse response;
-		client = new MailjetClient(System.getenv("58aa52c3891f33d6d827a86fa3ed4b73"),
-				System.getenv("a9924aa9cd5731ef67a2eea9514d5cd1"), new ClientOptions("v3.1"));
+		client = new MailjetClient("58aa52c3891f33d6d827a86fa3ed4b73","a9924aa9cd5731ef67a2eea9514d5cd1",
+				new ClientOptions("v3.1"));
 		request = new MailjetRequest(Emailv31.resource)
 				.property(Emailv31.MESSAGES, new JSONArray()
 						.put(new JSONObject()
@@ -80,7 +80,9 @@ public class EmailEJB {
 								.put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
 		try {
 			logger.debug("Sending API request");
-			logger.debug("Response code: " + client.post(request).getStatus());
+			response = client.post(request);
+			logger.debug("Response code: " + response.getStatus());
+			logger.debug("Response body: " + response.getData().toString(2));
 		} catch (MailjetException | MailjetSocketTimeoutException e) {
 			logger.error(e.getMessage(), e);
 		}
