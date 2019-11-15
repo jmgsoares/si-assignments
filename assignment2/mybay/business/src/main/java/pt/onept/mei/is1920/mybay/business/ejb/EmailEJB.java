@@ -33,7 +33,7 @@ public class EmailEJB {
 	private ItemEJBRemote itemEJBRemote;
 
 
-	@Schedule(dayOfWeek="Fri", hour="08")
+	@Schedule(dayOfWeek="Fri", hour="15")
 	public void sendNewsletter() {
 		logger.info("Sending newsletter to users");
 
@@ -48,6 +48,8 @@ public class EmailEJB {
 
 		List<Item> newsLetterItems = itemEJBRemote.search(searchParameters, 3);
 
+		logger.debug("Got " + newsLetterItems.size() + " items.");
+
 		JSONArray emailJsonArray = new JSONArray();
 
 		for (String s: emails
@@ -57,6 +59,8 @@ public class EmailEJB {
 			dest.put("Name", s);
 			emailJsonArray.put(dest);
 		}
+
+		logger.debug("Sending newsletter to: " + emailJsonArray.toString(2));
 
 		MailjetClient client;
 		MailjetRequest request;
@@ -69,13 +73,14 @@ public class EmailEJB {
 								.put(Emailv31.Message.FROM, new JSONObject()
 										.put("Email", "mailjet@onept.pt")
 										.put("Name", "JG"))
-								.put(Emailv31.Message.TO,emailJsonArray)
+								.put(Emailv31.Message.TO, emailJsonArray)
 								.put(Emailv31.Message.SUBJECT, "MYBAY NEWEST ITEMS!!")
 								.put(Emailv31.Message.TEXTPART, "CHECKOUT THE HOTTEST NEWS IN TOWN")
 								.put(Emailv31.Message.HTMLPART, newsLetterItems.toString())
 								.put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
 		try {
-			client.post(request);
+			logger.debug("Sending API request");
+			logger.debug("Response code: " + client.post(request).getStatus());
 		} catch (MailjetException | MailjetSocketTimeoutException e) {
 			logger.error(e.getMessage(), e);
 		}
