@@ -1,26 +1,19 @@
 version: '3'
 
-networks:
-  is-assign3-net:
-    driver: bridge
-
 services:
   db-server:   
     image: 'postgres'
-    networks:
-      - is-assign3-net
     ports:
-      - '51433:5432'
+      - '5432:5432'
     environment:
       - POSTGRES_USER=postgres-user
       - POSTGRES_PASSWORD=postgres-password
       - POSTGRES_DB=kafka
   kafka:
     image: 'jmgsoares/apache-kafka:latest'
-    networks:
-      - is-assign3-net
     ports:
       - '9092:9092'
       - '2181:2181'
+      - '8083:8083'
     depends_on:
       - db-server
