@@ -12,27 +12,15 @@ services:
     ports:
       - '51433:5432'
     environment:
-      - POSTGRES_USER=ISKAFKA2019user3
-      - POSTGRES_PASSWORD=ISKAFKA2019USER3passW0RD
+      - POSTGRES_USER=postgres-user
+      - POSTGRES_PASSWORD=postgres-password
       - POSTGRES_DB=kafka
-  zookeeper-server:
-    image: 'kafka:latest'
+  kafka:
+    image: 'jmgsoares/apache-kafka:latest'
     networks:
       - is-assign3-net
     ports:
-      - '51623:2181'
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-  kafka-server:
-    image: 'kafka:latest'
-    networks:
-      - is-assign3-net
-    ports:
-      - '51722:9092'
-    environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://onept.pt:51722
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      - '9092:9092'
+      - '2181:2181'
     depends_on:
-      - zookeeper-server
-
+      - db-server
