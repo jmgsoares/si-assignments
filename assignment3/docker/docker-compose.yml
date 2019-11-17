@@ -16,7 +16,7 @@ services:
       - POSTGRES_PASSWORD=ISKAFKA2019USER3passW0RD
       - POSTGRES_DB=kafka
   zookeeper-server:
-    image: 'bitnami/zookeeper:latest'
+    image: 'kafka:latest'
     networks:
       - is-assign3-net
     ports:
@@ -24,7 +24,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka-server:
-    image: 'bitnami/kafka:latest'
+    image: 'kafka:latest'
     networks:
       - is-assign3-net
     ports:
