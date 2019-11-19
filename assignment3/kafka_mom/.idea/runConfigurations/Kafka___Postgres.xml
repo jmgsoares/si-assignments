@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start kafka &amp; postgres" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+  <configuration default="false" name="Kafka &amp; Postgres" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
         <option name="services">
@@ -8,7 +8,7 @@
             <option value="kafka" />
           </list>
         </option>
-        <option name="sourceFilePath" value="../docker/docker-compose.yml" />
+        <option name="sourceFilePath" value="docker-compose.yml" />
       </settings>
     </deployment>
     <method v="2" />

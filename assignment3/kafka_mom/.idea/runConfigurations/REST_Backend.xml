@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start rest backend" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+  <configuration default="false" name="REST Backend" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
         <option name="buildCliOptions" value="" />
@@ -15,7 +15,7 @@
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="commandLineOptions" value="" />
+        <option name="commandLineOptions" value="--rm" />
         <option name="sourceFilePath" value="rest_backend/Dockerfile" />
       </settings>
     </deployment>

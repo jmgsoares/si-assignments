@@ -57,7 +57,7 @@ final class HttpUtility {
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setRequestMethod(method);
-			conn.setRequestProperty("Authorization", "Client-ID d34b5a0ca538c5b");
+			conn.setRequestProperty("Authorization", "Client-ID <insert your client id here>");
 			conn.setReadTimeout(100000);
 			conn.connect();
 			return conn;

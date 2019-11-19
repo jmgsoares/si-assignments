@@ -68,17 +68,17 @@ public class EmailEJB {
 		MailjetClient client;
 		MailjetRequest request;
 		MailjetResponse response;
-		client = new MailjetClient("58aa52c3891f33d6d827a86fa3ed4b73","a9924aa9cd5731ef67a2eea9514d5cd1",
+		client = new MailjetClient("<AKI KEY HERE>","<API SECRET HERE>",
 				new ClientOptions("v3.1"));
 		request = new MailjetRequest(Emailv31.resource)
 				.property(Emailv31.MESSAGES, new JSONArray()
 						.put(new JSONObject()
 								.put(Emailv31.Message.FROM, new JSONObject()
-										.put("Email", "mailjet@onept.pt")
+										.put("Email", "<email>")
 										.put("Name", "JG"))
 								.put(Emailv31.Message.TO, new JSONArray()
 										.put(new JSONObject()
-										.put("Email", "mailjet@onept.pt")
+										.put("Email", "<email>")
 										.put("Name", "JG")))
 								.put(Emailv31.Message.BCC, emailJsonArray)
 								.put(Emailv31.Message.SUBJECT, "MYBAY NEWEST ITEMS!!")

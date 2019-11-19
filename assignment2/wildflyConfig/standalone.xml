@@ -43,7 +43,7 @@
             <security-realm name="ManagementRealm">
                 <server-identities>
                     <ssl>
-                        <keystore path="oneptKeyStore.jks" relative-to="jboss.server.config.dir" keystore-password="passevite" alias="oneptWildlfy" key-password="passevite"/>
+                        <keystore path="oneptKeyStore.jks" relative-to="jboss.server.config.dir" keystore-password="<password>" alias="oneptWildlfy" key-password="<key password>"/>
                     </ssl>
                 </server-identities>
                 <authentication>
@@ -57,7 +57,7 @@
             <security-realm name="ApplicationRealm">
                 <server-identities>
                     <ssl>
-                        <keystore path="oneptKeyStore.jks" relative-to="jboss.server.config.dir" keystore-password="passevite" alias="oneptWildlfy" key-password="passevite"/>
+                        <keystore path="oneptKeyStore.jks" relative-to="jboss.server.config.dir" keystore-password="<password>" alias="oneptWildlfy" key-password="<password>"/>
                     </ssl>
                 </server-identities>
                 <authentication>
@@ -245,12 +245,12 @@
         <subsystem xmlns="urn:jboss:domain:datasources:5.0">
             <datasources>
                 <datasource jndi-name="java:/jdbc/mybayDS" pool-name="mybayDS" statistics-enabled="true">
-                    <connection-url>jdbc:postgresql://onept.pt:1433/mybay</connection-url>
+                    <connection-url>jdbc:postgresql://<dns name or ip>:<port>/<db name></connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
                     <security>
-                        <user-name>MyBayDbUser</user-name>
-                        <password>MyBayDbUser2019</password>
+                        <user-name><db user name></user-name>
+                        <password><db user password></password>
                     </security>
                 </datasource>
                 <drivers>
