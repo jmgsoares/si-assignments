@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>pt.onept.mei.is1920.kafka_mom</groupId>
-	<artifactId>kafka_mom</artifactId>
+	<groupId>pt.onept.mei.is1920.kafka-assignment</groupId>
+	<artifactId>kafka-assignment</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1</version>
 	<modules>
 		<module>customers</module>
-		<module>purchase_orders</module>
+		<module>purchase-orders</module>
 		<module>streams</module>
 		<module>cli</module>
-		<module>rest_backend</module>
+		<module>rest-backend</module>
 		<module>common</module>
 	</modules>
 
@@ -31,6 +31,13 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>pt.onept.mei.is1920.kafka-assignment</groupId>
+				<artifactId>common</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>com.sparkjava</groupId>

@@ -3,13 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<artifactId>kafka_mom</artifactId>
-		<groupId>pt.onept.mei.is1920.kafka_mom</groupId>
+		<artifactId>kafka-assignment</artifactId>
+		<groupId>pt.onept.mei.is1920.kafka-assignment</groupId>
 		<version>0.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>purchase_orders</artifactId>
+	<artifactId>rest-backend</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -23,7 +38,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>pt.onept.mei.is1920.kafka_mom.purchase_orders.PurchaseOrders</mainClass>
+									<mainClass>pt.onept.mei.is1920.kafka-assignment.rest-backend.RestBackend</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

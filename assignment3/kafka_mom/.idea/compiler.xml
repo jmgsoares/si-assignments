@@ -9,8 +9,8 @@
         <module name="customers" />
         <module name="common" />
         <module name="cli" />
-        <module name="purchase_orders" />
-        <module name="rest_backend" />
+        <module name="rest-backend" />
+        <module name="purchase-orders" />
         <module name="streams" />
       </profile>
     </annotationProcessing>
