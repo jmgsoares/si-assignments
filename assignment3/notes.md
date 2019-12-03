@@ -30,6 +30,7 @@
     - QUESTIONS
         - I don't get the following
             - Average expense per order (separated by item) - Separated by item? how does this work? Each order only has 1 item...
+                - It's an item per order - he wants an average per item id
 
 - Customers
     - Module name -> customers
@@ -37,6 +38,7 @@
     - We must choose at random an item and country that is in the topic and then we generate a random price and number of units
     - QUESTIONS
         - We are assuming that the price and number of units and randomly generated. Is it correct?
+            - Yes
 
 - Purchase Orders
     - Module name -> orders
@@ -44,6 +46,7 @@
     - We must choose an item at random, assume a random price per unit and a random quantity
     - QUESTIONS
         - Do we also have to randomize the date of the purchase??
+            - No, it's not relevant
 
 ##### Kafka
 
