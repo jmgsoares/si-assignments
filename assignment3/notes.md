@@ -27,26 +27,16 @@
         - Total expense in the last hour
         - Total Profit in the last hour
         - Country with the highest sales per item and the corresponding revenue sum
-    - QUESTIONS
-        - I don't get the following
-            - Average expense per order (separated by item) - Separated by item? how does this work? Each order only has 1 item...
-                - It's an item per order - he wants an average per item id
 
 - Customers
     - Module name -> customers
     - This module writes random simulated sale orders to the sales topic, with items and countries read from DB Info topic
     - We must choose at random an item and country that is in the topic and then we generate a random price and number of units
-    - QUESTIONS
-        - We are assuming that the price and number of units and randomly generated. Is it correct?
-            - Yes
 
 - Purchase Orders
     - Module name -> orders
     - This module writes random simulated purchase orders to the purchases topic, with the items read from the DB Info topic.
     - We must choose an item at random, assume a random price per unit and a random quantity
-    - QUESTIONS
-        - Do we also have to randomize the date of the purchase??
-            - No, it's not relevant
 
 ##### Kafka
 
