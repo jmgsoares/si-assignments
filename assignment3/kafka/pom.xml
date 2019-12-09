@@ -25,7 +25,7 @@
 		<plugin.maven-shade-plugin.version>3.2.1</plugin.maven-shade-plugin.version>
 		<dependecy.spark-core.version>2.9.1</dependecy.spark-core.version>
 		<dependecy.lombok.version>1.18.10</dependecy.lombok.version>
-		<dependecy.kafka-streams.version>2.3.1</dependecy.kafka-streams.version>
+		<dependecy.kafka.version>2.3.1</dependecy.kafka.version>
 		<dependecy.slf4j-simple.version>1.7.28</dependecy.slf4j-simple.version>
 	</properties>
 
@@ -33,7 +33,7 @@
 		<dependencies>
 
 			<dependency>
-				<groupId>pt.onept.mei.is1920.kafka-assignment</groupId>
+				<groupId>pt.onept.mei.is1920.assignment.kafka</groupId>
 				<artifactId>common</artifactId>
 				<version>${project.version}</version>
 				<scope>compile</scope>
@@ -56,7 +56,14 @@
 			<dependency>
 				<groupId>org.apache.kafka</groupId>
 				<artifactId>kafka-streams</artifactId>
-				<version>${dependecy.kafka-streams.version}</version>
+				<version>${dependecy.kafka.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>kafka-clients</artifactId>
+				<version>${dependecy.kafka.version}</version>
 				<scope>provided</scope>
 			</dependency>
 
