@@ -1,0 +1,3 @@
+"{""schema"":{""type"":""struct"",""fields"":[{""type"":""int32"",""optional"":false,""field"":""id""},{""type"":""string"",""optional"":false,""field"":""name""}],""optional"":false,""name"":""countries""},""payload"":{""id"":1,""name"":""France""}}"
+
+"{""schema"":{""type"":""struct"",""fields"":[{""type"":""int32"",""optional"":false,""field"":""id""},{""type"":""string"",""optional"":false,""field"":""name""}],""optional"":false,""name"":""items""},""payload"":{""id"":1,""name"":""ChainSaw""}}"
