@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Item;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +32,7 @@ public class Orders {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-orders-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-orders-test-app-4");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-orders-test-app-6");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -47,9 +44,9 @@ public class Orders {
 		sinkProps.put("batch.size", 16384);
 		sinkProps.put("linger.ms", 1);
 		sinkProps.put("buffer.memory", 33554432);
-		sinkProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		sinkProps.put("key.serializer", "org.apache.kafka.common.serialization.LongSerializer");
 		sinkProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		Producer<String, String> producer = new KafkaProducer<>(sinkProps);
+		Producer<Long, String> producer = new KafkaProducer<>(sinkProps);
 
 		StreamsBuilder builder = new StreamsBuilder();
 
@@ -78,9 +75,9 @@ public class Orders {
 			Order newOrder = new Order()
 					.setItem(itemsMap.get(randomValue))
 					.setQuantity(generator.nextInt(Order.QUANTITY_MAX))
-					.setPrice(generator.nextFloat() * Order.PRICE_MAX);
-
-			producer.send(new ProducerRecord<>(sinkTopic, "purchase", gson.toJson(newOrder)));
+					.setPrice(generator.nextFloat() * Order.PRICE_MAX)
+					.setTimeStamp(new Date());
+			producer.send(new ProducerRecord<>(sinkTopic, newOrder.getItem().getId(), gson.toJson(newOrder)));
 			logger.info("Sending " + newOrder.toString());
 
 		}, 5, 5, TimeUnit.SECONDS);
