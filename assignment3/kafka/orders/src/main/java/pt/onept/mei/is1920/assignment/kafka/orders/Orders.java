@@ -1,12 +1,12 @@
 package pt.onept.mei.is1920.assignment.kafka.orders;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
+import pt.onept.mei.is1920.assignment.kafka.common.type.Item;
 
 import java.util.Properties;
 
@@ -26,9 +26,12 @@ public class Orders {
 
 		KStream<String, String> DbInfoKStream = builder.stream(sourceTopic);
 
-		DbInfoKStream.foreach((k, v) -> {
-			System.out.print(k + " ");
-			System.out.println(v);
+		Gson gson = new Gson();
+
+		DbInfoKStream.filter((k ,v) -> k.equals("\"item\"")).foreach((k, v) -> {
+			Item item = gson.fromJson(v, Item.class);
+			//Here we have an item to process
+			System.out.println(item.toString()); //This is a debug print! it has to be removed
 		});
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), props);
