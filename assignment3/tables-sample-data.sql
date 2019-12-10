@@ -1,39 +1,32 @@
-create table countries
+create table data
 (
     id   SERIAL,
+    type VARCHAR(40) NOT NULL,
     name VARCHAR(40) NOT NULL,
     PRIMARY KEY (id)
 );
 
-
-create table items(
-    id SERIAL,
-    name VARCHAR(40) NOT NULL,
-    PRIMARY KEY ( id )
-);
-
-INSERT INTO countries (name) VALUES ('France');
-INSERT INTO countries (name) VALUES ('Poland');
-INSERT INTO countries (name) VALUES ('United Kingdom');
-INSERT INTO countries (name) VALUES ('Italy');
-INSERT INTO countries (name) VALUES ('Portugal');
-INSERT INTO countries (name) VALUES ('Spain');
-INSERT INTO countries (name) VALUES ('Switzerland');
-INSERT INTO countries (name) VALUES ('Netherlands');
-INSERT INTO countries (name) VALUES ('Ireland');
-INSERT INTO countries (name) VALUES ('Luxembourg');
-INSERT INTO countries (name) VALUES ('Deutschland');
-
-INSERT INTO items (name) VALUES ('ChainSaw');
-INSERT INTO items (name) VALUES ('Car');
-INSERT INTO items (name) VALUES ('Microwave');
-INSERT INTO items (name) VALUES ('CellPhone');
-INSERT INTO items (name) VALUES ('Cow');
-INSERT INTO items (name) VALUES ('Beef');
-INSERT INTO items (name) VALUES ('Brick');
-INSERT INTO items (name) VALUES ('Wood');
-INSERT INTO items (name) VALUES ('GoldenToilet');
-INSERT INTO items (name) VALUES ('Castle');
-INSERT INTO items (name) VALUES ('Hamburger');
+INSERT INTO data (type, name) VALUES ('country', 'France');
+INSERT INTO data (type, name) VALUES ('country', 'Poland');
+INSERT INTO data (type, name) VALUES ('country', 'United Kingdom');
+INSERT INTO data (type, name) VALUES ('country', 'Italy');
+INSERT INTO data (type, name) VALUES ('country', 'Portugal');
+INSERT INTO data (type, name) VALUES ('country', 'Spain');
+INSERT INTO data (type, name) VALUES ('country', 'Switzerland');
+INSERT INTO data (type, name) VALUES ('country', 'Netherlands');
+INSERT INTO data (type, name) VALUES ('country', 'Ireland');
+INSERT INTO data (type, name) VALUES ('country', 'Luxembourg');
+INSERT INTO data (type, name) VALUES ('country', 'Deutschland');
+INSERT INTO data (type, name) VALUES ('item', 'ChainSaw');
+INSERT INTO data (type, name) VALUES ('item', 'Car');
+INSERT INTO data (type, name) VALUES ('item', 'Microwave');
+INSERT INTO data (type, name) VALUES ('item', 'CellPhone');
+INSERT INTO data (type, name) VALUES ('item', 'Cow');
+INSERT INTO data (type, name) VALUES ('item', 'Beef');
+INSERT INTO data (type, name) VALUES ('item', 'Brick');
+INSERT INTO data (type, name) VALUES ('item', 'Wood');
+INSERT INTO data (type, name) VALUES ('item', 'GoldenToilet');
+INSERT INTO data (type, name) VALUES ('item', 'Castle');
+INSERT INTO data (type, name) VALUES ('item', 'Hamburger');
 
 
