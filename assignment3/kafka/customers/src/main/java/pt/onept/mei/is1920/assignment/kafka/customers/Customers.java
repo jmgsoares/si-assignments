@@ -102,6 +102,7 @@ public class Customers {
 
 				// generate a random quantity
 
+				@SuppressWarnings("SuspiciousMethodCalls")
 				Sale newSale = new Sale()
 						.setItem(itemsMap.get(randomItem))
 						.setPrice(generator.nextFloat() * Sale.PRICE_MAX)
