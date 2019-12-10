@@ -32,12 +32,11 @@ public class Customers {
 		Map<Long, Item> itemsMap = new HashMap<>();
 		Map<Long, Country> countriesMap = new HashMap<>();
 
-
 		java.util.Properties props = new Properties();
 		//props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-app");
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-test-app-2");
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-test-app-1111");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
+		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
 		Properties sinkProps = new Properties();
@@ -47,7 +46,7 @@ public class Customers {
 		sinkProps.put("batch.size", 16384);
 		sinkProps.put("linger.ms", 1);
 		sinkProps.put("buffer.memory", 33554432);
-		sinkProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		sinkProps.put("key.serializer", "org.apache.kafka.common.serialization.LongSerializer");
 		sinkProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		Producer<Long, String> producer = new KafkaProducer<>(sinkProps);
 
@@ -100,12 +99,10 @@ public class Customers {
 					.setCountry(countriesMap.get(randomCountry))
 					.setTimeStamp(new Date());
 
-			//noinspection SuspiciousMethodCalls
-			producer.send(new ProducerRecord<>(sinkTopic, itemsMap.get(randomItem).getId(), gson.toJson(newSale)));
+			producer.send(new ProducerRecord<>(sinkTopic, newSale.getItem().getId(), gson.toJson(newSale)));
 			logger.info("Sending " + newSale.toString());
 
 		}, 5, 5, TimeUnit.SECONDS);
-
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), props);
 		streams.start();
