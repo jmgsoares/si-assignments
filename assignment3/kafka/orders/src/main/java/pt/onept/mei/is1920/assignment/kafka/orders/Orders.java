@@ -23,12 +23,13 @@ public class Orders {
 
 	public static void main(String[] args) {
 
-		String sourceTopic = "dbinfo";
+		String sourceTopic = "DBInfo";
 
-		Map<Long, String> itemMap = new HashMap<>();
+		Map<Long, String> itemsMap = new HashMap<>();
 
 		java.util.Properties props = new Properties();
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "3");
+		//props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-orders-app");
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-orders-test-app-1");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -41,13 +42,13 @@ public class Orders {
 
 		DbInfoKStream.filter((k ,v) -> k.equals("\"item\"")).foreach((k, v) -> {
 			Item item = gson.fromJson(v, Item.class);
-			if(itemMap.containsKey(item.getId())) {
+			if(itemsMap.containsKey(item.getId())) {
 				logger.info("Updating item " + item.getId());
-				itemMap.replace(item.getId(), item.getName());
+				itemsMap.replace(item.getId(), item.getName());
 			}
 			else {
 				logger.info("Adding new item " + item.getId() + " " + item.getName());
-				itemMap.putIfAbsent(item.getId(), item.getName());
+				itemsMap.putIfAbsent(item.getId(), item.getName());
 			}
 		});
 
@@ -55,7 +56,8 @@ public class Orders {
 		exec.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println(itemMap.size());
+				//Here we need to now generate the random purchase thingy...
+				System.out.println(itemsMap.size());
 			}
 		}, 5, 5, TimeUnit.SECONDS);
 
