@@ -1,3 +1,5 @@
+create sequence data_id_seq;
+
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -6,40 +8,53 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-create table info(
-    id   SERIAL,
+create table items (
+    id bigint default nextval('data_id_seq'),
     type VARCHAR(40) NOT NULL,
     name VARCHAR(40) NOT NULL,
     updated TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
 
-CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON info
+create table countries (
+    id bigint default nextval('data_id_seq'),
+    type VARCHAR(40) NOT NULL,
+    name VARCHAR(40) NOT NULL,
+    updated TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id)
+);
+
+CREATE TRIGGER set_timestamp_items
+BEFORE UPDATE ON items
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
-INSERT INTO info (type, name) VALUES ('country', 'France');
-INSERT INTO info (type, name) VALUES ('country', 'Poland');
-INSERT INTO info (type, name) VALUES ('country', 'United Kingdom');
-INSERT INTO info (type, name) VALUES ('country', 'Italy');
-INSERT INTO info (type, name) VALUES ('country', 'Portugal');
-INSERT INTO info (type, name) VALUES ('country', 'Spain');
-INSERT INTO info (type, name) VALUES ('country', 'Switzerland');
-INSERT INTO info (type, name) VALUES ('country', 'Netherlands');
-INSERT INTO info (type, name) VALUES ('country', 'Ireland');
-INSERT INTO info (type, name) VALUES ('country', 'Luxembourg');
-INSERT INTO info (type, name) VALUES ('country', 'Deutschland');
-INSERT INTO info (type, name) VALUES ('item', 'ChainSaw');
-INSERT INTO info (type, name) VALUES ('item', 'Car');
-INSERT INTO info (type, name) VALUES ('item', 'Microwave');
-INSERT INTO info (type, name) VALUES ('item', 'CellPhone');
-INSERT INTO info (type, name) VALUES ('item', 'Cow');
-INSERT INTO info (type, name) VALUES ('item', 'Beef');
-INSERT INTO info (type, name) VALUES ('item', 'Brick');
-INSERT INTO info (type, name) VALUES ('item', 'Wood');
-INSERT INTO info (type, name) VALUES ('item', 'GoldenToilet');
-INSERT INTO info (type, name) VALUES ('item', 'Castle');
-INSERT INTO info (type, name) VALUES ('item', 'Hamburger');
+CREATE TRIGGER set_timestamp_countries
+BEFORE UPDATE ON countries
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+INSERT INTO countries (type, name) VALUES ('country', 'France');
+INSERT INTO countries (type, name) VALUES ('country', 'Poland');
+INSERT INTO countries (type, name) VALUES ('country', 'United Kingdom');
+INSERT INTO countries (type, name) VALUES ('country', 'Italy');
+INSERT INTO countries (type, name) VALUES ('country', 'Portugal');
+INSERT INTO countries (type, name) VALUES ('country', 'Spain');
+INSERT INTO countries (type, name) VALUES ('country', 'Switzerland');
+INSERT INTO countries (type, name) VALUES ('country', 'Netherlands');
+INSERT INTO countries (type, name) VALUES ('country', 'Ireland');
+INSERT INTO countries (type, name) VALUES ('country', 'Luxembourg');
+INSERT INTO countries (type, name) VALUES ('country', 'Deutschland');
+INSERT INTO items (type, name) VALUES ('item', 'ChainSaw');
+INSERT INTO items (type, name) VALUES ('item', 'Car');
+INSERT INTO items (type, name) VALUES ('item', 'Microwave');
+INSERT INTO items (type, name) VALUES ('item', 'CellPhone');
+INSERT INTO items (type, name) VALUES ('item', 'Cow');
+INSERT INTO items (type, name) VALUES ('item', 'Beef');
+INSERT INTO items (type, name) VALUES ('item', 'Brick');
+INSERT INTO items (type, name) VALUES ('item', 'Wood');
+INSERT INTO items (type, name) VALUES ('item', 'GoldenToilet');
+INSERT INTO items (type, name) VALUES ('item', 'Castle');
+INSERT INTO items (type, name) VALUES ('item', 'Hamburger');
 
 
