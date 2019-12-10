@@ -10,6 +10,8 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class Sale {
+    public static final int PRICE_MAX = 10000;
+    public static final int QUANTITY_MAX = 10;
     private Item item;
     private float price;
     private int quantity;
