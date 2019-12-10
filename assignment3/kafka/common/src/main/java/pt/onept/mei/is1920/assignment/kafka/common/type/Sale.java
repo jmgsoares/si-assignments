@@ -9,8 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class Order {
+public class Sale {
     private Item item;
     private float price;
     private int quantity;
+    private Country countryOfOrigin;
 }
