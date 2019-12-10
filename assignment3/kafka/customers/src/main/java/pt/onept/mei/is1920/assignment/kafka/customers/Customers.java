@@ -90,17 +90,12 @@ public class Customers {
 		exec.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				// chose a random item and country
 				Random generator = new Random();
 				Object[] itemIds = itemsMap.keySet().toArray();
 				Object randomItem = itemIds[generator.nextInt(itemIds.length)];
 
 				Object[] countryIds = countriesMap.keySet().toArray();
 				Object randomCountry = countryIds[generator.nextInt(countryIds.length)];
-
-				// generate a random price
-
-				// generate a random quantity
 
 				@SuppressWarnings("SuspiciousMethodCalls")
 				Sale newSale = new Sale()
