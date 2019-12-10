@@ -15,10 +15,7 @@ import pt.onept.mei.is1920.assignment.kafka.common.type.Country;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Item;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -102,7 +99,8 @@ public class Customers {
 						.setItem(itemsMap.get(randomItem))
 						.setPrice(generator.nextFloat() * Sale.PRICE_MAX)
 						.setQuantity(generator.nextInt(Sale.QUANTITY_MAX))
-						.setCountry(countriesMap.get(randomCountry));
+						.setCountry(countriesMap.get(randomCountry))
+						.setTimeStamp(new Date());
 
 				producer.send(new ProducerRecord<>(sinkTopic, "sale", gson.toJson(newSale)));
 				logger.info("Sending " + newSale.toString());
