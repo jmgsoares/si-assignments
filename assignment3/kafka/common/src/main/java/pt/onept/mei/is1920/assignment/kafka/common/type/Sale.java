@@ -13,5 +13,5 @@ public class Sale {
     private Item item;
     private float price;
     private int quantity;
-    private Country countryOfOrigin;
+    private Country country;
 }
