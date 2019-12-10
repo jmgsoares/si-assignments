@@ -6,18 +6,33 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Country;
+import pt.onept.mei.is1920.assignment.kafka.common.type.Item;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Customers {
 
+	private final static Logger logger = LoggerFactory.getLogger(Customers.class);
+
 	public static void main(String[] args) {
 
-		String sourceTopic = "dbinfo";
+		String sourceTopic = "DBInfo";
+
+		Map<Long, String> itemsMap = new HashMap<>();
+		Map<Long, String> countriesMap = new HashMap<>();
+
 
 		java.util.Properties props = new Properties();
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-app");
+		//props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-app");
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-test-app-1");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -28,14 +43,43 @@ public class Customers {
 
 		Gson gson = new Gson();
 
-		DbInfoKStream.filter((k ,v) -> k.equals("\"country\"")).foreach((k, v) -> {
-			Country country = gson.fromJson(v, Country.class);
-			//Here we have a country to process
-			System.out.println(country.toString()); //This is a debug print! it has to be removed
+		DbInfoKStream.foreach((k, v) -> {
+			if (k.equals("\"item\"")) {
+				Item item = gson.fromJson(v, Item.class);
+				if(itemsMap.containsKey(item.getId())) {
+					logger.info("Updating item " + item.getId());
+					itemsMap.replace(item.getId(), item.getName());
+				}
+				else {
+					logger.info("Adding new item " + item.getId() + " " + item.getName());
+					itemsMap.putIfAbsent(item.getId(), item.getName());
+				}
+			}
+			else if (k.equals("\"country\"")) {
+				Country country = gson.fromJson(v, Country.class);
+				//noinspection DuplicatedCode
+				if(countriesMap.containsKey(country.getId())) {
+					logger.info("Updating country " + country.getId());
+					countriesMap.replace(country.getId(), country.getName());
+				}
+				else {
+					logger.info("Adding new country " + country.getId() + " " + country.getName());
+					countriesMap.putIfAbsent(country.getId(), country.getName());
+				}
+			}
 		});
 
-		KafkaStreams streams = new KafkaStreams(builder.build(), props);
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				//Here we need to now generate the random sales thingy...
+				System.out.println(countriesMap.size() + " " + itemsMap.size());
+			}
+		}, 5, 5, TimeUnit.SECONDS);
 
+
+		KafkaStreams streams = new KafkaStreams(builder.build(), props);
 		streams.start();
 
 	}
