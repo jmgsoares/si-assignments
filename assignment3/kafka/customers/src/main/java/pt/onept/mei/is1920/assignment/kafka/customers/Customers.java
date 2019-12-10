@@ -37,7 +37,7 @@ public class Customers {
 		//props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-app");
 		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-test-app-2");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
 		Properties sinkProps = new Properties();
@@ -49,7 +49,7 @@ public class Customers {
 		sinkProps.put("buffer.memory", 33554432);
 		sinkProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		sinkProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		Producer<String, String> producer = new KafkaProducer<>(sinkProps);
+		Producer<Long, String> producer = new KafkaProducer<>(sinkProps);
 
 		StreamsBuilder builder = new StreamsBuilder();
 
@@ -84,28 +84,26 @@ public class Customers {
 		});
 
 		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				Random generator = new Random();
-				Object[] itemIds = itemsMap.keySet().toArray();
-				Object randomItem = itemIds[generator.nextInt(itemIds.length)];
+		exec.scheduleAtFixedRate(() -> {
+			Random generator = new Random();
+			Object[] itemIds = itemsMap.keySet().toArray();
+			Object randomItem = itemIds[generator.nextInt(itemIds.length)];
 
-				Object[] countryIds = countriesMap.keySet().toArray();
-				Object randomCountry = countryIds[generator.nextInt(countryIds.length)];
+			Object[] countryIds = countriesMap.keySet().toArray();
+			Object randomCountry = countryIds[generator.nextInt(countryIds.length)];
 
-				@SuppressWarnings("SuspiciousMethodCalls")
-				Sale newSale = new Sale()
-						.setItem(itemsMap.get(randomItem))
-						.setPrice(generator.nextFloat() * Sale.PRICE_MAX)
-						.setQuantity(generator.nextInt(Sale.QUANTITY_MAX))
-						.setCountry(countriesMap.get(randomCountry))
-						.setTimeStamp(new Date());
+			@SuppressWarnings("SuspiciousMethodCalls")
+			Sale newSale = new Sale()
+					.setItem(itemsMap.get(randomItem))
+					.setPrice(generator.nextFloat() * Sale.PRICE_MAX)
+					.setQuantity(generator.nextInt(Sale.QUANTITY_MAX))
+					.setCountry(countriesMap.get(randomCountry))
+					.setTimeStamp(new Date());
 
-				producer.send(new ProducerRecord<>(sinkTopic, "sale", gson.toJson(newSale)));
-				logger.info("Sending " + newSale.toString());
+			//noinspection SuspiciousMethodCalls
+			producer.send(new ProducerRecord<>(sinkTopic, itemsMap.get(randomItem).getId(), gson.toJson(newSale)));
+			logger.info("Sending " + newSale.toString());
 
-			}
 		}, 5, 5, TimeUnit.SECONDS);
 
 
