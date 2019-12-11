@@ -6,12 +6,12 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
-import pt.onept.mei.is1920.assignment.kafka.common.type.Country;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
 
 import java.time.Duration;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class Streams {
 
@@ -31,13 +31,14 @@ public class Streams {
 	private static final String countryHighestSalesSinkTopic = resultSinkTopicsPrefix + "CountryHighestSales";
 	private static final String revenuePerItemSinkTopic = resultSinkTopicsPrefix + "RevenuePerItem";
 	private static final String totalRevenueSinkTopic = resultSinkTopicsPrefix + "TotalRevenue";
-	private static final String totalRevenueLastHourSinkTopic = resultSinkTopicsPrefix + "Results.TotalRevenueLastHour";
+	private static final String totalRevenueLastHourSinkTopic = resultSinkTopicsPrefix + "TotalRevenueLastHour";
+	private static final Duration windowSizeMs = Duration.ofSeconds(30);
 
 	public static void main(String[] args) {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-102");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-65");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -86,26 +87,47 @@ public class Streams {
 			});
 		revenuePerItem.toStream().to(revenuePerItemSinkTopic);
 
-		KTable<Long, String> totalRevenue = allSalesGroupedKGroupedStream.reduce((v1, v2) -> {
+		KTable<Long, String> profitPerItemKTable = revenuePerItem.join(expensePerItemKTable,
+			(revenue, expense) -> {
+				Sale sale = gson.fromJson(revenue, Sale.class);
+				Order order = gson.fromJson(expense, Order.class);
+				return Float.toString(sale.getPrice() - order.getPrice());
+			});
+		profitPerItemKTable.toStream().to(profitPerItemSinkTopic);
+
+		KTable<Long, String> totalRevenueKTable = allSalesGroupedKGroupedStream.reduce((v1, v2) -> {
 				Sale sale1 = gson.fromJson(v1, Sale.class);
 				Sale sale2 = gson.fromJson(v2, Sale.class);
 				return gson.toJson(new Sale()
 						.setPrice(sale1.getPrice() + sale2.getPrice())
 						.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
 			});
-		totalRevenue.toStream().to(totalRevenueSinkTopic);
+		totalRevenueKTable.toStream().to(totalRevenueSinkTopic);
+
+
 
 		// At the moment is set for one minute instead of one hour
 		KTable<Windowed<Long>, String> totalRevenueLastHour = allSalesGroupedKGroupedStream
-				.windowedBy(TimeWindows.of(Duration.ofMinutes(1)))
-				.reduce((v1, v2) -> {
-					Sale sale1 = gson.fromJson(v1, Sale.class);
-					Sale sale2 = gson.fromJson(v2, Sale.class);
-					return gson.toJson(new Sale()
-							.setPrice(sale1.getPrice() + sale2.getPrice())
-							.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
+			.windowedBy(TimeWindows.of(windowSizeMs))
+			.reduce((v1, v2) -> {
+				Sale sale1 = gson.fromJson(v1, Sale.class);
+				Sale sale2 = gson.fromJson(v2, Sale.class);
+				return gson.toJson(new Sale()
+						.setPrice(sale1.getPrice() + sale2.getPrice())
+						.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
 			});
 		totalRevenueLastHour.toStream((wk, v) -> wk.key()).to(totalRevenueLastHourSinkTopic);
+
+		// At the moment is set for one minute instead of one hour
+		KTable<Windowed<Long>, String> totalExpenseLastHour = allPurchasesGroupedKGroupedStream
+			.windowedBy(TimeWindows.of(windowSizeMs))
+			.reduce((v1, v2) -> {
+				Order order1 = gson.fromJson(v1, Order.class);
+				Order order2 = gson.fromJson(v2, Order.class);
+				return gson.toJson(new Sale()
+						.setPrice(order1.getPrice() + order2.getPrice()));
+			});
+		totalExpenseLastHour.toStream((wk, v) -> wk.key()).to(totalExpenseLastHourSinkTopic);
 
 		KTable<Long, String> totalExpenseKTable = allPurchasesGroupedKGroupedStream.reduce((v1, v2) -> {
 			Order order1 = gson.fromJson(v1, Order.class);
@@ -114,6 +136,29 @@ public class Streams {
 					.setPrice(order1.getPrice() + order2.getPrice()));
 		});
 		totalExpenseKTable.toStream().to(totalExpenseSinkTopic);
+
+		KTable<Long, String> totalProfitKTable = totalRevenueKTable.join(totalExpenseKTable,
+			(revenue, expense) -> {
+				Sale sale = gson.fromJson(revenue, Sale.class);
+				Order order = gson.fromJson(expense, Order.class);
+				return Float.toString(sale.getPrice() - order.getPrice());
+			});
+		totalProfitKTable.toStream().to(totalProfitSinkTopic);
+
+		//TODO This could be more elegant
+		KTable<Windowed<Long>, String> totalProfitLastHour = totalRevenueKTable.toStream().join(totalExpenseKTable.toStream(),
+			(revenue, expense) -> {
+				Sale sale = gson.fromJson(revenue, Sale.class);
+				Order order = gson.fromJson(expense, Order.class);
+				return Float.toString(sale.getPrice() - order.getPrice());
+			}, JoinWindows.of(Duration.ofMillis(1))).groupByKey().windowedBy(TimeWindows.of(windowSizeMs))
+				.reduce((revenue, expense) -> {
+					Sale sale = gson.fromJson(revenue, Sale.class);
+					Order order = gson.fromJson(expense, Order.class);
+					return Float.toString(sale.getPrice() - order.getPrice());
+				});
+
+		totalProfitLastHour.toStream().to(totalProfitLastHourSinkTopic);
 
 		KTable<Long, String> averageExpenseByOrderKTable = totalExpenseKTable.join(totalPurchaseCount,
 				(totalExpense, totalCount) -> {
