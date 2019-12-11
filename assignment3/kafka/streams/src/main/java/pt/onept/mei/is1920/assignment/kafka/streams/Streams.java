@@ -3,6 +3,7 @@ package pt.onept.mei.is1920.assignment.kafka.streams;
 import com.google.gson.Gson;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
@@ -38,7 +39,7 @@ public class Streams {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-65");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-191");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -157,7 +158,6 @@ public class Streams {
 					Order order = gson.fromJson(expense, Order.class);
 					return Float.toString(sale.getPrice() - order.getPrice());
 				});
-
 		totalProfitLastHour.toStream().to(totalProfitLastHourSinkTopic);
 
 		KTable<Long, String> averageExpenseByOrderKTable = totalExpenseKTable.join(totalPurchaseCount,
@@ -169,14 +169,36 @@ public class Streams {
 		averageExpenseByOrderKTable.toStream().to(averageExpenseByOrderSinkTopic);
 
 		// Country with the highest sales per item and the corresponding revenue sum
-		//@TODO this one + Most profitable item (if there is a tie, only one is needed)
-
 		/*
 		KSF -> Group by key
-		KGS -> Agregate by country
+		KGS -> Aggregate by country (array de sales)
 		KT -> GroupBy ou toStream
 		... -> Reduce price
 		*/
+
+
+
+
+		KTable<Long, String> mostProfitableItemKTable = revenuePerItem.join(expensePerItemKTable,
+				(revenue, expense) -> {
+					Sale sale = gson.fromJson(revenue, Sale.class);
+					Order order = gson.fromJson(expense, Order.class);
+					return gson.toJson(new Order()
+					.setItem(order.getItem())
+					.setPrice(sale.getPrice() - order.getPrice()));
+				})
+				.toStream()
+				.groupBy((k,v) -> 0L)
+				.reduce((aggVal, newVal) -> {
+					Order a = gson.fromJson(aggVal, Order.class),
+							b = gson.fromJson(newVal, Order.class);
+					if(a.getPrice() < b.getPrice()) {
+						a = b;
+					}
+					return gson.toJson(a);
+				});
+		mostProfitableItemKTable.toStream().to(mostProfitableItemSinkTopic);
+
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), sourceProps);
 		streams.start();
