@@ -11,6 +11,9 @@ import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -39,7 +42,7 @@ public class Streams {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-191");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-09");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -168,35 +171,46 @@ public class Streams {
 		);
 		averageExpenseByOrderKTable.toStream().to(averageExpenseByOrderSinkTopic);
 
-		// Country with the highest sales per item and the corresponding revenue sum
-		/*
-		KSF -> Group by key
-		KGS -> Aggregate by country (array de sales)
-		KT -> GroupBy ou toStream
-		... -> Reduce price
-		*/
+		//TODO: wip - still doesnt work, serializer is wrong
+		KTable<Long, Map<String, String>> countryHighestSalesKTable = salesKStream
+			.groupByKey()
+			.aggregate(HashMap::new,
+				(aggKey, newValue, aggValue) -> {
+				Sale sale = gson.fromJson(newValue, Sale.class);
+				if(aggValue.isEmpty()) {
+					aggValue.put(sale.getCountry().getName(), gson.toJson(sale));
+					return aggValue;
+				}
 
-
+				aggValue.forEach((k,v) -> {
+					Sale oldSale = gson.fromJson(v, Sale.class);
+					if(k.equals(sale.getCountry().getName()) && oldSale.getQuantity() < sale.getQuantity()){
+						v = newValue;
+					}
+				});
+				return aggValue;
+		});
+		countryHighestSalesKTable.toStream().to(countryHighestSalesSinkTopic);
 
 
 		KTable<Long, String> mostProfitableItemKTable = revenuePerItem.join(expensePerItemKTable,
-				(revenue, expense) -> {
-					Sale sale = gson.fromJson(revenue, Sale.class);
-					Order order = gson.fromJson(expense, Order.class);
-					return gson.toJson(new Order()
-					.setItem(order.getItem())
-					.setPrice(sale.getPrice() - order.getPrice()));
-				})
-				.toStream()
-				.groupBy((k,v) -> 0L)
-				.reduce((aggVal, newVal) -> {
-					Order a = gson.fromJson(aggVal, Order.class),
-							b = gson.fromJson(newVal, Order.class);
-					if(a.getPrice() < b.getPrice()) {
-						a = b;
-					}
-					return gson.toJson(a);
-				});
+			(revenue, expense) -> {
+				Sale sale = gson.fromJson(revenue, Sale.class);
+				Order order = gson.fromJson(expense, Order.class);
+				return gson.toJson(new Order()
+				.setItem(order.getItem())
+				.setPrice(sale.getPrice() - order.getPrice()));
+			})
+			.toStream()
+			.groupBy((k,v) -> 0L)
+			.reduce((aggVal, newVal) -> {
+				Order a = gson.fromJson(aggVal, Order.class),
+						b = gson.fromJson(newVal, Order.class);
+				if(a.getPrice() < b.getPrice()) {
+					a = b;
+				}
+				return gson.toJson(a);
+			});
 		mostProfitableItemKTable.toStream().to(mostProfitableItemSinkTopic);
 
 
