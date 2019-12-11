@@ -185,7 +185,7 @@ public class Streams {
 				aggValue.forEach((k,v) -> {
 					Sale oldSale = gson.fromJson(v, Sale.class);
 					if(k.equals(sale.getCountry().getName()) && oldSale.getQuantity() < sale.getQuantity()){
-						v = newValue;
+						aggValue.replace(k, newValue);
 					}
 				});
 				return aggValue;
