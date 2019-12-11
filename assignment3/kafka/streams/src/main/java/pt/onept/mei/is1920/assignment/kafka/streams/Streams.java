@@ -6,6 +6,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
+import pt.onept.mei.is1920.assignment.kafka.common.type.Country;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
 
@@ -122,6 +123,15 @@ public class Streams {
 		);
 		averageExpenseByOrderKTable.toStream().to(averageExpenseByOrderSinkTopic);
 
+		// Country with the highest sales per item and the corresponding revenue sum
+		//@TODO this one + Most profitable item (if there is a tie, only one is needed)
+
+		/*
+		KSF -> Group by key
+		KGS -> Agregate by country
+		KT -> GroupBy ou toStream
+		... -> Reduce price
+		*/
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), sourceProps);
 		streams.start();
