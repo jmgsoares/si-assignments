@@ -19,18 +19,10 @@ public class Streams {
 	private static final String salesSourceTopic = "Sales";
 
 	private static final String resultSinkTopicsPrefix = "Results.";
-	private static final String expensePerItemSinkTopic = resultSinkTopicsPrefix + "ExpensePerItem";
-	private static final String totalExpenseSinkTopic = resultSinkTopicsPrefix + "TotalExpense";
-	private static final String averageExpenseByItemSinkTopic = resultSinkTopicsPrefix + "AverageExpenseByItem";
-	private static final String averageExpenseByOrderSinkTopic = resultSinkTopicsPrefix + "AverageExpenseByOrder";
-	private static final String profitPerItemSinkTopic = resultSinkTopicsPrefix + "ProfitPerItem";
 	private static final String totalProfitSinkTopic = resultSinkTopicsPrefix + "TotalProfit";
-	private static final String mostProfitableItemSinkTopic = resultSinkTopicsPrefix + "MostProfitableItem";
 	private static final String totalExpenseLastHourSinkTopic = resultSinkTopicsPrefix + "TotalExpenseLastHour";
 	private static final String totalProfitLastHourSinkTopic = resultSinkTopicsPrefix + "TotalProfitLastHour";
-	private static final String countryHighestSalesSinkTopic = resultSinkTopicsPrefix + "CountryHighestSales";
-	private static final String revenuePerItemSinkTopic = resultSinkTopicsPrefix + "RevenuePerItem";
-	private static final String totalRevenueSinkTopic = resultSinkTopicsPrefix + "TotalRevenue";
+
 	private static final String totalRevenueLastHourSinkTopic = resultSinkTopicsPrefix + "TotalRevenueLastHour";
 	private static final Duration windowSizeMs = Duration.ofSeconds(30);
 
@@ -57,52 +49,8 @@ public class Streams {
 		KGroupedStream<Long, String> allPurchasesGroupedKGroupedStream = purchasesKStream.groupBy((k, v) -> 0L);
 		KGroupedStream<Long, String> allSalesGroupedKGroupedStream = salesKStream.groupBy((k, v) -> 0L);
 
-		KTable<Long, Long> totalPurchaseCount = allPurchasesGroupedKGroupedStream.count();
 		KTable<Long, Long> purchaseCountByItem = purchasesByKeyKGroupedStream.count();
 
-		KTable<Long, String> expensePerItemKTable = purchasesByKeyKGroupedStream.reduce((v1, v2) -> {
-			Order order1 = gson.fromJson(v1, Order.class);
-			Order order2 = gson.fromJson(v2, Order.class);
-			return gson.toJson(new Order()
-					.setItem(order1.getItem())
-					.setPrice(order1.getPrice() + order2.getPrice()));
-		});
-		expensePerItemKTable.toStream().to(expensePerItemSinkTopic);
-
-		KTable<Long, String> averageExpenseByItemKTable = expensePerItemKTable.join(purchaseCountByItem,
-			(expensePerItem, countPerItem) -> {
-				Order expense = gson.fromJson(expensePerItem, Order.class);
-				return Float.toString(expense.getPrice()/countPerItem);
-			});
-		averageExpenseByItemKTable.toStream().to(averageExpenseByItemSinkTopic);
-
-		KTable<Long, String> revenuePerItem = salesByKeyKGroupedStream.reduce((value1, value2) -> {
-				Sale sale1 = gson.fromJson(value1, Sale.class);
-				Sale sale2 = gson.fromJson(value2, Sale.class);
-				float price = sale1.getPrice() + sale2.getPrice();
-				return gson.toJson(new Sale()
-						.setItem(sale1.getItem())
-						.setPrice(price)
-						.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
-			});
-		revenuePerItem.toStream().to(revenuePerItemSinkTopic);
-
-		KTable<Long, String> profitPerItemKTable = revenuePerItem.join(expensePerItemKTable,
-			(revenue, expense) -> {
-				Sale sale = gson.fromJson(revenue, Sale.class);
-				Order order = gson.fromJson(expense, Order.class);
-				return Float.toString(sale.getPrice() - order.getPrice());
-			});
-		profitPerItemKTable.toStream().to(profitPerItemSinkTopic);
-
-		KTable<Long, String> totalRevenueKTable = allSalesGroupedKGroupedStream.reduce((v1, v2) -> {
-				Sale sale1 = gson.fromJson(v1, Sale.class);
-				Sale sale2 = gson.fromJson(v2, Sale.class);
-				return gson.toJson(new Sale()
-						.setPrice(sale1.getPrice() + sale2.getPrice())
-						.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
-			});
-		totalRevenueKTable.toStream().to(totalRevenueSinkTopic);
 
 
 
@@ -129,21 +77,8 @@ public class Streams {
 			});
 		totalExpenseLastHour.toStream((wk, v) -> wk.key()).to(totalExpenseLastHourSinkTopic);
 
-		KTable<Long, String> totalExpenseKTable = allPurchasesGroupedKGroupedStream.reduce((v1, v2) -> {
-			Order order1 = gson.fromJson(v1, Order.class);
-			Order order2 = gson.fromJson(v2, Order.class);
-			return gson.toJson(new Order()
-					.setPrice(order1.getPrice() + order2.getPrice()));
-		});
-		totalExpenseKTable.toStream().to(totalExpenseSinkTopic);
 
-		KTable<Long, String> totalProfitKTable = totalRevenueKTable.join(totalExpenseKTable,
-			(revenue, expense) -> {
-				Sale sale = gson.fromJson(revenue, Sale.class);
-				Order order = gson.fromJson(expense, Order.class);
-				return Float.toString(sale.getPrice() - order.getPrice());
-			});
-		totalProfitKTable.toStream().to(totalProfitSinkTopic);
+
 
 		//TODO This could be more elegant
 		KTable<Windowed<Long>, String> totalProfitLastHour = totalRevenueKTable.toStream().join(totalExpenseKTable.toStream(),
@@ -160,13 +95,7 @@ public class Streams {
 
 		totalProfitLastHour.toStream().to(totalProfitLastHourSinkTopic);
 
-		KTable<Long, String> averageExpenseByOrderKTable = totalExpenseKTable.join(totalPurchaseCount,
-				(totalExpense, totalCount) -> {
-					Order expense = gson.fromJson(totalExpense, Order.class);
-					return Float.toString(expense.getPrice()/totalCount);
-				}
-		);
-		averageExpenseByOrderKTable.toStream().to(averageExpenseByOrderSinkTopic);
+
 
 		// Country with the highest sales per item and the corresponding revenue sum
 		//@TODO this one + Most profitable item (if there is a tie, only one is needed)

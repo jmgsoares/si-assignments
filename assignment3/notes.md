@@ -14,14 +14,14 @@
 - Streams
     - Module Name -> streams
     - This reads from sales and purchase topics and should compute the following and write the results to result topics
-        OK - Revenue per item (sum item sales)
-        OK - Expense per item (sum item purchases)
-        OK - Profit per item (sum item sales - sum item purchases)
-        OK - Total Revenue (sum all sales)
-        OK - Total Expense (sum all purchases)
+       - OK - Revenue per item (sum item sales)
+       - OK - Expense per item (sum item purchases)
+       - OK - Profit per item (sum item sales - sum item purchases)
+       - OK - Total Revenue (sum all sales)
+       - OK - Total Expense (sum all purchases)
         OK - Total Profit (sum all sales - sum all purchases)
-        OK - Average expense per order (separated by item)
-        OK - Average expense per order (aggregate all items)
+       - OK - Average expense per order (separated by item)
+       - OK - Average expense per order (aggregate all items)
         - Most profitable item (if there is a tie, only one is needed)
         OK - Total revenue in the last hour
         OK - Total expense in the last hour
