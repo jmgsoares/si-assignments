@@ -12,7 +12,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class Sale {
-    public static final int PRICE_MAX = 10000;
+    public static final int PRICE_MAX = 1100;
     public static final int QUANTITY_MAX = 10;
     private Item item;
     private float price;

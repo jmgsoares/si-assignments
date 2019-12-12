@@ -1,3 +1,5 @@
+Create SCHEMA "Results"
+
 create sequence data_id_seq;
 
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()

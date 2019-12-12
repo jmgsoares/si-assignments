@@ -33,8 +33,7 @@ public class Customers {
 		Map<Long, Country> countriesMap = new HashMap<>();
 
 		java.util.Properties props = new Properties();
-		//props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-app");
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-customers-test-app-19");
+		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "__kafkaShop-customers-app-222132");
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
