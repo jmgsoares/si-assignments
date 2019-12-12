@@ -1,5 +1,7 @@
 package pt.onept.mei.is1920.assignment.kafka.cli;
 
+import pt.onept.mei.is1920.assignment.kafka.cli.CliHandler.CliOperationsHandler;
+
 import java.util.Scanner;
 
 public class Cli {
@@ -32,43 +34,61 @@ public class Cli {
 				case 0:
 					return;
 				case 1:
+					CliOperationsHandler.addCountry();
 					continue;
 				case 2:
+					CliOperationsHandler.editCountry();
 					continue;
 				case 3:
+					CliOperationsHandler.listCountries();
 					continue;
 				case 4:
+					CliOperationsHandler.addItem();
 					continue;
 				case 5:
+					CliOperationsHandler.editItem();
 					continue;
 				case 6:
+					CliOperationsHandler.listItems();
 					continue;
 				case 7:
+					CliOperationsHandler.getRevenuePerItem();
 					continue;
 				case 8:
+					CliOperationsHandler.getExpensePerItem();
 					continue;
 				case 9:
+					CliOperationsHandler.getProfitPerItem();
 					continue;
 				case 10:
+					CliOperationsHandler.getTotalRevenue();
 					continue;
 				case 11:
+					CliOperationsHandler.getTotalExpense();
 					continue;
 				case 12:
+					CliOperationsHandler.getTotalProfit();
 					continue;
 				case 13:
+					CliOperationsHandler.getAverageSpentByItem();
 					continue;
 				case 14:
+					CliOperationsHandler.getTotalAverageSpent();
 					continue;
 				case 15:
+					CliOperationsHandler.getItemHighestProfit();
 					continue;
 				case 16:
+					CliOperationsHandler.getTotalRevenueLastHour();
 					continue;
 				case 17:
+					CliOperationsHandler.getTotalExpenseLastHour();
 					continue;
 				case 18:
+					CliOperationsHandler.getTotalProfitLastHour();
 					continue;
 				case 19:
-					continue;
+					CliOperationsHandler.getCountryHighestSalesPerItem();
 			}
 		}
 	}
