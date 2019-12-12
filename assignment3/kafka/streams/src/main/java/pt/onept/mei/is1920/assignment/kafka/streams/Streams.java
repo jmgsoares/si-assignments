@@ -11,11 +11,7 @@ import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class Streams {
 
@@ -42,7 +38,7 @@ public class Streams {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-09");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-093");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -171,25 +167,34 @@ public class Streams {
 		);
 		averageExpenseByOrderKTable.toStream().to(averageExpenseByOrderSinkTopic);
 
-		//TODO: wip - still doesnt work, serializer is wrong
-		KTable<Long, Map<String, String>> countryHighestSalesKTable = salesKStream
-			.groupByKey()
-			.aggregate(HashMap::new,
-				(aggKey, newValue, aggValue) -> {
-				Sale sale = gson.fromJson(newValue, Sale.class);
-				if(aggValue.isEmpty()) {
-					aggValue.put(sale.getCountry().getName(), gson.toJson(sale));
-					return aggValue;
-				}
-
-				aggValue.forEach((k,v) -> {
-					Sale oldSale = gson.fromJson(v, Sale.class);
-					if(k.equals(sale.getCountry().getName()) && oldSale.getQuantity() < sale.getQuantity()){
-						aggValue.replace(k, newValue);
+		KTable<Long, String> countryHighestSalesKTable = salesKStream
+				.groupBy((k, v) -> {
+					Sale sale = gson.fromJson(v, Sale.class);
+					return (k + " " + sale.getCountry().getName());
+				}, Grouped.with(Serdes.String(), Serdes.String()))
+				.reduce((sale1, sale2) -> {
+					Sale s1 = gson.fromJson(sale1, Sale.class);
+					Sale s2 = gson.fromJson(sale2, Sale.class);
+					System.out.println(s1);
+					System.out.println(s2);
+					return gson.toJson(new Sale()
+							.setPrice(s1.getPrice() + s2.getPrice())
+							.setCountry(s2.getCountry()));
+				})
+				.toStream()
+				.groupBy((k, v) -> {
+					String[] keyP = k.split(" ");
+					return Long.parseLong(keyP[0]);
+				}, Grouped.with(Serdes.Long(), Serdes.String()))
+				.reduce((oldVal, newVal) -> {
+					Sale oldS = gson.fromJson(oldVal, Sale.class);
+					Sale newS = gson.fromJson(newVal, Sale.class);
+					if(oldS.getPrice() < newS.getPrice()){
+						return newVal;
 					}
+					return oldVal;
 				});
-				return aggValue;
-		});
+
 		countryHighestSalesKTable.toStream().to(countryHighestSalesSinkTopic);
 
 
