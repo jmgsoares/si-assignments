@@ -1,6 +1,7 @@
 package pt.onept.mei.is1920.assignment.kafka.streams.handler;
 
 import com.google.gson.Gson;
+import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -22,12 +23,14 @@ final class StreamOperationsHandler {
 	private final KGroupedStream<Long, String> allOrders;
 	private final KGroupedStream<Long, String> salesByKey;
 	private final KGroupedStream<Long, String> allSales;
+	private final KStream<Long, String> salesStream;
 
 	StreamOperationsHandler(KStream<Long, String> ordersStream, KStream<Long, String> salesStream) {
 		this.ordersByKey = ordersStream.groupByKey();
 		this.salesByKey = salesStream.groupByKey();
 		this.allSales = salesStream.groupBy((k, v) -> 0L);
 		this.allOrders = ordersStream.groupBy((k, v) -> 0L);
+		this.salesStream = salesStream;
 	}
 
 	KTable<Long, Float> expensePerItem () {
@@ -223,6 +226,7 @@ final class StreamOperationsHandler {
 
 		return totalProfitLastHourTable;
 	}
+
 	KTable<Long, String> mostProfitableItem(KTable<Long, Float> profitPerItemTable) {
 		KTable<Long, String> mostProfitableItemTable = profitPerItemTable
 				.toStream()
@@ -235,14 +239,14 @@ final class StreamOperationsHandler {
 		mostProfitableItemTable
 				.toStream()
 				.map((k, v) -> new KeyValue<>(Long.parseLong(v.split(" ")[0]),
-						StreamConfigs.WrapKVSchema(Long.parseLong(v.split(" ")[0]), v.split(" ")[1])))
-				.to(StreamConfigs.MOST_PROFITABLE_ITEM_SINK_TOPIC);
+						DBSchemaUtility.WrapKVSchema(Long.parseLong(v.split(" ")[0]), v.split(" ")[1])))
+				.to(TopicsName.MOST_PROFITABLE_ITEM_SINK_TOPIC);
 
 		return mostProfitableItemTable;
 	}
 
 	KTable<Long, String> countryHighestSales() {
-		KTable<Long, String> countryHighestSalesTable = salesStream
+		KTable<Long, String> countryHighestSalesTable = this.salesStream
 				.groupBy((k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getName()),
 						Grouped.with(Serdes.String(), Serdes.String()))
 				.reduce((sale1, sale2) -> {
@@ -273,7 +277,7 @@ final class StreamOperationsHandler {
 				.map(((key, value) -> new KeyValue<>(
 						key,
 						gson.fromJson(value, Sale.class).getCountry().getId() + " " + gson.fromJson(value, Sale.class).getPrice()
-				))).to(StreamConfigs.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
+				))).to(TopicsName.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
 
 		return countryHighestSalesTable;
 	}

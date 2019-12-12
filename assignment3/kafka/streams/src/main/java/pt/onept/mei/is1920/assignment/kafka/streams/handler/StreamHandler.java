@@ -121,4 +121,12 @@ public final class StreamHandler {
 		return this.countryHighestSalesTable;
 	}
 
+	public KTable<Long, String> getMostProfitableItemStream() {
+		if(this.mostProfitableItemTable != null) {
+			return this.mostProfitableItemTable;
+		}
+		this.mostProfitableItemTable = this.streamOperationsHandler.mostProfitableItem(getProfitPerItemTable());
+		return this.mostProfitableItemTable;
+	}
+
 }
