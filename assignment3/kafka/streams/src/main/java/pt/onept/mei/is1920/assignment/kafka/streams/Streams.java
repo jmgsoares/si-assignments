@@ -38,7 +38,7 @@ public class Streams {
 
 		java.util.Properties sourceProps = new Properties();
 		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-093");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-20");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -175,11 +175,8 @@ public class Streams {
 				.reduce((sale1, sale2) -> {
 					Sale s1 = gson.fromJson(sale1, Sale.class);
 					Sale s2 = gson.fromJson(sale2, Sale.class);
-					System.out.println(s1);
-					System.out.println(s2);
-					return gson.toJson(new Sale()
-							.setPrice(s1.getPrice() + s2.getPrice())
-							.setCountry(s2.getCountry()));
+					return gson.toJson(s2
+							.setPrice(s1.getPrice() + s2.getPrice()));
 				})
 				.toStream()
 				.groupBy((k, v) -> {
@@ -189,10 +186,15 @@ public class Streams {
 				.reduce((oldVal, newVal) -> {
 					Sale oldS = gson.fromJson(oldVal, Sale.class);
 					Sale newS = gson.fromJson(newVal, Sale.class);
+					Sale resultSale = new Sale();
 					if(oldS.getPrice() < newS.getPrice()){
-						return newVal;
+						resultSale.setPrice(newS.getPrice())
+								.setCountry(newS.getCountry());
+					} else {
+						resultSale.setPrice(oldS.getPrice())
+								.setCountry(oldS.getCountry());
 					}
-					return oldVal;
+					return gson.toJson(resultSale);
 				});
 
 		countryHighestSalesKTable.toStream().to(countryHighestSalesSinkTopic);
