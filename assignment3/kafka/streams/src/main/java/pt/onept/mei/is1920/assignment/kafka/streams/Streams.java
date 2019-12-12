@@ -5,8 +5,8 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
+import pt.onept.mei.is1920.assignment.kafka.streams.handler.StreamHandler;
 
-import java.time.Duration;
 import java.util.Properties;
 
 public class Streams {
@@ -30,19 +30,19 @@ public class Streams {
 		KStream<Long, String> ordersStream = builder.stream(purchasesSourceTopic);
 		KStream<Long, String> salesStream = builder.stream(salesSourceTopic);
 
-		Processor dataProcessor = new Processor(ordersStream, salesStream);
+		StreamHandler streamHandler = new StreamHandler(ordersStream, salesStream);
 
-		dataProcessor.expensePerItem();
-		dataProcessor.revenuePerItem();
-		dataProcessor.totalRevenue();
-		dataProcessor.totalExpense();
-		dataProcessor.averageExpensePerItem();
-		dataProcessor.averageExpensePerOrder();
-		dataProcessor.profitPerItem();
-		dataProcessor.totalProfit();
-		dataProcessor.totalRevenueLastHour();
-		dataProcessor.totalExpenseLastHour();
-		dataProcessor.totalProfitLastHour();
+		streamHandler.getExpensePerItemTable();
+		streamHandler.getRevenuePerItemTable();
+		streamHandler.getTotalRevenueTable();
+		streamHandler.getTotalExpenseTable();
+		streamHandler.getAverageExpensePerItemTable();
+		streamHandler.getAverageExpensePerOrderTable();
+		streamHandler.getProfitPerItemTable();
+		streamHandler.getTotalProfitLastHourTable();
+		streamHandler.getTotalRevenueLastHourTable();
+		streamHandler.getTotalExpenseLastHourTable();
+		streamHandler.getTotalProfitLastHourTable();
 
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), sourceProps);
