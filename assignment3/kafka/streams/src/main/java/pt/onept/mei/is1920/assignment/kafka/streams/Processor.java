@@ -2,7 +2,6 @@ package pt.onept.mei.is1920.assignment.kafka.streams;
 
 import com.google.gson.Gson;
 import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
@@ -203,7 +202,7 @@ public final class Processor {
 
 	public void totalRevenueLastHour() {
 		KTable<Windowed<Long>, String> totalRevenueLastHour = this.allSales
-				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE_MS))
+				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE))
 				.reduce((v1, v2) -> {
 					Sale sale1 = gson.fromJson(v1, Sale.class);
 					Sale sale2 = gson.fromJson(v2, Sale.class);
@@ -225,7 +224,7 @@ public final class Processor {
 
 	public void totalExpenseLastHour() {
 		KTable<Windowed<Long>, String> totalExpenseLastHour = this.allOrders
-				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE_MS))
+				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE))
 				.reduce((v1, v2) -> {
 					Order order1 = gson.fromJson(v1, Order.class);
 					Order order2 = gson.fromJson(v2, Order.class);
@@ -247,25 +246,27 @@ public final class Processor {
 
 	public void totalProfitLastHour() {
 		KStream<Long, String> totalRevenueStream = this.allSales
-				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE_MS))
+				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE))
 				.reduce((v1, v2) -> {
 					Sale sale1 = gson.fromJson(v1, Sale.class);
 					Sale sale2 = gson.fromJson(v2, Sale.class);
 					return gson.toJson(new Sale()
 							.setPrice(sale1.getPrice() + sale2.getPrice()));})
 				.toStream()
+				.filter( (wk, v) -> keepCurrentWindow(wk, StreamConfigs.WINDOW_ADVANCE_MS) )
 				.map(
 						(wk, v) -> new KeyValue<>(wk.key(), Float.toString(gson.fromJson(v, Sale.class).getPrice()))
 				);
 
 		KStream<Long, String> totalExpenseStream = this.allOrders
-				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE_MS))
+				.windowedBy(TimeWindows.of(StreamConfigs.WINDOW_SIZE))
 				.reduce((v1, v2) -> {
 					Order order1 = gson.fromJson(v1, Order.class);
 					Order order2 = gson.fromJson(v2, Order.class);
 					return gson.toJson(new Order()
 							.setPrice(order1.getPrice() + order2.getPrice())); })
 				.toStream()
+				.filter( (wk, v) -> keepCurrentWindow(wk, StreamConfigs.WINDOW_ADVANCE_MS) )
 				.map(
 						(wk, v) -> new KeyValue<>(wk.key(), Float.toString(gson.fromJson(v, Order.class).getPrice()))
 				);
@@ -274,11 +275,18 @@ public final class Processor {
 				.join(totalExpenseStream,
 					(revenueVal, expenseVal) ->
 							Float.toString(Float.parseFloat(revenueVal) + Float.parseFloat(expenseVal)),
-					JoinWindows.of(Duration.ofSeconds(3)))
+					JoinWindows.of(Duration.ofSeconds(15)))
 				.map(
 						(k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v))
 				);
 
 		totalProfitLastHour.to(StreamConfigs.TOTAL_PROFIT_LAST_HOUR_SINK_TOPIC);
+	}
+
+	private boolean keepCurrentWindow(Windowed<Long> window, long advanceMs) {
+		long now = System.currentTimeMillis();
+
+		return window.window().end() > now &&
+				window.window().end() < now + advanceMs;
 	}
 }
