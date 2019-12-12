@@ -207,11 +207,28 @@ final class StreamOperationsHandler {
 		KTable<Long, String> countryHighestSalesTable = salesStream
 				.groupBy((k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getName()),
 						Grouped.with(Serdes.String(), Serdes.String()))
-				.reduce(this::sumSales)
+				.reduce((sale1, sale2) -> {
+					Sale s1 = gson.fromJson(sale1, Sale.class);
+					Sale s2 = gson.fromJson(sale2, Sale.class);
+					return gson.toJson(s2
+							.setPrice(s1.getPrice() + s2.getPrice()));
+				})
 				.toStream()
 				.groupBy((k, v) -> Long.parseLong(k.split(" ")[0]), Grouped.with(Serdes.Long(),
 						Serdes.String()))
-				.reduce(this::getBestPriceOfSales);
+				.reduce((oldVal, newVal) -> {
+					Sale oldS = gson.fromJson(oldVal, Sale.class);
+					Sale newS = gson.fromJson(newVal, Sale.class);
+					Sale resultSale = new Sale();
+					if(oldS.getPrice() < newS.getPrice()){
+						resultSale.setPrice(newS.getPrice())
+								.setCountry(newS.getCountry());
+					} else {
+						resultSale.setPrice(oldS.getPrice())
+								.setCountry(oldS.getCountry());
+					}
+					return gson.toJson(resultSale);
+				});
 
 		countryHighestSalesTable
 				.toStream()
@@ -221,27 +238,5 @@ final class StreamOperationsHandler {
 				))).to(StreamConfigs.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
 
 		return countryHighestSalesTable;
-	}
-
-	//TODO Place this helper functions for countryHighestSales on the utils package
-	String sumSales(String sale1, String sale2) {
-		Sale s1 = gson.fromJson(sale1, Sale.class);
-		Sale s2 = gson.fromJson(sale2, Sale.class);
-		return gson.toJson(s2
-				.setPrice(s1.getPrice() + s2.getPrice()));
-	}
-
-	String getBestPriceOfSales(String oldVal,String newVal){
-		Sale oldS = gson.fromJson(oldVal, Sale.class);
-		Sale newS = gson.fromJson(newVal, Sale.class);
-		Sale resultSale = new Sale();
-		if(oldS.getPrice() < newS.getPrice()){
-			resultSale.setPrice(newS.getPrice())
-					.setCountry(newS.getCountry());
-		} else {
-			resultSale.setPrice(oldS.getPrice())
-					.setCountry(oldS.getCountry());
-		}
-		return gson.toJson(resultSale);
 	}
 }
