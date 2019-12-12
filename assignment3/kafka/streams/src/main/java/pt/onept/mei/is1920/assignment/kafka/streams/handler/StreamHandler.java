@@ -16,6 +16,8 @@ public final class StreamHandler {
 	private KTable<Long, Float> totalExpenseTable = null;
 	private KTable<Long, Float> averageExpensePerOrderStream = null;
 	private KTable<Long, Float> totalProfitStream = null;
+	private KTable<Long, String> mostProfitableItemTable = null;
+	private KTable<Long, String> countryHighestSalesTable = null;
 
 	private KTable<Windowed<Long>, Float> totalRevenueLastHourTable = null;
 	private KTable<Windowed<Long>, Float> totalExpenseLastHourTable = null;
@@ -87,6 +89,14 @@ public final class StreamHandler {
 		return this.profitPerItemTable;
 	}
 
+	public KTable<Long, String> getMostProfitableItemStream() {
+		if(this.mostProfitableItemTable != null) {
+			return this.mostProfitableItemTable;
+		}
+		this.mostProfitableItemTable = this.streamOperationsHandler.mostProfitableItem(getProfitPerItemTable());
+		return this.mostProfitableItemTable;
+	}
+
 	public KTable<Windowed<Long>, Float> getTotalRevenueLastHourTable() {
 		if (this.totalRevenueLastHourTable != null)
 			return this.totalRevenueLastHourTable;
@@ -104,11 +114,19 @@ public final class StreamHandler {
 	public KTable<Windowed<Long>, Float> getTotalProfitLastHourTable() {
 		if (totalProfitLastHourTable !=  null)
 			return this.totalProfitLastHourTable;
-		this.totalProfitLastHourTable = this.streamOperationsHandler.totalProfitLastHour(
+		/*this.totalProfitLastHourTable = this.streamOperationsHandler.totalProfitLastHour(
 				this.getTotalRevenueLastHourTable(),
 				this.getTotalExpenseLastHourTable()
-		);
+		);*/
 		return this.totalProfitLastHourTable;
+	}
+
+	public KTable<Long, String> getCountryHighestSalesTable() {
+		if(this.countryHighestSalesTable != null) {
+			return this.countryHighestSalesTable;
+		}
+		this.countryHighestSalesTable = this.streamOperationsHandler.countryHighestSales();
+		return this.countryHighestSalesTable;
 	}
 
 }

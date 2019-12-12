@@ -1,6 +1,7 @@
 package pt.onept.mei.is1920.assignment.kafka.streams.handler;
 
 import com.google.gson.Gson;
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
@@ -16,7 +17,10 @@ final class StreamOperationsHandler {
 	private final KGroupedStream<Long, String> salesByKey;
 	private final KGroupedStream<Long, String> allSales;
 
+	private final KStream<Long, String> salesStream;
+
 	StreamOperationsHandler(KStream<Long, String> ordersStream, KStream<Long, String> salesStream) {
+		this.salesStream = salesStream;
 		this.ordersByKey = ordersStream.groupByKey();
 		this.salesByKey = salesStream.groupByKey();
 		this.allSales = salesStream.groupBy((k, v) -> 0L);
@@ -27,7 +31,8 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> expensePerItemTable = this.ordersByKey
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		expensePerItemTable
 				.toStream()
@@ -40,7 +45,8 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> revenuePerItemTable = this.salesByKey
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		revenuePerItemTable
 				.toStream()
@@ -54,7 +60,8 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> totalRevenueTable = this.allSales
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalRevenueTable
 				.toStream()
@@ -68,7 +75,8 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> totalExpenseTable = this.allSales
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalExpenseTable.toStream()
 				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
@@ -125,6 +133,24 @@ final class StreamOperationsHandler {
 		return profitPerItemTable;
 	}
 
+	KTable<Long, String> mostProfitableItem(KTable<Long, Float> profitPerItemTable) {
+		KTable<Long, String> mostProfitableItemTable = profitPerItemTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, k + " " + v))
+				.groupBy((k, v) -> 0L)
+				.reduce((newValue, aggValue) ->
+						Float.parseFloat(aggValue.split(" ")[1]) < Float.parseFloat(newValue.split(" ")[1]) ?
+								newValue : aggValue);
+
+		mostProfitableItemTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(Long.parseLong(v.split(" ")[0]),
+						StreamConfigs.WrapKVSchema(Long.parseLong(v.split(" ")[0]), v.split(" ")[1])))
+				.to(StreamConfigs.MOST_PROFITABLE_ITEM_SINK_TOPIC);
+
+		return mostProfitableItemTable;
+	}
+
 	KTable<Windowed<Long>, Float>totalRevenueLastHour() {
 		KTable<Windowed<Long>, Float> totalRevenueLastHourWindowed = this.allSales
 				.windowedBy(StreamConfigs.TIME_WINDOWS)
@@ -177,4 +203,45 @@ final class StreamOperationsHandler {
 		return totalProfitLastHour;
 	}
 
+	KTable<Long, String> countryHighestSales() {
+		KTable<Long, String> countryHighestSalesTable = salesStream
+				.groupBy((k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getName()),
+						Grouped.with(Serdes.String(), Serdes.String()))
+				.reduce(this::sumSales)
+				.toStream()
+				.groupBy((k, v) -> Long.parseLong(k.split(" ")[0]), Grouped.with(Serdes.Long(),
+						Serdes.String()))
+				.reduce(this::getBestPriceOfSales);
+
+		countryHighestSalesTable
+				.toStream()
+				.map(((key, value) -> new KeyValue<>(
+						key,
+						gson.fromJson(value, Sale.class).getCountry().getId() + " " + gson.fromJson(value, Sale.class).getPrice()
+				))).to(StreamConfigs.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
+
+		return countryHighestSalesTable;
+	}
+
+	//TODO Place this helper functions for countryHighestSales on the utils package
+	String sumSales(String sale1, String sale2) {
+		Sale s1 = gson.fromJson(sale1, Sale.class);
+		Sale s2 = gson.fromJson(sale2, Sale.class);
+		return gson.toJson(s2
+				.setPrice(s1.getPrice() + s2.getPrice()));
+	}
+
+	String getBestPriceOfSales(String oldVal,String newVal){
+		Sale oldS = gson.fromJson(oldVal, Sale.class);
+		Sale newS = gson.fromJson(newVal, Sale.class);
+		Sale resultSale = new Sale();
+		if(oldS.getPrice() < newS.getPrice()){
+			resultSale.setPrice(newS.getPrice())
+					.setCountry(newS.getCountry());
+		} else {
+			resultSale.setPrice(oldS.getPrice())
+					.setCountry(oldS.getCountry());
+		}
+		return gson.toJson(resultSale);
+	}
 }
