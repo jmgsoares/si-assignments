@@ -22,9 +22,11 @@ public final class StreamConfigs {
 	public static final String REVENUE_PER_ITEM_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "RevenuePerItem";
 	public static final String TOTAL_REVENUE_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalRevenue";
 	public static final String TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalRevenueLastHour";
-	public static final Duration WINDOW_SIZE_MS = Duration.ofSeconds(30);
 
-	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"key\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"key\":\"";
+	public static final Duration WINDOW_SIZE = Duration.ofSeconds(30);
+	public static final long WINDOW_ADVANCE_MS = Duration.ofSeconds(29).toMillis();
+
+	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"id\":\"";
 	public static final String RESULT_SCHEMA_SEP = "\",\"value\":\"";
 	public static final String RESULT_SCHEMA_SUFFIX = "\"}}";
 
