@@ -1,13 +1,21 @@
 package pt.onept.mei.is1920.assignment.kafka.streams.handler;
 
 import com.google.gson.Gson;
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Order;
 import pt.onept.mei.is1920.assignment.kafka.common.type.Sale;
-import pt.onept.mei.is1920.assignment.kafka.streams.StreamConfigs;
+import pt.onept.mei.is1920.assignment.kafka.streams.TopicsName;
+import pt.onept.mei.is1920.assignment.kafka.streams.util.DBSchemaUtility;
+import pt.onept.mei.is1920.assignment.kafka.streams.util.WindowedStreamUtility;
 
 final class StreamOperationsHandler {
+
+	private final static Logger logger = LoggerFactory.getLogger(StreamOperationsHandler.class);
+
 
 	private static Gson gson = new Gson();
 
@@ -27,12 +35,14 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> expensePerItemTable = this.ordersByKey
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float())
+						);
 
 		expensePerItemTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.EXPENSE_PER_ITEM_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.EXPENSE_PER_ITEM_SINK_TOPIC);
 		return expensePerItemTable;
 	}
 
@@ -40,12 +50,13 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> revenuePerItemTable = this.salesByKey
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		revenuePerItemTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(	k,StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.REVENUE_PER_ITEM_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(	k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.REVENUE_PER_ITEM_SINK_TOPIC);
 
 	return revenuePerItemTable;
 	}
@@ -54,127 +65,152 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> totalRevenueTable = this.allSales
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalRevenueTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.TOTAL_REVENUE_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.TOTAL_REVENUE_SINK_TOPIC);
 
-	return totalRevenueTable;
+		return totalRevenueTable;
 	}
 
 	KTable<Long, Float> totalExpense() {
 		KTable<Long, Float> totalExpenseTable = this.allSales
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue);
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalExpenseTable.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.TOTAL_EXPENSE_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.TOTAL_EXPENSE_SINK_TOPIC);
 
 		return totalExpenseTable;
 	}
 
 	KTable<Long, Float> totalProfit(KTable<Long, Float> totalRevenueTable, KTable<Long, Float> totalExpenseTable) {
 
-		KTable<Long, Float> totalProfitTable = totalRevenueTable.join(totalExpenseTable, Float::sum);
+		KTable<Long, Float> totalProfitTable = totalRevenueTable
+				.join(
+						totalExpenseTable,
+						Float::sum,
+						Materialized.with(Serdes.Long(), Serdes.Float())
+				);
 
 		totalProfitTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.TOTAL_PROFIT_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.TOTAL_PROFIT_SINK_TOPIC);
 
 		return totalProfitTable;
 	}
 
 	KTable<Long, Float> averageExpensePerItem(KTable<Long, Float> expensePerItemTable) {
 		KTable<Long, Float> averageExpensePerItemTable = expensePerItemTable
-				.join(this.ordersByKey.count(),(exp, cnt) -> exp/cnt);
+				.join(
+						this.ordersByKey.count(),
+						(exp, cnt) -> exp/cnt,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		averageExpensePerItemTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.AVERAGE_EXPENSE_BY_ITEM_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.AVERAGE_EXPENSE_BY_ITEM_SINK_TOPIC);
 
 		return averageExpensePerItemTable;
 	}
 
 	KTable<Long, Float> averageExpensePerOrder(KTable<Long, Float> totalExpenseTable){
-		KTable<Long, Float> averageExpenseByOrderTable = totalExpenseTable.join(allOrders.count(),
-				(exp, count) -> exp/count);
+		KTable<Long, Float> averageExpenseByOrderTable = totalExpenseTable
+				.join(
+						allOrders.count(),
+						(exp, count) -> exp/count,
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		averageExpenseByOrderTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.AVERAGE_EXPENSE_BY_ORDER_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.AVERAGE_EXPENSE_BY_ORDER_SINK_TOPIC);
 
 		return averageExpenseByOrderTable;
 	}
 
 	KTable<Long, Float> profitPerItem(KTable<Long, Float> revenuePerItemTable, KTable<Long, Float> expensePerItemTable){
-		KTable<Long, Float> profitPerItemTable = revenuePerItemTable.join(expensePerItemTable,
-				(revenue, expense) -> revenue - expense);
+		KTable<Long, Float> profitPerItemTable = revenuePerItemTable
+				.join(
+						expensePerItemTable,
+						(revenue, expense) -> revenue - expense,
+						Materialized.with(Serdes.Long(), Serdes.Float())
+				);
 
 		profitPerItemTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, Float.toString(v))))
-				.to(StreamConfigs.PROFIT_PER_ITEM_SINK_TOPIC);
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to(TopicsName.PROFIT_PER_ITEM_SINK_TOPIC);
 
 		return profitPerItemTable;
 	}
 
-	KTable<Windowed<Long>, Float>totalRevenueLastHour() {
-		KTable<Windowed<Long>, Float> totalRevenueLastHourWindowed = this.allSales
-				.windowedBy(StreamConfigs.TIME_WINDOWS)
+	KStream<Windowed<Long>, Float>totalRevenueLastHour() {
+		KStream<Windowed<Long>, Float> totalRevenueLastHourWindowedStream = this.allSales
+				.windowedBy(WindowedStreamUtility.TIME_WINDOWS)
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue)
-				.filter((w, v) -> StreamConfigs.KeepWindow(w));
-
-		totalRevenueLastHourWindowed
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()))
 				.toStream()
-				.map((wk, v) -> new KeyValue<>(wk.key(),Float.toString(v)))
-				.to(StreamConfigs.TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC);
+				.filter((wk, v) -> !WindowedStreamUtility.KeepWindow(wk));
 
-		return totalRevenueLastHourWindowed;
+		totalRevenueLastHourWindowedStream
+				.map((wk, v) -> new KeyValue<>(wk.key(), DBSchemaUtility.WrapKVSchema(wk.key(), Float.toString(v))))
+				.to(TopicsName.TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC);
+
+		return totalRevenueLastHourWindowedStream;
 	}
 
-	KTable<Windowed<Long>, Float> totalExpenseLastHour() {
-		KTable<Windowed<Long>, Float> totalExpenseLastHourWindowed = this.allOrders
-				.windowedBy(StreamConfigs.TIME_WINDOWS)
+	KStream<Windowed<Long>, Float> totalExpenseLastHour() {
+		KStream<Windowed<Long>, Float> totalExpenseLastHourWindowedStream = this.allOrders
+				.windowedBy(WindowedStreamUtility.TIME_WINDOWS)
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue)
-				.filter((w, v) -> StreamConfigs.KeepWindow(w));
-
-
-		totalExpenseLastHourWindowed
+						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						Materialized.with(Serdes.Long(), Serdes.Float()))
 				.toStream()
-				.map((wk, v) -> new KeyValue<>(wk.key(),Float.toString(v)))
-				.to(StreamConfigs.TOTAL_EXPENSE_LAST_HOUR_SINK_TOPIC);
+				.filter((w, v) -> !WindowedStreamUtility.KeepWindow(w));
 
-		return totalExpenseLastHourWindowed;
+		totalExpenseLastHourWindowedStream
+				.map((wk, v) -> new KeyValue<>(wk.key(), DBSchemaUtility.WrapKVSchema(wk.key(), Float.toString(v))))
+				.to(TopicsName.TOTAL_EXPENSE_LAST_HOUR_SINK_TOPIC);
+
+		return totalExpenseLastHourWindowedStream;
 	}
 
-	KTable<Windowed<Long>, Float> totalProfitLastHour(
-		KTable<Windowed<Long>, Float> totalRevenueLastHourTable,
-		KTable<Windowed<Long>, Float> totalExpenseLastHourTable
+	KStream<Windowed<Long>, Float> totalProfitLastHour(
+		KStream<Windowed<Long>, Float> totalRevenueLastHourTable,
+		KStream<Windowed<Long>, Float> totalExpenseLastHourTable
 	) {
 
-		KTable<Windowed<Long>, Float> totalProfitLastHour = totalRevenueLastHourTable
-				.join(totalExpenseLastHourTable, Float::sum);
+		KStream<Long, Float> totalRevenueLastHourStream =
+				totalRevenueLastHourTable.map((wk, v) -> new KeyValue<>(wk.key(),v));
+		KStream<Long, Float> totalExpenseLastHourStream =
+				totalExpenseLastHourTable.map((wk, v) -> new KeyValue<>(wk.key(),v));
 
-		totalExpenseLastHourTable
-				.filter((w, v) -> StreamConfigs.KeepWindow(w))
-				.toStream()
-				.map(
-						(wk, v) -> new KeyValue<>(wk.key(), StreamConfigs.WrapKVSchema(wk.key(), Float.toString(v)))
-				)
-				.to(StreamConfigs.TOTAL_PROFIT_LAST_HOUR_SINK_TOPIC);
+		totalRevenueLastHourStream
+				.join(
+						totalExpenseLastHourStream,
+						(left, right) -> left - right,
+						JoinWindows.of(WindowedStreamUtility.STREAM_JOINING_WINDOW),
+						Joined.with(
+								Serdes.Long(),
+								Serdes.Float(),
+								Serdes.Float()))
+				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
+				.to("TEST-TOPIC");
 
-		return totalProfitLastHour;
+
+		return null;
 	}
 
 }

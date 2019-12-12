@@ -4,15 +4,15 @@ import org.apache.kafka.streams.kstream.TimeWindows;
 import org.apache.kafka.streams.kstream.Windowed;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
-public final class StreamConfigs {
-	private StreamConfigs() { }
+public final class TopicsName {
+	private TopicsName() { }
 
 	public static final String PURCHASES_SOURCE_TOPIC = "Purchases";
 	public static final String SALES_SOURCE_TOPIC = "Sales";
 
 	public static final String RESULT_SINK_TOPIC_PREFIX = "Results.";
+
 	public static final String EXPENSE_PER_ITEM_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "ExpensePerItem";
 	public static final String TOTAL_EXPENSE_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalExpense";
 	public static final String AVERAGE_EXPENSE_BY_ITEM_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "AverageExpenseByItem";
@@ -27,23 +27,5 @@ public final class StreamConfigs {
 	public static final String TOTAL_REVENUE_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalRevenue";
 	public static final String TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalRevenueLastHour";
 
-	public static final Duration WINDOW_SIZE_DURATION = Duration.ofSeconds(30);
-	public static final Duration WINDOW_ADVANCE_DURATION = Duration.ofSeconds(30);
-	public static final TimeWindows TIME_WINDOWS = TimeWindows.of(WINDOW_SIZE_DURATION).advanceBy(WINDOW_ADVANCE_DURATION);
 
-
-	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"id\":\"";
-	public static final String RESULT_SCHEMA_SEP = "\",\"value\":\"";
-	public static final String RESULT_SCHEMA_SUFFIX = "\"}}";
-
-	public static boolean KeepWindow (Windowed<Long> window) {
-		long now = System.currentTimeMillis();
-
-		return window.window().end() > now &&
-				window.window().end() < now + WINDOW_ADVANCE_DURATION.toMillis();
-	}
-
-	public static String WrapKVSchema(Long k, String v) {
-		return StreamConfigs.RESULT_SCHEMA_PREFIX + k.toString() + RESULT_SCHEMA_SEP + v + RESULT_SCHEMA_SUFFIX;
-	}
 }

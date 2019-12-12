@@ -17,9 +17,9 @@ public final class StreamHandler {
 	private KTable<Long, Float> averageExpensePerOrderStream = null;
 	private KTable<Long, Float> totalProfitStream = null;
 
-	private KTable<Windowed<Long>, Float> totalRevenueLastHourTable = null;
-	private KTable<Windowed<Long>, Float> totalExpenseLastHourTable = null;
-	private KTable<Windowed<Long>, Float> totalProfitLastHourTable = null;
+	private KStream<Windowed<Long>, Float> totalRevenueLastHourTable = null;
+	private KStream<Windowed<Long>, Float> totalExpenseLastHourTable = null;
+	private KStream<Windowed<Long>, Float> totalProfitLastHourTable = null;
 
 	public StreamHandler(KStream<Long, String> ordersStream, KStream<Long, String> salesStream) {
 		this.streamOperationsHandler = new StreamOperationsHandler(ordersStream, salesStream);
@@ -87,21 +87,21 @@ public final class StreamHandler {
 		return this.profitPerItemTable;
 	}
 
-	public KTable<Windowed<Long>, Float> getTotalRevenueLastHourTable() {
+	public KStream<Windowed<Long>, Float> getTotalRevenueLastHourTable() {
 		if (this.totalRevenueLastHourTable != null)
 			return this.totalRevenueLastHourTable;
 		this.totalRevenueLastHourTable = this.streamOperationsHandler.totalRevenueLastHour();
 		return this.totalRevenueLastHourTable;
 	}
 
-	public KTable<Windowed<Long>, Float> getTotalExpenseLastHourTable() {
+	public KStream<Windowed<Long>, Float> getTotalExpenseLastHourTable() {
 		if (this.totalExpenseLastHourTable != null)
 			return this.totalExpenseLastHourTable;
 		this.totalExpenseLastHourTable = this.streamOperationsHandler.totalExpenseLastHour();
 		return this.totalExpenseLastHourTable;
 	}
 
-	public KTable<Windowed<Long>, Float> getTotalProfitLastHourTable() {
+	public KStream<Windowed<Long>, Float> getTotalProfitLastHourTable() {
 		if (totalProfitLastHourTable !=  null)
 			return this.totalProfitLastHourTable;
 		this.totalProfitLastHourTable = this.streamOperationsHandler.totalProfitLastHour(
