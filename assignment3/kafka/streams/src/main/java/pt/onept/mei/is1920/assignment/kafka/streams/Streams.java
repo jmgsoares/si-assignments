@@ -196,8 +196,11 @@ public class Streams {
 					}
 					return gson.toJson(resultSale);
 				});
-
-		countryHighestSalesKTable.toStream().to(countryHighestSalesSinkTopic);
+		countryHighestSalesKTable.toStream()
+				.map(((key, value) -> new KeyValue<>(
+						key,
+						gson.fromJson(value, Sale.class).getCountry().getId() + " " + gson.fromJson(value, Sale.class).getPrice()
+				))).to(countryHighestSalesSinkTopic);
 
 
 		KTable<Long, String> mostProfitableItemKTable = revenuePerItem.join(expensePerItemKTable,
@@ -218,7 +221,10 @@ public class Streams {
 				}
 				return gson.toJson(a);
 			});
-		mostProfitableItemKTable.toStream().to(mostProfitableItemSinkTopic);
+		mostProfitableItemKTable.toStream()
+				.map(((key, value) ->
+						new KeyValue<>(gson.fromJson(value, Order.class).getItem().getId(),
+								Float.toString(gson.fromJson(value, Order.class).getPrice())))).to(mostProfitableItemSinkTopic);
 
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), sourceProps);
