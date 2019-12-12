@@ -222,7 +222,60 @@ final class StreamOperationsHandler {
 				.to(TopicsName.TOTAL_PROFIT_LAST_HOUR_SINK_TOPIC);
 
 		return totalProfitLastHourTable;
+	}
+	KTable<Long, String> mostProfitableItem(KTable<Long, Float> profitPerItemTable) {
+		KTable<Long, String> mostProfitableItemTable = profitPerItemTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, k + " " + v))
+				.groupBy((k, v) -> 0L)
+				.reduce((newValue, aggValue) ->
+						Float.parseFloat(aggValue.split(" ")[1]) < Float.parseFloat(newValue.split(" ")[1]) ?
+								newValue : aggValue);
 
+		mostProfitableItemTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(Long.parseLong(v.split(" ")[0]),
+						StreamConfigs.WrapKVSchema(Long.parseLong(v.split(" ")[0]), v.split(" ")[1])))
+				.to(StreamConfigs.MOST_PROFITABLE_ITEM_SINK_TOPIC);
+
+		return mostProfitableItemTable;
+	}
+
+	KTable<Long, String> countryHighestSales() {
+		KTable<Long, String> countryHighestSalesTable = salesStream
+				.groupBy((k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getName()),
+						Grouped.with(Serdes.String(), Serdes.String()))
+				.reduce((sale1, sale2) -> {
+					Sale s1 = gson.fromJson(sale1, Sale.class);
+					Sale s2 = gson.fromJson(sale2, Sale.class);
+					return gson.toJson(s2
+							.setPrice(s1.getPrice() + s2.getPrice()));
+				})
+				.toStream()
+				.groupBy((k, v) -> Long.parseLong(k.split(" ")[0]), Grouped.with(Serdes.Long(),
+						Serdes.String()))
+				.reduce((oldVal, newVal) -> {
+					Sale oldS = gson.fromJson(oldVal, Sale.class);
+					Sale newS = gson.fromJson(newVal, Sale.class);
+					Sale resultSale = new Sale();
+					if(oldS.getPrice() < newS.getPrice()){
+						resultSale.setPrice(newS.getPrice())
+								.setCountry(newS.getCountry());
+					} else {
+						resultSale.setPrice(oldS.getPrice())
+								.setCountry(oldS.getCountry());
+					}
+					return gson.toJson(resultSale);
+				});
+
+		countryHighestSalesTable
+				.toStream()
+				.map(((key, value) -> new KeyValue<>(
+						key,
+						gson.fromJson(value, Sale.class).getCountry().getId() + " " + gson.fromJson(value, Sale.class).getPrice()
+				))).to(StreamConfigs.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
+
+		return countryHighestSalesTable;
 	}
 
 }

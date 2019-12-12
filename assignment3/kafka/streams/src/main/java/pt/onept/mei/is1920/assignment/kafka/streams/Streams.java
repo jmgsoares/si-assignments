@@ -42,6 +42,8 @@ public class Streams {
 		streamHandler.getTotalExpenseLastHourStream();
 		streamHandler.getTotalProfitLastHourTable();
 
+		streamHandler.getMostProfitableItemStream();
+		streamHandler.getCountryHighestSalesTable();
 
 		KafkaStreams streams = new KafkaStreams(builder.build(), sourceProps);
 		streams.start();

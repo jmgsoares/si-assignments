@@ -17,6 +17,8 @@ public final class StreamHandler {
 	private KTable<Long, Float> averageExpensePerOrderTable = null;
 	private KTable<Long, Float> totalProfitTable = null;
 	private KTable<Long, Float> totalProfitLastHourTable = null;
+	private KTable<Long, String> mostProfitableItemTable = null;
+	private KTable<Long, String> countryHighestSalesTable = null;
 
 	private KStream<Windowed<Long>, Float> totalRevenueLastHourStream = null;
 	private KStream<Windowed<Long>, Float> totalExpenseLastHourStream = null;
@@ -109,6 +111,14 @@ public final class StreamHandler {
 				this.getTotalExpenseLastHourStream()
 		);
 		return this.totalProfitLastHourTable;
+	}
+
+	public KTable<Long, String> getCountryHighestSalesTable() {
+		if(this.countryHighestSalesTable != null) {
+			return this.countryHighestSalesTable;
+		}
+		this.countryHighestSalesTable = this.streamOperationsHandler.countryHighestSales();
+		return this.countryHighestSalesTable;
 	}
 
 }
