@@ -14,12 +14,12 @@ public final class StreamHandler {
 	private KTable<Long, Float> profitPerItemTable = null;
 	private KTable<Long, Float> totalRevenueTable = null;
 	private KTable<Long, Float> totalExpenseTable = null;
-	private KTable<Long, Float> averageExpensePerOrderStream = null;
-	private KTable<Long, Float> totalProfitStream = null;
+	private KTable<Long, Float> averageExpensePerOrderTable = null;
+	private KTable<Long, Float> totalProfitTable = null;
+	private KTable<Long, Float> totalProfitLastHourTable = null;
 
-	private KStream<Windowed<Long>, Float> totalRevenueLastHourTable = null;
-	private KStream<Windowed<Long>, Float> totalExpenseLastHourTable = null;
-	private KStream<Windowed<Long>, Float> totalProfitLastHourTable = null;
+	private KStream<Windowed<Long>, Float> totalRevenueLastHourStream = null;
+	private KStream<Windowed<Long>, Float> totalExpenseLastHourStream = null;
 
 	public StreamHandler(KStream<Long, String> ordersStream, KStream<Long, String> salesStream) {
 		this.streamOperationsHandler = new StreamOperationsHandler(ordersStream, salesStream);
@@ -54,13 +54,13 @@ public final class StreamHandler {
 	}
 
 	public KTable<Long, Float> getTotalProfitTable() {
-		if (this.totalProfitStream != null) {
-			return this.totalProfitStream;
+		if (this.totalProfitTable != null) {
+			return this.totalProfitTable;
 		}
-		this.totalProfitStream = this.streamOperationsHandler.totalProfit(
+		this.totalProfitTable = this.streamOperationsHandler.totalProfit(
 				this.getTotalRevenueTable(),
 				this.getTotalExpenseTable());
-		return this.totalProfitStream;
+		return this.totalProfitTable;
 	}
 
 	public KTable<Long, Float> getAverageExpensePerItemTable() {
@@ -71,10 +71,10 @@ public final class StreamHandler {
 	}
 
 	public KTable<Long, Float> getAverageExpensePerOrderTable() {
-		if (this.averageExpensePerOrderStream != null)
-			return this.averageExpensePerOrderStream;
-		this.averageExpensePerOrderStream = this.streamOperationsHandler.averageExpensePerOrder(getTotalExpenseTable());
-		return this.averageExpensePerOrderStream;
+		if (this.averageExpensePerOrderTable != null)
+			return this.averageExpensePerOrderTable;
+		this.averageExpensePerOrderTable = this.streamOperationsHandler.averageExpensePerOrder(getTotalExpenseTable());
+		return this.averageExpensePerOrderTable;
 	}
 
 	public KTable<Long, Float> getProfitPerItemTable() {
@@ -87,26 +87,26 @@ public final class StreamHandler {
 		return this.profitPerItemTable;
 	}
 
-	public KStream<Windowed<Long>, Float> getTotalRevenueLastHourTable() {
-		if (this.totalRevenueLastHourTable != null)
-			return this.totalRevenueLastHourTable;
-		this.totalRevenueLastHourTable = this.streamOperationsHandler.totalRevenueLastHour();
-		return this.totalRevenueLastHourTable;
+	public KStream<Windowed<Long>, Float> getTotalRevenueLastHourStream() {
+		if (this.totalRevenueLastHourStream != null)
+			return this.totalRevenueLastHourStream;
+		this.totalRevenueLastHourStream = this.streamOperationsHandler.totalRevenueLastHour();
+		return this.totalRevenueLastHourStream;
 	}
 
-	public KStream<Windowed<Long>, Float> getTotalExpenseLastHourTable() {
-		if (this.totalExpenseLastHourTable != null)
-			return this.totalExpenseLastHourTable;
-		this.totalExpenseLastHourTable = this.streamOperationsHandler.totalExpenseLastHour();
-		return this.totalExpenseLastHourTable;
+	public KStream<Windowed<Long>, Float> getTotalExpenseLastHourStream() {
+		if (this.totalExpenseLastHourStream != null)
+			return this.totalExpenseLastHourStream;
+		this.totalExpenseLastHourStream = this.streamOperationsHandler.totalExpenseLastHour();
+		return this.totalExpenseLastHourStream;
 	}
 
-	public KStream<Windowed<Long>, Float> getTotalProfitLastHourTable() {
+	public KTable<Long, Float> getTotalProfitLastHourTable() {
 		if (totalProfitLastHourTable !=  null)
 			return this.totalProfitLastHourTable;
 		this.totalProfitLastHourTable = this.streamOperationsHandler.totalProfitLastHour(
-				this.getTotalRevenueLastHourTable(),
-				this.getTotalExpenseLastHourTable()
+				this.getTotalRevenueLastHourStream(),
+				this.getTotalExpenseLastHourStream()
 		);
 		return this.totalProfitLastHourTable;
 	}

@@ -16,7 +16,6 @@ final class StreamOperationsHandler {
 
 	private final static Logger logger = LoggerFactory.getLogger(StreamOperationsHandler.class);
 
-
 	private static Gson gson = new Gson();
 
 	private final KGroupedStream<Long, String> ordersByKey;
@@ -35,7 +34,7 @@ final class StreamOperationsHandler {
 		KTable<Long, Float> expensePerItemTable = this.ordersByKey
 				.aggregate(
 						() -> 0F,
-						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
+						(aggKey, newValue, aggValue) ->  gson.fromJson(newValue, Order.class).getPrice() + aggValue,
 						Materialized.with(Serdes.Long(), Serdes.Float())
 						);
 
@@ -77,7 +76,7 @@ final class StreamOperationsHandler {
 	}
 
 	KTable<Long, Float> totalExpense() {
-		KTable<Long, Float> totalExpenseTable = this.allSales
+		KTable<Long, Float> totalExpenseTable = this.allOrders
 				.aggregate(
 						() -> 0F,
 						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
@@ -91,11 +90,10 @@ final class StreamOperationsHandler {
 	}
 
 	KTable<Long, Float> totalProfit(KTable<Long, Float> totalRevenueTable, KTable<Long, Float> totalExpenseTable) {
-
 		KTable<Long, Float> totalProfitTable = totalRevenueTable
 				.join(
 						totalExpenseTable,
-						Float::sum,
+						(rev, exp) -> rev - exp,
 						Materialized.with(Serdes.Long(), Serdes.Float())
 				);
 
@@ -161,7 +159,7 @@ final class StreamOperationsHandler {
 						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Sale.class).getPrice() + aggValue,
 						Materialized.with(Serdes.Long(), Serdes.Float()))
 				.toStream()
-				.filter((wk, v) -> !WindowedStreamUtility.KeepWindow(wk));
+				.filter((k, v) -> WindowedStreamUtility.KeepWindow(k));
 
 		totalRevenueLastHourWindowedStream
 				.map((wk, v) -> new KeyValue<>(wk.key(), DBSchemaUtility.WrapKVSchema(wk.key(), Float.toString(v))))
@@ -178,7 +176,7 @@ final class StreamOperationsHandler {
 						(aggKey, newValue, aggValue) -> gson.fromJson(newValue, Order.class).getPrice() + aggValue,
 						Materialized.with(Serdes.Long(), Serdes.Float()))
 				.toStream()
-				.filter((w, v) -> !WindowedStreamUtility.KeepWindow(w));
+				.filter((k, v) -> WindowedStreamUtility.KeepWindow(k));
 
 		totalExpenseLastHourWindowedStream
 				.map((wk, v) -> new KeyValue<>(wk.key(), DBSchemaUtility.WrapKVSchema(wk.key(), Float.toString(v))))
@@ -187,30 +185,44 @@ final class StreamOperationsHandler {
 		return totalExpenseLastHourWindowedStream;
 	}
 
-	KStream<Windowed<Long>, Float> totalProfitLastHour(
-		KStream<Windowed<Long>, Float> totalRevenueLastHourTable,
-		KStream<Windowed<Long>, Float> totalExpenseLastHourTable
+	KTable<Long, Float> totalProfitLastHour(
+		KStream<Windowed<Long>, Float> totalRevenueLastHourStream,
+		KStream<Windowed<Long>, Float> totalExpenseLastHourStream
 	) {
 
-		KStream<Long, Float> totalRevenueLastHourStream =
-				totalRevenueLastHourTable.map((wk, v) -> new KeyValue<>(wk.key(),v));
-		KStream<Long, Float> totalExpenseLastHourStream =
-				totalExpenseLastHourTable.map((wk, v) -> new KeyValue<>(wk.key(),v));
+		KTable<Long, Float> totalRevenueLastHourTable =
+				totalRevenueLastHourStream
+						.map((wk, v) -> new KeyValue<>(wk.key(),v))
+						.groupByKey(Grouped.with(Serdes.Long(), Serdes.Float()))
+						.aggregate(
+								() -> 0F,
+								(aggKey, newValue, aggValue) -> newValue,
+								Materialized.with(Serdes.Long(), Serdes.Float()));
 
-		totalRevenueLastHourStream
+
+		KTable<Long, Float> totalExpenseLastHourTable =
+				totalExpenseLastHourStream
+						.map((wk, v) -> new KeyValue<>(wk.key(),v))
+						.groupByKey(Grouped.with(Serdes.Long(), Serdes.Float()))
+						.aggregate(
+								() -> 0F,
+								(aggKey, newValue, aggValue) -> newValue,
+								Materialized.with(Serdes.Long(), Serdes.Float()));
+
+		KTable<Long, Float> totalProfitLastHourTable = totalRevenueLastHourTable
 				.join(
-						totalExpenseLastHourStream,
-						(left, right) -> left - right,
-						JoinWindows.of(WindowedStreamUtility.STREAM_JOINING_WINDOW),
-						Joined.with(
-								Serdes.Long(),
-								Serdes.Float(),
-								Serdes.Float()))
+						totalExpenseLastHourTable,
+						(rev, exp) -> rev - exp,
+						Materialized.with(Serdes.Long(), Serdes.Float())
+				);
+
+		totalProfitLastHourTable
+				.toStream()
 				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
-				.to("TEST-TOPIC");
+				.to(TopicsName.TOTAL_PROFIT_LAST_HOUR_SINK_TOPIC);
 
+		return totalProfitLastHourTable;
 
-		return null;
 	}
 
 }

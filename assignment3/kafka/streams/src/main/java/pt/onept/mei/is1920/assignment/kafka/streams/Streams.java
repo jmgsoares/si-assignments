@@ -17,12 +17,10 @@ public class Streams {
 	public static void main(String[] args) {
 
 		java.util.Properties sourceProps = new Properties();
-		//sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-app");
-		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafkaShop-streams-test-app-23");
+		sourceProps.put(StreamsConfig.APPLICATION_ID_CONFIG, "__kafkaShop-streams-app-44");
 		sourceProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		sourceProps.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		sourceProps.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-		sourceProps.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
 		sourceProps.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
 		sourceProps.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, 1);
 
@@ -40,8 +38,8 @@ public class Streams {
 		streamHandler.getAverageExpensePerOrderTable();
 		streamHandler.getProfitPerItemTable();
 		streamHandler.getTotalProfitTable();
-		streamHandler.getTotalRevenueLastHourTable();
-		streamHandler.getTotalExpenseLastHourTable();
+		streamHandler.getTotalRevenueLastHourStream();
+		streamHandler.getTotalExpenseLastHourStream();
 		streamHandler.getTotalProfitLastHourTable();
 
 
