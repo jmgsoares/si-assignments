@@ -1,7 +1,6 @@
 package pt.onept.mei.is1920.assignment.kafka.streams;
 
 import com.google.gson.Gson;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
@@ -38,7 +37,10 @@ public final class Processor {
 		KStream<Long, String> expensePerItemStream = expensePerItemKTable
 				.toStream()
 				.map(
-						(k, v) -> new KeyValue<>(k, Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						(k, v) -> new KeyValue<>(
+								k,
+								StreamConfigs.WrapKVSchema(k, Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						)
 				);
 		expensePerItemStream.to(StreamConfigs.EXPENSE_PER_ITEM_SINK_TOPIC);
 	}
@@ -56,7 +58,11 @@ public final class Processor {
 		KStream<Long, String> revenuePerItemStream = revenuePerItem
 				.toStream()
 				.map(
-						(k, v) -> new KeyValue<>(k, Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+						(k, v) -> new KeyValue<>(
+								k,
+								StreamConfigs.WrapKVSchema(k, Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+
+						)
 				);
 		revenuePerItemStream.to(StreamConfigs.REVENUE_PER_ITEM_SINK_TOPIC);
 	}
@@ -71,7 +77,10 @@ public final class Processor {
 		KStream<Long, String> totalRevenueStream = totalRevenueKTable
 				.toStream()
 				.map(
-						(k, v) -> new KeyValue<>(k, Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+						(k, v) -> new KeyValue<>(
+								k,
+								StreamConfigs.WrapKVSchema(k, Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+						)
 				);
 		totalRevenueStream.to(StreamConfigs.TOTAL_REVENUE_SINK_TOPIC);
 	}
@@ -86,7 +95,10 @@ public final class Processor {
 		KStream<Long, String> totalExpenseStream = totalExpenseKTable
 				.toStream()
 				.map(
-						(k, v) -> new KeyValue<>(k, Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						(k, v) -> new KeyValue<>(
+								k,
+								StreamConfigs.WrapKVSchema(k, Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						)
 				);
 		totalExpenseStream.to(StreamConfigs.TOTAL_EXPENSE_SINK_TOPIC);
 	}
@@ -104,7 +116,9 @@ public final class Processor {
 					Order expense = gson.fromJson(exp, Order.class);
 					return Float.toString(expense.getPrice()/cnt);
 				});
-		KStream<Long, String> averageExpensePerItemStream = averageExpenseByItemKTable.toStream();
+		KStream<Long, String> averageExpensePerItemStream = averageExpenseByItemKTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v)));
 
 		averageExpensePerItemStream.to(StreamConfigs.AVERAGE_EXPENSE_BY_ITEM_SINK_TOPIC);
 	}
@@ -122,7 +136,9 @@ public final class Processor {
 					return Float.toString(expense.getPrice()/tCount);
 				}
 		);
-		KStream<Long, String> averageExpensePerItemStream = averageExpenseByOrderKTable.toStream();
+		KStream<Long, String> averageExpensePerItemStream = averageExpenseByOrderKTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v)));
 
 		averageExpensePerItemStream.to(StreamConfigs.AVERAGE_EXPENSE_BY_ORDER_SINK_TOPIC);
 	}
@@ -133,16 +149,13 @@ public final class Processor {
 			Sale sale2 = gson.fromJson(value2, Sale.class);
 			float price = sale1.getPrice() + sale2.getPrice();
 			return gson.toJson(new Sale()
-					.setItem(sale1.getItem())
-					.setPrice(price)
-					.setQuantity(sale1.getQuantity() + sale2.getQuantity()));
+					.setPrice(price));
 		});
 
 		KTable<Long, String> expensePerItem = this.ordersByKey.reduce((v1, v2) -> {
 			Order order1 = gson.fromJson(v1, Order.class);
 			Order order2 = gson.fromJson(v2, Order.class);
 			return gson.toJson(new Order()
-					.setItem(order1.getItem())
 					.setPrice(order1.getPrice() + order2.getPrice()));
 		});
 
@@ -153,7 +166,9 @@ public final class Processor {
 					return Float.toString(sale.getPrice() - order.getPrice());
 				});
 
-		KStream<Long, String> profitPerItem = profitPerItemKTable.toStream();
+		KStream<Long, String> profitPerItem = profitPerItemKTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v)));
 
 		profitPerItem.to(StreamConfigs.PROFIT_PER_ITEM_SINK_TOPIC);
 	}
@@ -179,7 +194,9 @@ public final class Processor {
 					return Float.toString(sale.getPrice() - order.getPrice());
 				});
 
-		KStream<Long, String> totalProfit = totalProfitKTable.toStream();
+		KStream<Long, String> totalProfit = totalProfitKTable
+				.toStream()
+				.map((k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v)));
 
 		totalProfit.to(StreamConfigs.TOTAL_PROFIT_SINK_TOPIC);
 	}
@@ -197,7 +214,10 @@ public final class Processor {
 		KStream<Long, String> totalRevLastHour = totalRevenueLastHour
 				.toStream()
 				.map(
-						(wk, v) -> new KeyValue<>(wk.key(), Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+						(wk, v) -> new KeyValue<>(
+								wk.key(),
+								StreamConfigs.WrapKVSchema(wk.key(), Float.toString(gson.fromJson(v, Sale.class).getPrice()))
+						)
 				);
 
 		totalRevLastHour.to(StreamConfigs.TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC);
@@ -216,7 +236,10 @@ public final class Processor {
 		KStream<Long, String> totalExpLastHour = totalExpenseLastHour
 				.toStream()
 				.map(
-						(wk, v) -> new KeyValue<>(wk.key(), Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						(wk, v) -> new KeyValue<>(
+								wk.key(),
+								StreamConfigs.WrapKVSchema(wk.key(), Float.toString(gson.fromJson(v, Order.class).getPrice()))
+						)
 				);
 
 		totalExpLastHour.to(StreamConfigs.TOTAL_EXPENSE_LAST_HOUR_SINK_TOPIC);
@@ -247,10 +270,14 @@ public final class Processor {
 						(wk, v) -> new KeyValue<>(wk.key(), Float.toString(gson.fromJson(v, Order.class).getPrice()))
 				);
 
-		KStream<Long, String> totalProfitLastHour = totalRevenueStream.join(totalExpenseStream,
-				(revenueVal, expenseVal) ->
-						Float.toString(Float.parseFloat(revenueVal) + Float.parseFloat(expenseVal)),
-				JoinWindows.of(Duration.ofSeconds(1)));
+		KStream<Long, String> totalProfitLastHour = totalRevenueStream
+				.join(totalExpenseStream,
+					(revenueVal, expenseVal) ->
+							Float.toString(Float.parseFloat(revenueVal) + Float.parseFloat(expenseVal)),
+					JoinWindows.of(Duration.ofSeconds(3)))
+				.map(
+						(k, v) -> new KeyValue<>(k, StreamConfigs.WrapKVSchema(k, v))
+				);
 
 		totalProfitLastHour.to(StreamConfigs.TOTAL_PROFIT_LAST_HOUR_SINK_TOPIC);
 	}

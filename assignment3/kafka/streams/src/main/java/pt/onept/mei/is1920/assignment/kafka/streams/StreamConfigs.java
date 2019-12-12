@@ -24,4 +24,11 @@ public final class StreamConfigs {
 	public static final String TOTAL_REVENUE_LAST_HOUR_SINK_TOPIC = RESULT_SINK_TOPIC_PREFIX + "TotalRevenueLastHour";
 	public static final Duration WINDOW_SIZE_MS = Duration.ofSeconds(30);
 
+	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32\",\"optional\":false,\"field\":\"key\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"key\":\"";
+	public static final String RESULT_SCHEMA_SEP = "\",\"value\":\"";
+	public static final String RESULT_SCHEMA_SUFFIX = "\"}}";
+
+	public static String WrapKVSchema(Long k, String v) {
+		return StreamConfigs.RESULT_SCHEMA_PREFIX + k.toString() + RESULT_SCHEMA_SEP + v + RESULT_SCHEMA_SUFFIX;
+	}
 }
