@@ -237,10 +237,11 @@ final class StreamOperationsHandler {
 				.toStream()
 				.map(
 						(k, v) -> new KeyValue<>(
-								Long.parseLong(v.split(" ")[0]),
-								DBSchemaUtility.WrapKVSchema(
+								0L,
+								DBSchemaUtility.WrapKVSchema2V(
+										0L,
 										Long.parseLong(v.split(" ")[0]),
-										v.split(" ")[1])))
+										Float.parseFloat(v.split(" ")[1]))))
 				.to(TopicsName.MOST_PROFITABLE_ITEM_SINK_TOPIC);
 
 		return mostProfitableItemTable;
