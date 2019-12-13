@@ -38,13 +38,13 @@ final class StreamOperationsHandler {
 				.aggregate(
 						() -> 0F,
 						(aggKey, newValue, aggValue) ->  gson.fromJson(newValue, Order.class).getPrice() + aggValue,
-						Materialized.with(Serdes.Long(), Serdes.Float())
-						);
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		expensePerItemTable
 				.toStream()
 				.map((k, v) -> new KeyValue<>(k, DBSchemaUtility.WrapKVSchema(k, Float.toString(v))))
 				.to(TopicsName.EXPENSE_PER_ITEM_SINK_TOPIC);
+
 		return expensePerItemTable;
 	}
 
@@ -97,8 +97,7 @@ final class StreamOperationsHandler {
 				.join(
 						totalExpenseTable,
 						(rev, exp) -> rev - exp,
-						Materialized.with(Serdes.Long(), Serdes.Float())
-				);
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalProfitTable
 				.toStream()
@@ -143,8 +142,7 @@ final class StreamOperationsHandler {
 				.join(
 						expensePerItemTable,
 						(revenue, expense) -> revenue - expense,
-						Materialized.with(Serdes.Long(), Serdes.Float())
-				);
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		profitPerItemTable
 				.toStream()
@@ -202,7 +200,6 @@ final class StreamOperationsHandler {
 								(aggKey, newValue, aggValue) -> newValue,
 								Materialized.with(Serdes.Long(), Serdes.Float()));
 
-
 		KTable<Long, Float> totalExpenseLastHourTable =
 				totalExpenseLastHourStream
 						.map((wk, v) -> new KeyValue<>(wk.key(),v))
@@ -216,8 +213,7 @@ final class StreamOperationsHandler {
 				.join(
 						totalExpenseLastHourTable,
 						(rev, exp) -> rev - exp,
-						Materialized.with(Serdes.Long(), Serdes.Float())
-				);
+						Materialized.with(Serdes.Long(), Serdes.Float()));
 
 		totalProfitLastHourTable
 				.toStream()
@@ -232,45 +228,52 @@ final class StreamOperationsHandler {
 				.toStream()
 				.map((k, v) -> new KeyValue<>(k, k + " " + v))
 				.groupBy((k, v) -> 0L)
-				.reduce((newValue, aggValue) ->
-						Float.parseFloat(aggValue.split(" ")[1]) < Float.parseFloat(newValue.split(" ")[1]) ?
-								newValue : aggValue);
+				.reduce((v1, v2) ->
+						Float.parseFloat(v2.split(" ")[1]) < Float.parseFloat(v1.split(" ")[1])
+								?
+								v1 : v2);
 
 		mostProfitableItemTable
 				.toStream()
-				.map((k, v) -> new KeyValue<>(Long.parseLong(v.split(" ")[0]),
-						DBSchemaUtility.WrapKVSchema(Long.parseLong(v.split(" ")[0]), v.split(" ")[1])))
+				.map(
+						(k, v) -> new KeyValue<>(
+								Long.parseLong(v.split(" ")[0]),
+								DBSchemaUtility.WrapKVSchema(
+										Long.parseLong(v.split(" ")[0]),
+										v.split(" ")[1])))
 				.to(TopicsName.MOST_PROFITABLE_ITEM_SINK_TOPIC);
 
 		return mostProfitableItemTable;
 	}
 
 	KTable<Long, String> countryHighestSales() {
-		KTable<Long, String> countryHighestSalesTable = this.salesStream
-				.groupBy((k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getName()),
+		KStream<String, String> salesByItemAndCountryStream = this.salesStream
+				.groupBy(
+						(k, v) -> (k + " " + gson.fromJson(v, Sale.class).getCountry().getId().toString()),
 						Grouped.with(Serdes.String(), Serdes.String()))
-				.reduce((sale1, sale2) -> {
-					Sale s1 = gson.fromJson(sale1, Sale.class);
-					Sale s2 = gson.fromJson(sale2, Sale.class);
-					return gson.toJson(s2
-							.setPrice(s1.getPrice() + s2.getPrice()));
-				})
-				.toStream()
-				.groupBy((k, v) -> Long.parseLong(k.split(" ")[0]), Grouped.with(Serdes.Long(),
-						Serdes.String()))
-				.reduce((oldVal, newVal) -> {
-					Sale oldS = gson.fromJson(oldVal, Sale.class);
-					Sale newS = gson.fromJson(newVal, Sale.class);
-					Sale resultSale = new Sale();
-					if(oldS.getPrice() < newS.getPrice()){
-						resultSale.setPrice(newS.getPrice())
-								.setCountry(newS.getCountry());
-					} else {
-						resultSale.setPrice(oldS.getPrice())
-								.setCountry(oldS.getCountry());
-					}
-					return gson.toJson(resultSale);
-				});
+				.reduce(
+						(sale1, sale2) -> {
+							Sale s1 = gson.fromJson(sale1, Sale.class);
+							Sale s2 = gson.fromJson(sale2, Sale.class);
+							return gson.toJson(s2.setPrice(s1.getPrice() + s2.getPrice()));
+						})
+				.toStream();
+
+		KTable<Long, String> countryHighestSalesTable = salesByItemAndCountryStream
+				.groupBy(
+						(k, v) -> Long.parseLong(k.split(" ")[0]),
+						Grouped.with(Serdes.Long(),	Serdes.String()))
+				.reduce(
+						(v1, v2) -> {
+							Sale s1 = gson.fromJson(v1, Sale.class);
+							Sale s2 = gson.fromJson(v2, Sale.class);
+							Sale res = new Sale();
+							if(s1.getPrice() < s2.getPrice())
+								res.setPrice(s2.getPrice()).setCountry(s2.getCountry());
+							else
+								res.setPrice(s1.getPrice()).setCountry(s1.getCountry());
+							return gson.toJson(res);
+						});
 
 		countryHighestSalesTable
 				.toStream()
@@ -287,5 +290,4 @@ final class StreamOperationsHandler {
 
 		return countryHighestSalesTable;
 	}
-
 }
