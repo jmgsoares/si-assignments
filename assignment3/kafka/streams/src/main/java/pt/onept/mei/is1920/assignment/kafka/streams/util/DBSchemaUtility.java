@@ -2,15 +2,18 @@ package pt.onept.mei.is1920.assignment.kafka.streams.util;
 
 public final class DBSchemaUtility {
 
-	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}],\"optional\":false},\"payload\":{\"id\":\"";
-	public static final String RESULT_SCHEMA_SEP = "\",\"value\":\"";
-	public static final String RESULT_SCHEMA_SUFFIX = "\"}}";
+	public static final String RESULT_SCHEMA_PREFIX = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"int32" +
+			"\",\"optional\":false,\"field\":\"id\"},{\"type\":\"float\",\"optional\":false,\"field\":\"value\"}]," +
+			"\"optional\":false},\"payload\":{\"id\":";
+	public static final String RESULT_SCHEMA_SEP = ",\"value\":";
+	public static final String RESULT_SCHEMA_SUFFIX = "}}";
 
-	public static final String RESULT_SCHEMA_PREFIX_MPI = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"value\"}" +
-			",{\"type\":\"string\",\"optional\":false,\"field\":\"value2\"}],\"optional\":false},\"payload\":{\"id\":\"";
-	public static final String RESULT_SCHEMA_SEP1_MPI = "\",\"value\":\"";
-	public static final String RESULT_SCHEMA_SEP2_MPI = "\",\"value2\":\"";
-	public static final String RESULT_SCHEMA_SUFFIX_MPI = "\"}}";
+	public static final String RESULT_SCHEMA_PREFIX_MPI = "{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"" +
+			"int32\",\"optional\":false,\"field\":\"id\"},{\"type\":\"int32\",\"optional\":false,\"field\":\"value\"}" +
+			",{\"type\":\"float\",\"optional\":false,\"field\":\"value2\"}],\"optional\":false},\"payload\":{\"id\":";
+	public static final String RESULT_SCHEMA_SEP1_MPI = ",\"value\":";
+	public static final String RESULT_SCHEMA_SEP2_MPI = ",\"value2\":";
+	public static final String RESULT_SCHEMA_SUFFIX_MPI = "}}";
 
 	private DBSchemaUtility() { }
 
