@@ -274,10 +274,16 @@ final class StreamOperationsHandler {
 
 		countryHighestSalesTable
 				.toStream()
-				.map(((key, value) -> new KeyValue<>(
-						key,
-						gson.fromJson(value, Sale.class).getCountry().getId() + " " + gson.fromJson(value, Sale.class).getPrice()
-				))).to(TopicsName.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
+				.map(
+						(key, value) -> new KeyValue<>(
+								key,
+								DBSchemaUtility.WrapKVSchema2V(
+										key,
+										gson.fromJson(value, Sale.class).getCountry().getId(),
+										gson.fromJson(value, Sale.class).getPrice())
+										)
+				)
+				.to(TopicsName.COUNTRY_HIGHEST_SALES_SINK_TOPIC);
 
 		return countryHighestSalesTable;
 	}

@@ -41,7 +41,6 @@ public class Streams {
 		streamHandler.getTotalRevenueLastHourStream();
 		streamHandler.getTotalExpenseLastHourStream();
 		streamHandler.getTotalProfitLastHourTable();
-
 		streamHandler.getMostProfitableItemStream();
 		streamHandler.getCountryHighestSalesTable();
 

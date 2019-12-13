@@ -5,11 +5,7 @@ import org.apache.kafka.streams.kstream.Windowed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public final class WindowedStreamUtility {
 
@@ -18,7 +14,6 @@ public final class WindowedStreamUtility {
 	public static final Duration WINDOW_SIZE_DURATION = Duration.ofSeconds(30);
 	public static final Duration STREAM_JOINING_WINDOW = Duration.ofSeconds(1);
 	public static final TimeWindows TIME_WINDOWS = TimeWindows.of(WINDOW_SIZE_DURATION);
-
 
 	private WindowedStreamUtility() { }
 
