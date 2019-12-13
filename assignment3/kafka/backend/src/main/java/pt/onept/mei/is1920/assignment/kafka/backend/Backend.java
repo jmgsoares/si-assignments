@@ -19,5 +19,6 @@ public class Backend {
 		path("/health", () -> {
 			get("", new HealthProbeHandler());
 		});
+		DBHandler.GetConnection();
 	}
 }
