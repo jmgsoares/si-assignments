@@ -1,4 +1,4 @@
-Create SCHEMA "Results"
+Create SCHEMA "Results";
 
 create sequence data_id_seq;
 
