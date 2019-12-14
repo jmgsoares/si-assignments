@@ -40,14 +40,11 @@ public class ItemsOperationsHandler {
             // Else, allow the user to select one of the items in order to edit it.
             itemsMap.forEach((k, v) -> System.out.println(k + " - " + v));
 
-            System.out.println("Add new item? (y/n)");
-            if (scanner.nextLine().equals("y")) {
+            System.out.println("(A)dd new item or (E)dit new item? (A/E/No)");
+            String addOrEdit = scanner.nextLine();
+            if (addOrEdit.toLowerCase().equals("a")) {
                 addItem();
-                return;
-            }
-
-            System.out.println("Edit an item? (y/n)");
-            if (scanner.nextLine().equals("y")) {
+            } else if (addOrEdit.toLowerCase().equals("e")){
                 System.out.print("Select one item to edit (numbers only): ");
                 int option = scanner.nextInt();
                 scanner.nextLine(); // clean buffer
@@ -56,8 +53,8 @@ public class ItemsOperationsHandler {
                 } else {
                     editItem(itemsMap.get(option));
                 }
+                System.out.println();
             }
-
         }
     }
 

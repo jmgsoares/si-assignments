@@ -40,14 +40,11 @@ public class CountryOperationsHandler {
             // Else, allow the user to select one of the countries in order to edit it.
             countriesMap.forEach((k, v) -> System.out.println(k + " - " + v));
 
-            System.out.println("Add new country? (y/n)");
-            if (scanner.nextLine().equals("y")) {
+            System.out.println("(A)dd new country or (E)dit new country? (A/E/No)");
+            String addOrEdit = scanner.nextLine();
+            if (addOrEdit.toLowerCase().equals("a")) {
                 addCountry();
-                return;
-            }
-
-            System.out.println("Edit a country? (y/n)");
-            if (scanner.nextLine().equals("y")) {
+            } else if (addOrEdit.toLowerCase().equals("e")){
                 System.out.print("Select one country to edit (numbers only): ");
                 int option = scanner.nextInt();
                 scanner.nextLine(); // clean buffer
@@ -56,6 +53,7 @@ public class CountryOperationsHandler {
                 } else {
                     editCountry(countriesMap.get(option));
                 }
+                System.out.println();
             }
         }
     }
