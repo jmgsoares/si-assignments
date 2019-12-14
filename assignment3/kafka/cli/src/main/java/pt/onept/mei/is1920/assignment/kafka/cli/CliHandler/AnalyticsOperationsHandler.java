@@ -17,15 +17,15 @@ public class AnalyticsOperationsHandler {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Type the number with the desired operation (0 to leave)");
-            System.out.println("1 - Get the revenue per item.");
-            System.out.println("2 - Get the expenses per item.");
-            System.out.println("3 - Get the profit per item.");
-            System.out.println("4 - Get the total revenues.");
-            System.out.println("5 - Get the total expenses.");
-            System.out.println("6 - Get the total profit.");
-            System.out.println("7 - Get the average amount spent in each purchase (separated by item).");
-            System.out.println("8 - Get the average amount spent in each purchase (aggregated for all items).");
-            System.out.println("9 - Get the item with the highest profit of all.");
+            System.out.println(" 1 - Get the revenue per item.");
+            System.out.println(" 2 - Get the expenses per item.");
+            System.out.println(" 3 - Get the profit per item.");
+            System.out.println(" 4 - Get the total revenues.");
+            System.out.println(" 5 - Get the total expenses.");
+            System.out.println(" 6 - Get the total profit.");
+            System.out.println(" 7 - Get the average amount spent in each purchase (separated by item).");
+            System.out.println(" 8 - Get the average amount spent in each purchase (aggregated for all items).");
+            System.out.println(" 9 - Get the item with the highest profit of all.");
             System.out.println("10 - Get the total revenue in the last hour.");
             System.out.println("11 - Get the total expenses in the last hour.");
             System.out.println("12 - Get the total profits in the last hour.");
