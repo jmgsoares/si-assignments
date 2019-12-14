@@ -115,7 +115,8 @@ public class AnalyticsOperationsHandler {
             System.out.println("Value: " + ((JSONObject) o).get("value").toString());
         }
         System.out.println("Press any key to continue...");
-        scanner.nextLine();    }
+        scanner.nextLine();
+    }
 
     private static void getCountryHighestSalesPerItem() {
         Scanner scanner = new Scanner(System.in);
@@ -133,7 +134,6 @@ public class AnalyticsOperationsHandler {
             }
         }
         System.out.println("Press any key to continue...");
-        scanner.nextLine();    }
-
-
+        scanner.nextLine();
+    }
 }
