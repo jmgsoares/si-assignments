@@ -18,7 +18,7 @@ public class ItemsOperationsHandler {
         int indexKey = 1; // starting at one
         Map<Integer, String> itemsMap = new HashMap<>();
 
-        JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL + "item")
+        JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ITEM)
                 .asJson()
                 .getBody()
                 .getArray();
@@ -71,7 +71,7 @@ public class ItemsOperationsHandler {
         }
 
         // Send new name
-        HttpResponse<String> response = Unirest.post(ConnectionUtility.PAGE_URL + "item")
+        HttpResponse<String> response = Unirest.post(ConnectionUtility.PAGE_URL_ITEM)
                 .queryString("name", newItemName)
                 .asString();
 
@@ -88,7 +88,7 @@ public class ItemsOperationsHandler {
         }
 
         // Send old and new name
-        HttpResponse<String> response = Unirest.put(ConnectionUtility.PAGE_URL + "item/{oldName}")
+        HttpResponse<String> response = Unirest.put(ConnectionUtility.PAGE_URL_ITEM + "/{oldName}")
                 .routeParam("oldName", selectedItem)
                 .queryString("name", newItemName)
                 .asString();

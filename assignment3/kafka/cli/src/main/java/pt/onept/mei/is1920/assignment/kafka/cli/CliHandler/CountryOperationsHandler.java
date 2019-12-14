@@ -18,7 +18,7 @@ public class CountryOperationsHandler {
         int indexKey = 1; // starting at one
         Map<Integer, String> countriesMap = new HashMap<>();
 
-        JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL + "country")
+        JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_COUNTRY)
                 .connectTimeout(1000)
                 .asJson()
                 .getBody()
@@ -70,7 +70,7 @@ public class CountryOperationsHandler {
         }
 
         // Send new name
-        HttpResponse<String> response = Unirest.post(ConnectionUtility.PAGE_URL + "country")
+        HttpResponse<String> response = Unirest.post(ConnectionUtility.PAGE_URL_COUNTRY)
                 .queryString("name", newCountryName)
                 .asString();
 
@@ -87,7 +87,7 @@ public class CountryOperationsHandler {
         }
 
         // Send old and new name
-        HttpResponse<String> response = Unirest.put(ConnectionUtility.PAGE_URL + "country/{oldName}")
+        HttpResponse<String> response = Unirest.put(ConnectionUtility.PAGE_URL_COUNTRY + "/{oldName}")
                 .routeParam("oldName", selectedCountry)
                 .queryString("name", newCountryName)
                 .asString();
