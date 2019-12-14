@@ -24,9 +24,10 @@ public class MostProfitableItemHandler implements Route {
 		try {
 			Connection conn = DBHandler.GetConnection();
 			PreparedStatement ps = conn.prepareStatement(
-					"select i.name as name, r.value2 from \"Results\".\"MostProfitableItem\" r" +
-					" inner join items i" +
-					" on r.value = i.id");
+					"select i.name as name, r.value2 as value " +
+						"from \"Results\".\"MostProfitableItem\" r" +
+						" inner join items i" +
+						" on r.value = i.id");
 			logger.info("Query " + ps.toString());
 			ResultSet rs = ps.executeQuery();
 			JsonArray jsonArray = ResultSetToJsonMapper.MapResultSet(rs);
