@@ -19,10 +19,10 @@ public class Cli {
 			int option = scanner.nextInt();
 			switch (option) {
 				case 1:
-					CountryOperationsHandler.countriesMenu();
+					CountryOperationsHandler.listCountries();
 					continue;
 				case 2:
-					ItemsOperationsHandler.itemsMenu();
+					ItemsOperationsHandler.listItems();
 					continue;
 				case 3:
 					CliOperationsHandler.cliOperationsMenu();
