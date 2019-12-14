@@ -66,7 +66,8 @@ public class AnalyticsOperationsHandler {
                     getTotal("avg-exp-ord");
                     continue;
                 case 9:
-                    getMostProfitableItem();
+                    System.out.println("Item with the highest profit of all");
+                    getTotalPerItem("mst-prof-itm");
                     continue;
                 case 10:
                     System.out.println("Total revenue in the last hour");
@@ -97,8 +98,8 @@ public class AnalyticsOperationsHandler {
 
         if (!response.isEmpty()) {
             for (Object o : response.toList()) {
-                System.out.println("Name: " + (((JSONObject) o).get("item").toString() +
-                        ", value: " + ((JSONObject) o).get("value").toString()));
+                System.out.printf("Name: %-15s Value: %-15s\n", ((JSONObject) o).get("item").toString(),
+                        ((JSONObject) o).get("value").toString());
             }
         }
         System.out.println();
@@ -116,23 +117,6 @@ public class AnalyticsOperationsHandler {
         System.out.println();
     }
 
-    private static void getMostProfitableItem() {
-        System.out.println("Item with the highest profit of all");
-        JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ANALYTICS + "mst-prof-itm")
-                .asJson()
-                .getBody()
-                .getArray();
-
-        if (!response.isEmpty()) {
-            for (Object o : response.toList()) {
-                System.out.println("Name: " + (((JSONObject) o).get("name").toString() +
-                        ", value: " + ((JSONObject) o).get("value").toString()));
-            }
-        }
-        System.out.println();
-
-    }
-
     private static void getCountryHighestSalesPerItem() {
         JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ANALYTICS + "cnt-hst-sale-itm")
                 .asJson()
@@ -142,9 +126,8 @@ public class AnalyticsOperationsHandler {
         System.out.println("Country with the highest sales per item");
         if (!response.isEmpty()) {
             for (Object o : response.toList()) {
-                System.out.println("Name: " + ((JSONObject) o).get("item").toString() +
-                        ", Country: " + ((JSONObject) o).get("country").toString() +
-                        ", Value: " + ((JSONObject) o).get("value").toString());
+                System.out.printf("Name: %-15s Country: %-15s Value: %-15s\n", ((JSONObject) o).get("item").toString(),
+                        ((JSONObject) o).get("country").toString(), ((JSONObject) o).get("value").toString());
             }
         }
         System.out.println();
