@@ -99,7 +99,7 @@ public class AnalyticsOperationsHandler {
                         ((JSONObject) o).get("value").toString());
             }
         }
-        System.out.println("Press any key to continue...");
+        System.out.println("\nPress return to continue...");
         scanner.nextLine();
     }
 
@@ -114,7 +114,7 @@ public class AnalyticsOperationsHandler {
         for (Object o : response.toList()) {
             System.out.println("Value: " + ((JSONObject) o).get("value").toString());
         }
-        System.out.println("Press any key to continue...");
+        System.out.println("\nPress return to continue...");
         scanner.nextLine();
     }
 
@@ -133,7 +133,7 @@ public class AnalyticsOperationsHandler {
                         ((JSONObject) o).get("country").toString(), ((JSONObject) o).get("value").toString());
             }
         }
-        System.out.println("Press any key to continue...");
+        System.out.println("\nPress return to continue...");
         scanner.nextLine();
     }
 }
