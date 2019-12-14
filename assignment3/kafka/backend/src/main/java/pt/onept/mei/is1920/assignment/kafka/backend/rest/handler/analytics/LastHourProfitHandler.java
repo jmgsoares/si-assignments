@@ -1,5 +1,6 @@
 package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.analytics;
 
+import com.google.gson.JsonArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.onept.mei.is1920.assignment.kafka.backend.db.DBHandler;
@@ -25,8 +26,9 @@ public class LastHourProfitHandler implements Route {
 			PreparedStatement ps = conn.prepareStatement("select value from \"Results\".\"TotalProfitLastHour\"");
 			logger.info("Query " + ps.toString());
 			ResultSet rs = ps.executeQuery();
+			JsonArray jsonArray = ResultSetToJsonMapper.MapResultSet(rs);
 			conn.close();
-			return ResultSetToJsonMapper.MapResultSet(rs);
+			return jsonArray;
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 			response.status(500);

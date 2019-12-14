@@ -2,7 +2,7 @@ package pt.onept.mei.is1920.assignment.kafka.backend;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.analytics.AnalyticsHandler;
+import pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.analytics.*;
 import pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.entities.*;
 
 import static spark.Spark.*;
@@ -27,6 +27,24 @@ public class Backend {
 			post("", new AddItemHandler());
 			put("/:item", new UpdateItemHandler());
 		});
-		get("/analytics/:type", new AnalyticsHandler());
+		path("/analytics", () -> {
+			get("/avg-exp-ord-itm", new AverageExpensePerOrderByItemHandler());
+			get("/avg-exp-ord", new AverageExpensePerOrderHandler());
+
+			get("/cnt-hst-sale-itm", new CountryHighestSalesByItemHandler());
+			get("/mst-prof-itm", new MostProfitableItemHandler());
+
+			get("/lst-hour-rev", new LastHourRevenueHandler());
+			get("/lst-hour-exp", new LastHourExpenseHandler());
+			get("/lst-hour-pft", new LastHourProfitHandler());
+
+			get("/rev-itm", new RevenuePerItemHandler());
+			get("/exp-itm", new ExpensePerItemHandler());
+			get("/pft-itm", new ProfitPerItemHandler());
+
+			get("/tot-rev", new TotalRevenueHandler());
+			get("/tot-exp", new TotalExpenseHandler());
+			get("/tot-pft", new TotalProfitHandler());
+		});
 	}
 }
