@@ -5,13 +5,9 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import pt.onept.mei.is1920.assignment.kafka.cli.util.ConnectionUtility;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class ItemsOperationsHandler {
-
     private static Scanner scanner = new Scanner(System.in);
 
     public static void listItems() {
