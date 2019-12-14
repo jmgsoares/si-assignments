@@ -24,7 +24,7 @@ public class MostProfitableItemHandler implements Route {
 		try {
 			Connection conn = DBHandler.GetConnection();
 			PreparedStatement ps = conn.prepareStatement(
-					"select i.name as name, r.value2 as value " +
+					"select i.name as item, r.value2 as value " +
 						"from \"Results\".\"MostProfitableItem\" r" +
 						" inner join items i" +
 						" on r.value = i.id");
