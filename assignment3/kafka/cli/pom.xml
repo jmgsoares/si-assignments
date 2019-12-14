@@ -11,14 +11,22 @@
 
 	<artifactId>cli</artifactId>
 
-
 	<dependencies>
+		<dependency>
+			<groupId>pt.onept.mei.is1920.assignment.kafka</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.konghq</groupId>
 			<artifactId>unirest-java</artifactId>
 		</dependency>
-	</dependencies>
 
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
