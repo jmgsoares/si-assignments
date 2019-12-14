@@ -1,15 +1,10 @@
 package pt.onept.mei.is1920.assignment.kafka.cli.CliHandler;
 
-import com.google.gson.JsonObject;
-import kong.unirest.GenericType;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import pt.onept.mei.is1920.assignment.kafka.cli.util.ConnectionUtility;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AnalyticsOperationsHandler {
@@ -91,6 +86,8 @@ public class AnalyticsOperationsHandler {
     }
 
     private static void getTotalPerItem(String param) {
+        Scanner scanner = new Scanner(System.in);
+
         JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ANALYTICS + param)
                 .asJson()
                 .getBody()
@@ -102,10 +99,13 @@ public class AnalyticsOperationsHandler {
                         ((JSONObject) o).get("value").toString());
             }
         }
-        System.out.println();
+        System.out.println("Press any key to continue...");
+        scanner.nextLine();
     }
 
     private static void getTotal(String param) {
+        Scanner scanner = new Scanner(System.in);
+
         JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ANALYTICS + param)
                 .asJson()
                 .getBody()
@@ -114,10 +114,12 @@ public class AnalyticsOperationsHandler {
         for (Object o : response.toList()) {
             System.out.println("Value: " + ((JSONObject) o).get("value").toString());
         }
-        System.out.println();
-    }
+        System.out.println("Press any key to continue...");
+        scanner.nextLine();    }
 
     private static void getCountryHighestSalesPerItem() {
+        Scanner scanner = new Scanner(System.in);
+
         JSONArray response = Unirest.get(ConnectionUtility.PAGE_URL_ANALYTICS + "cnt-hst-sale-itm")
                 .asJson()
                 .getBody()
@@ -130,8 +132,8 @@ public class AnalyticsOperationsHandler {
                         ((JSONObject) o).get("country").toString(), ((JSONObject) o).get("value").toString());
             }
         }
-        System.out.println();
-    }
+        System.out.println("Press any key to continue...");
+        scanner.nextLine();    }
 
 
 }
