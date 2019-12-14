@@ -13,7 +13,7 @@ $$ LANGUAGE plpgsql;
 create table items (
     id bigint default nextval('data_id_seq'),
     type VARCHAR(40) NOT NULL default 'item',
-    name VARCHAR(40) NOT NULL,
+    name VARCHAR(40) NOT NULL UNIQUE,
     updated TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
@@ -21,7 +21,7 @@ create table items (
 create table countries (
     id bigint default nextval('data_id_seq'),
     type VARCHAR(40) NOT NULL default 'country',
-    name VARCHAR(40) NOT NULL,
+    name VARCHAR(40) NOT NULL UNIQUE,
     updated TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
