@@ -57,7 +57,7 @@ order by value desc;
 select value from "Results"."AverageExpenseByOrder";
 
 -- R13 Item with the highest profit
-select i.name as name, r.value2 from "Results"."MostProfitableItem" r
+select i.name as name, r.value2 as value from "Results"."MostProfitableItem" r
 inner join items i
 on r.value = i.id;
 
