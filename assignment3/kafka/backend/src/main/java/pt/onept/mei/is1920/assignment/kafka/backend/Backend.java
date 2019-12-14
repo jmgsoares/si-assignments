@@ -15,17 +15,17 @@ public class Backend {
 		port(8080);
 		get("/", (req, res) -> {
 			logger.info("Handling root request from " + req.ip() + " " + req.userAgent());
-			return Backend.class.toString();
+			return "Welcome to kafka-shop";
 		});
 		path("/country", () -> {
 			get("", new ListCountriesHandler());
-			post("/:newCountry", new AddCountyHandler());
-			put("/:oldCountry/:newCountry", new UpdateCountryHandler());
+			post("", new AddCountyHandler());
+			put("/:country", new UpdateCountryHandler());
 		});
 		path("/item", () -> {
 			get("", new ListItemsHandler());
-			post("/:newItem", new InsertItemHandler());
-			put("/:oldItem/:newItem", new UpdateItemHandler());
+			post("", new AddItemHandler());
+			put("/:item", new UpdateItemHandler());
 		});
 		get("/analytics/:type", new AnalyticsHandler());
 	}
