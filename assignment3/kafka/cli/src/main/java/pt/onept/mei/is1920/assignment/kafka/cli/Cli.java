@@ -1,6 +1,6 @@
 package pt.onept.mei.is1920.assignment.kafka.cli;
 
-import pt.onept.mei.is1920.assignment.kafka.cli.CliHandler.CliOperationsHandler;
+import pt.onept.mei.is1920.assignment.kafka.cli.CliHandler.AnalyticsOperationsHandler;
 import pt.onept.mei.is1920.assignment.kafka.cli.CliHandler.CountryOperationsHandler;
 import pt.onept.mei.is1920.assignment.kafka.cli.CliHandler.ItemsOperationsHandler;
 
@@ -14,7 +14,7 @@ public class Cli {
 			System.out.println("Type the number with the desired operation (0 to leave)");
 			System.out.println("1 - Add/Edit country menu");
 			System.out.println("2 - Add/Edit item menu");
-			System.out.println("3 - Money menu");
+			System.out.println("3 - Analytics menu");
 
 			int option = scanner.nextInt();
 			switch (option) {
@@ -25,7 +25,7 @@ public class Cli {
 					ItemsOperationsHandler.listItems();
 					continue;
 				case 3:
-					CliOperationsHandler.cliOperationsMenu();
+					AnalyticsOperationsHandler.analyticsOperationsMenu();
 					continue;
 				default:
 					return;
