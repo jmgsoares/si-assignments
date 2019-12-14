@@ -17,7 +17,7 @@ public final class AnalyticsMapperUtility {
 	private static String totalProfitLastHour = "r16";
 	private static String totalRevenue = "r8";
 	private static String totalRevenueLastHour = "r14";
-
+	private static String na = "na";
 
 	private AnalyticsMapperUtility () { }
 
@@ -50,24 +50,24 @@ public final class AnalyticsMapperUtility {
 			case TOTAL_REVENUE_LAST_HOUR:
 				return totalRevenueLastHour;
 			default:
-				return "NA";
+				return na;
 		}
 	}
 
 	public static Analytics StringToAnalytic(String s) {
 		if(s.equals(averageExpenseByItem)) return Analytics.AVERAGE_EXPENSE_BY_ITEM;
-		if(s.equals(averageExpenseByOrder)) return Analytics.AVERAGE_EXPENSE_BY_ORDER;
-		if(s.equals(countryHighestSalesPerItem)) return Analytics.COUNTRY_HIGHEST_SALES_PER_ITEM;
-		if(s.equals(expensePerItem)) return Analytics.EXPENSE_PER_ITEM;
-		if(s.equals(mostProfitableItem)) return Analytics.MOST_PROFITABLE_ITEM;
-		if(s.equals(profitPerItem)) return Analytics.PROFIT_PER_ITEM;
-		if(s.equals(revenuePerItem)) return Analytics.REVENUE_PER_ITEM;
-		if(s.equals(totalExpense)) return Analytics.TOTAL_EXPENSE;
-		if(s.equals(totalExpenseLastHour)) return Analytics.TOTAL_EXPENSE_LAST_HOUR;
-		if(s.equals(totalProfit)) return Analytics.TOTAL_PROFIT;
-		if(s.equals(totalProfitLastHour)) return Analytics.TOTAL_PROFIT_LAST_HOUR;
-		if(s.equals(totalRevenue)) return Analytics.TOTAL_REVENUE;
-		if(s.equals(totalRevenueLastHour)) return Analytics.TOTAL_REVENUE_LAST_HOUR;
-		else return null;
+		else if(s.equals(averageExpenseByOrder)) return Analytics.AVERAGE_EXPENSE_BY_ORDER;
+		else if(s.equals(countryHighestSalesPerItem)) return Analytics.COUNTRY_HIGHEST_SALES_PER_ITEM;
+		else if(s.equals(expensePerItem)) return Analytics.EXPENSE_PER_ITEM;
+		else if(s.equals(mostProfitableItem)) return Analytics.MOST_PROFITABLE_ITEM;
+		else if(s.equals(profitPerItem)) return Analytics.PROFIT_PER_ITEM;
+		else if(s.equals(revenuePerItem)) return Analytics.REVENUE_PER_ITEM;
+		else if(s.equals(totalExpense)) return Analytics.TOTAL_EXPENSE;
+		else if(s.equals(totalExpenseLastHour)) return Analytics.TOTAL_EXPENSE_LAST_HOUR;
+		else if(s.equals(totalProfit)) return Analytics.TOTAL_PROFIT;
+		else if(s.equals(totalProfitLastHour)) return Analytics.TOTAL_PROFIT_LAST_HOUR;
+		else if(s.equals(totalRevenue)) return Analytics.TOTAL_REVENUE;
+		else if(s.equals(totalRevenueLastHour)) return Analytics.TOTAL_REVENUE_LAST_HOUR;
+		else return Analytics.NA;
 	}
 }
