@@ -11,6 +11,15 @@
 
 	<artifactId>cli</artifactId>
 
+
+	<dependencies>
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+		</dependency>
+	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>
