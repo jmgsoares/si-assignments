@@ -26,6 +26,7 @@ public class ListItemsHandler implements Route {
 			PreparedStatement ps = conn.prepareStatement("select name from items order by name");
 			ResultSet rs = ps.executeQuery();
 			logger.info("Query " + ps.toString());
+			conn.close();
 			return ResultSetToJsonMapper.MapResultSet(rs);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);

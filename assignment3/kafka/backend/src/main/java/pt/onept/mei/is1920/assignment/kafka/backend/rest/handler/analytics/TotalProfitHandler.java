@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.entities;
+package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.analytics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,18 +13,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ListCountriesHandler implements Route {
-
-	private static Logger logger = LoggerFactory.getLogger(ListCountriesHandler.class);
+public class TotalProfitHandler implements Route {
+	private static Logger logger = LoggerFactory.getLogger(TotalProfitHandler.class);
 
 	@Override
-	public Object handle(Request request, Response response)
-	{
-		logger.info("Request to list countries");
+	public Object handle(Request request, Response response) {
+		logger.info("Request to get Total Profit");
 
 		try {
 			Connection conn = DBHandler.GetConnection();
-			PreparedStatement ps = conn.prepareStatement("select name from countries order by name");
+			PreparedStatement ps = conn.prepareStatement("select value from \"Results\".\"TotalProfit\"");
 			logger.info("Query " + ps.toString());
 			ResultSet rs = ps.executeQuery();
 			conn.close();
@@ -34,6 +32,5 @@ public class ListCountriesHandler implements Route {
 			response.status(500);
 			return e.getMessage();
 		}
-
 	}
 }

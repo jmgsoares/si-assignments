@@ -27,6 +27,7 @@ public class AddItemHandler implements Route {
 			ps.setString(1, itemToAdd);
 			logger.info("Query " + ps.toString());
 			ps.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 			response.status(500);

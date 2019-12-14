@@ -29,6 +29,7 @@ public class UpdateCountryHandler implements Route {
 			ps.setString(2, countyToUpdate);
 			logger.info("Query " + ps.toString());
 			ps.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 			response.status(500);

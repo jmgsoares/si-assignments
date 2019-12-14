@@ -28,6 +28,7 @@ public class UpdateItemHandler implements Route {
 			ps.setString(2, itemToUpdate);
 			logger.info("Query " + ps.toString());
 			ps.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 			response.status(500);

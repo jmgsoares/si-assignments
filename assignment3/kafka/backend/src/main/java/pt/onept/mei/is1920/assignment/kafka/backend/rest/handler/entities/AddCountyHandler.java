@@ -2,7 +2,6 @@ package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.entities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.onept.mei.is1920.assignment.kafka.backend.Backend;
 import pt.onept.mei.is1920.assignment.kafka.backend.db.DBHandler;
 import spark.Request;
 import spark.Response;
@@ -22,12 +21,14 @@ public class AddCountyHandler implements Route {
 
 		logger.info("Request to add country (" + countryToAdd + ")");
 
+
 		try {
 			Connection conn = DBHandler.GetConnection();
 			PreparedStatement ps = conn.prepareStatement("insert into countries (name) values (?)");
 			ps.setString(1, countryToAdd);
 			logger.info("Query " + ps.toString());
 			ps.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 			response.status(500);

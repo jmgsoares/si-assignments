@@ -1,4 +1,4 @@
-package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.entities;
+package pt.onept.mei.is1920.assignment.kafka.backend.rest.handler.analytics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,18 +13,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ListCountriesHandler implements Route {
-
-	private static Logger logger = LoggerFactory.getLogger(ListCountriesHandler.class);
+public class CountryHighestSalesByItemHandler implements Route {
+	private static Logger logger = LoggerFactory.getLogger(CountryHighestSalesByItemHandler.class);
 
 	@Override
-	public Object handle(Request request, Response response)
-	{
-		logger.info("Request to list countries");
+	public Object handle(Request request, Response response) {
+
+		logger.info("Request to get Country with highest sales");
 
 		try {
 			Connection conn = DBHandler.GetConnection();
-			PreparedStatement ps = conn.prepareStatement("select name from countries order by name");
+			PreparedStatement ps = conn.prepareStatement(
+					"select i.name as item, c.name as country, r.value2 as value" +
+					" from \"Results\".\"CountryHighestSales\" r" +
+					" inner join items i on r.id = i.id" +
+					" inner join countries c on r.value = c.id" +
+					" order by value2 desc");
 			logger.info("Query " + ps.toString());
 			ResultSet rs = ps.executeQuery();
 			conn.close();
@@ -34,6 +38,5 @@ public class ListCountriesHandler implements Route {
 			response.status(500);
 			return e.getMessage();
 		}
-
 	}
 }
