@@ -9,5 +9,6 @@ public class ResponseMessages {
         } else {
             System.out.println("Bad request.");
         }
+        System.out.println();
     }
 }
