@@ -121,10 +121,10 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-search-orm</artifactId>
-				<version>5.10.7.Final</version>
-				<scope>provided</scope>
+				<groupId>com.mailjet</groupId>
+				<artifactId>mailjet-client</artifactId>
+				<version>4.2.0</version>
+				<scope>compile</scope>
 			</dependency>
 
 		</dependencies>

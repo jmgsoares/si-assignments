@@ -3,7 +3,9 @@ package pt.onept.mei.is1920.mybay.common.converter;
 import pt.onept.mei.is1920.mybay.common.enums.Country;
 
 
-public class CountryConverter {
+public final class CountryConverter {
+
+	private CountryConverter() { }
 
 	public static String CountryToString(Country country) {
 		switch (country) {

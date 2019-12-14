@@ -3,9 +3,11 @@ package pt.onept.mei.is1920.mybay.common.converter;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 
 
-public class ItemCategoryConverter {
+public final class ItemCategoryConverter {
 
-	public static String CategoryToString(ItemCategory itemCategory) {
+	private ItemCategoryConverter() { }
+
+	public static String ItemCategoryToString(ItemCategory itemCategory) {
 		switch (itemCategory) {
 			case INFORMATICS:
 				return "informatics";

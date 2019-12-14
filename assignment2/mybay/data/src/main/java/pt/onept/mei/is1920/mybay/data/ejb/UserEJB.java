@@ -4,16 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.onept.mei.is1920.mybay.common.type.Item;
 import pt.onept.mei.is1920.mybay.common.type.User;
 import pt.onept.mei.is1920.mybay.common_data.contract.UserEJBRemote;
+import pt.onept.mei.is1920.mybay.data.type.PersistenceItem;
 import pt.onept.mei.is1920.mybay.data.type.PersistenceUser;
+import pt.onept.mei.is1920.mybay.data.utility.MapItemUtility;
 import pt.onept.mei.is1920.mybay.data.utility.MapUserUtility;
 
 import javax.ejb.*;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TransactionRequiredException;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 @Getter
@@ -42,13 +44,17 @@ public class UserEJB implements UserEJBRemote {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public User read(User userToRead) {
-		logger.info("Read request to user  " + userToRead.getEmail());
+		logger.info("Read request to user " + userToRead.getEmail());
 		try {
 			PersistenceUser persistedUserToRead = em.find(PersistenceUser.class, userToRead.getEmail());
-			return MapUserUtility.MapPersistenceUserToUser(persistedUserToRead);
+			if(persistedUserToRead != null) {
+				logger.debug("Found user " + persistedUserToRead.getEmail());
+				return MapUserUtility.MapPersistenceUserToUser(persistedUserToRead);
+			}
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 		}
+		logger.debug("Returning null user");
 		return null;
 	}
 
@@ -101,5 +107,43 @@ public class UserEJB implements UserEJBRemote {
 			logger.error(e.getMessage(), e);
 		}
 		return false;
+	}
+
+	@Override
+	public List<Item> listSales(User user) {
+		try {
+			logger.debug("List user sales");
+			PersistenceUser persistenceUser = em.find(PersistenceUser.class, user.getEmail());
+			if (persistenceUser != null) {
+				List<Item> itemList = new ArrayList<>();
+				for (PersistenceItem pi: persistenceUser.getItems()) {
+					itemList.add(MapItemUtility.MapPersistenceItemToItem(pi));
+				}
+				return itemList;
+			}
+			else {
+				logger.debug("Attempt get user " + user.getEmail() + " unsuccessful. User not found");
+			}
+		}catch (IllegalArgumentException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getUsersEmails() {
+		logger.debug("Getting user email list");
+		Query jpaQuery = em.createQuery("SELECT u.email FROM PersistenceUser u");
+
+		logger.debug(jpaQuery.toString());
+
+		List result = jpaQuery.getResultList();
+
+		List<String> emailList = new ArrayList<>();
+
+		for (Object o : result) {
+			emailList.add((String) o);
+		}
+		return emailList;
 	}
 }

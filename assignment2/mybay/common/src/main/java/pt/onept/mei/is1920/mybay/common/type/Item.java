@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import pt.onept.mei.is1920.mybay.common.enums.Country;
 import pt.onept.mei.is1920.mybay.common.enums.ItemCategory;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class Item {
 	private int id;
 	private String name;
 	private float price;
+	private Country country;
 	private Date publishDate;
 	private ItemCategory category;
 	private String photoUrl;

@@ -5,5 +5,4 @@ public enum SearchFilter {
 	CATEGORY,
 	COUNTRY,
 	DATE,
-	QUERY,
 }

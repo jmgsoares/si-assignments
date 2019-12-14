@@ -15,20 +15,34 @@
     <f:view>
         <ui:composition template="template/common.xhtml">
             <ui:define name="content">
+                <h:form id="SearchMyItems" styleClass="form">
+                    <h:commandButton action="#{searchController.listMySales}" styleClass="button" value="My sales"/>
+                </h:form>
+
                 <h:form id="SearchItem" styleClass="form">
                     <div class="label">
                         <h:outputLabel value="ITEM NAME" styleClass="label-txt"/>
-                        <h:inputText id="nameToSearch" styleClass="input" value="#{itemController.itemName}"/>
+                        <h:inputText id="nameToSearch" styleClass="input" value="#{searchController.itemName}"/>
                         <div class="line-box">
                             <div class="line"></div>
                         </div>
-                    </div>
-                    <div class="label">
-                        <h:selectOneRadio styleClass="formRadio" value="#{itemController.itemsFromUser}">
-                            <f:selectItem itemValue="#{false}" itemLabel="Search everything"/>
-                            <f:selectItem itemValue="#{true}" itemLabel="Search only my items"/>
+                        <h:selectOneRadio styleClass="formRadio"
+                                          value="#{searchController.itemSearchResultOrdering}" layout="spread">
+                            <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
+                            <f:selectItem itemValue="descending" itemLabel="Descending"/>
                         </h:selectOneRadio>
-                    </div>
+
+                    <h:form>
+                        <div class="label">
+                            <h:outputLabel value="FILTER BY" styleClass="label-txt"/>
+                            <h:outputLabel value="" styleClass="input"/>
+                            <h:selectOneMenu styleClass="form-control" value="#{searchController.filterByString}">
+                                <f:selectItem itemValue="#{null}" itemLabel=" "/>
+                                <f:selectItems value="#{searchFilterController.searchFilters}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </h:form>
+
                     <div class="rowHome">
                         <div class="columnHome">
                             <div class="label">
@@ -37,7 +51,7 @@
 
                                 <div class="form-group">
                                     <h:selectOneMenu styleClass="form-control"
-                                                     value="#{itemController.itemCategoryString}">
+                                                     value="#{searchController.itemCategoryString}">
                                         <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                         <f:selectItems value="#{categoryController.categories}"/>
                                     </h:selectOneMenu>
@@ -48,14 +62,14 @@
                                 <h:outputLabel value="PRICE" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
                                 <h:inputText id="priceLowerBound" p:placeholder="Min" styleClass="form-control"
-                                             value="#{itemController.itemSearchPriceLowerBound}"
+                                             value="#{searchController.itemSearchPriceLowerBound}"
                                              converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
                                 </h:inputText>
 
                                 <h:inputText id="priceUpperBound" p:placeholder="Max" styleClass="form-control"
-                                             value="#{itemController.itemSearchPriceUpperBound}"
+                                             value="#{searchController.itemSearchPriceUpperBound}"
                                              converterMessage="Please enter digits only.">
                                     <f:convertNumber maxIntegerDigits="15"
                                                      maxFractionDigits="2"/>
@@ -63,12 +77,12 @@
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="COUNTRY" styleClass="label-txt" required="true"/>
+                                <h:outputLabel value="COUNTRY" styleClass="label-txt" />
                                 <h:outputLabel value="" styleClass="input"/>
 
                                 <div class="form-group">
                                     <h:selectOneMenu styleClass="form-control"
-                                                     value="#{itemController.itemCountryString}">
+                                                     value="#{searchController.itemCountryString}">
                                         <f:selectItem itemValue="#{null}" itemLabel=" "/>
                                         <f:selectItems value="#{countryController.countries}"/>
                                     </h:selectOneMenu>
@@ -81,33 +95,29 @@
                                 <div class="form-group">
                                     <h:outputLabel value="DATE" styleClass="label-txt"/>
                                     <h:outputLabel value="" styleClass="input"/>
-                                    <h:inputText value="#{itemController.itemSearchDateFrom}"
+                                    <h:inputText value="#{searchController.itemSearchDateFrom}"
                                                  styleClass="form-control datepicker">
-                                        <f:convertDateTime pattern="dd/mm/yyyy"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
                                     </h:inputText>
                                 </div>
                             </div>
 
                             <div class="label">
-                                <h:outputLabel value="ORDER BY" styleClass="label-txt"/>
+                                <h:outputLabel value="SORT BY" styleClass="label-txt"/>
                                 <h:outputLabel value="" styleClass="input"/>
-                                <h:selectOneMenu styleClass="form-control" value="#{itemController.searchFilterString}">
-                                    <f:selectItem itemValue="#{null}" itemLabel=" "/>
-                                    <f:selectItems value="#{searchTypeController.searchTypes}"/>
+                                <h:selectOneMenu styleClass="form-control" value="#{searchController.sortByString}">
+                                    <f:selectItems value="#{sortByController.sortBy}"/>
                                 </h:selectOneMenu>
-                                <h:selectOneRadio styleClass="formRadio"
-                                                  value="#{itemController.itemSearchResultOrdering}" layout="spread">
-                                    <f:selectItem itemValue="ascending" itemLabel="Ascending"/>
-                                    <f:selectItem itemValue="descending" itemLabel="Descending"/>
-                                </h:selectOneRadio>
                             </div>
                         </div>
                     </div>
-                    <h:commandButton action="#{itemController.search}" styleClass="button" value="Search item"/>
+                    <h:commandButton action="#{searchController.search}" styleClass="button" value="Search item"/>
+                    </div>
                 </h:form>
 
-                <h:dataTable id="itemTable" value="#{itemController.itemList}" var="item"
-                             styleClass="table table-striped table-bordered form">
+                <h:dataTable id="itemTable" value="#{searchController.itemList}" var="item"
+                             styleClass="table table-striped table-bordered form"
+                             rendered="#{searchController.itemList ne null}">
                     <h:column>
                         <f:facet name="header">Image</f:facet>
                         <h:graphicImage url="#{item.photoUrl}" width="200" height="150"/>
@@ -122,7 +132,11 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Category</f:facet>
-                        <h:outputText value="#{item.category}"/>
+                        <h:outputText value="#{item.category}" converter="itemCategoryConverter"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Publish Date</f:facet>
+                        <h:outputText value="#{item.publishDate}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header"/>
