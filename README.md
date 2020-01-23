@@ -1,2 +1,2 @@
 # is-project
-Project - Integração de Sistemas - 2019/2020
+Project - Systems Integration - University of Coimbra - 2019/2020
